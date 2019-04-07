@@ -1,5 +1,7 @@
 package com.e.assignment.model;
 
+import java.util.Map;
+
 public interface Event {
     String getId();
     String getIitle();
@@ -9,4 +11,5 @@ public interface Event {
 
     String getLocation(long lat, long longi);//?
     String[] getAttendees();
-}
+    Map<String, Event>getEventList();
+    Event getEventById(String eventId);}
