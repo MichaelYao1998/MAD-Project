@@ -1,7 +1,9 @@
 package com.e.assignment.model;
 
-public class MovieImpl extends AbstractEvent {
-    public MovieImpl(String id, String title, String Start, String end, String location, String[] attendees) {
-        super(id, title, Start, end, location, attendees);
+import java.util.Date;
+
+public class MovieImpl extends AbstractMovie {
+    public MovieImpl(String id, String title, String year, String poster) {
+        super(id, title, year, poster);
     }
 }

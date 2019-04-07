@@ -8,6 +8,8 @@ import android.arch.lifecycle.ViewModel;
 
 import com.e.assignment.model.Event;
 import com.e.assignment.model.EventImpl;
+import com.e.assignment.model.EventsModel;
+import com.e.assignment.model.EventsModelImpl;
 
 import java.util.Map;
 
@@ -19,9 +21,9 @@ public class EventListViewModel extends AndroidViewModel {
     public LiveData<Map<String,Event>>getEvent(){
         if(eventLiveData == null){
             eventLiveData = new MutableLiveData<>();
-            Event event = EventImpl.getSingletonInstance(getApplication());
+            EventsModel events = EventsModelImpl.getSingletonInstance(getApplication());
             //load data
-            eventLiveData.setValue(event.getEventList());
+            eventLiveData.setValue(events.getEventsList());
         }
         return eventLiveData;
     }

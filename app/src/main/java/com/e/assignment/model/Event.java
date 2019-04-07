@@ -1,15 +1,21 @@
 package com.e.assignment.model;
 
+import android.app.Person;
+
+import java.util.Date;
 import java.util.Map;
 
 public interface Event {
     String getId();
-    String getIitle();
-    //?
-    String getStartDate();
-    String getEndDate();
+    String getTitle();
 
-    String getLocation(long lat, long longi);//?
+    Date getStartDate();
+    Date getEndDate();
+    String getVenue();
+    String getLocation();
+    int getAttendeesNum();
+    void setMovie(Movie movie);
+    Movie getMovie();
     String[] getAttendees();
-    Map<String, Event>getEventList();
-    Event getEventById(String eventId);}
+    void setAttendees(String[] attendees);
+}
