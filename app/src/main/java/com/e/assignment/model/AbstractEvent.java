@@ -1,5 +1,8 @@
 package com.e.assignment.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class AbstractEvent implements Event {
     private String id;
     private String title;
@@ -7,6 +10,7 @@ public class AbstractEvent implements Event {
     private String endDate;
     private String location;
     private String[] attendees;
+    private Map<String, Event> list = new HashMap<>();
     public AbstractEvent(String id, String title, String Start, String end, String location, String[] attendees){
         this.id =id;
         this.title  = title;
@@ -44,5 +48,15 @@ public class AbstractEvent implements Event {
     @Override
     public String[] getAttendees() {
         return attendees;
+    }
+
+    @Override
+    public Map<String, Event> getEventList() {
+        return list;
+    }
+
+    @Override
+    public Event getEventById(String eventId) {
+        return list.get(eventId);
     }
 }
