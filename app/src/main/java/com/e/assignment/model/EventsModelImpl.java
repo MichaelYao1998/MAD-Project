@@ -42,6 +42,7 @@ public class EventsModelImpl implements EventsModel {
 
     //TODO
     //Extract loadEvents() to fileLoader
+
     private void loadEvents() {
         events.clear();
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");

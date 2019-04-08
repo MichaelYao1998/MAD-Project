@@ -10,11 +10,14 @@ import com.e.assignment.model.Event;
 import com.e.assignment.model.EventImpl;
 import com.e.assignment.model.EventsModel;
 import com.e.assignment.model.EventsModelImpl;
+import com.e.assignment.model.Movie;
 
 import java.util.Map;
 
 public class EventListViewModel extends AndroidViewModel {
+    //event list
     private MutableLiveData<Map<String, Event>>eventLiveData;
+    //event list view model
     public EventListViewModel(Application application){
         super(application);
     }
@@ -27,5 +30,4 @@ public class EventListViewModel extends AndroidViewModel {
         }
         return eventLiveData;
     }
-
 }
