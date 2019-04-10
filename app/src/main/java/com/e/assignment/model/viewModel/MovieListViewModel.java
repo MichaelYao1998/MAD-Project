@@ -6,9 +6,9 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 
+import com.e.assignment.model.EventsModel;
+import com.e.assignment.model.EventsModelImpl;
 import com.e.assignment.model.Movie;
-import com.e.assignment.model.MovieModel;
-import com.e.assignment.model.MovieModelImpl;
 
 import java.util.Map;
 
@@ -21,7 +21,7 @@ public class MovieListViewModel extends AndroidViewModel {
     public LiveData<Map<String, Movie>> getMovie(){
         if(movieLiveData == null){
             movieLiveData = new MutableLiveData<>();
-            MovieModel movies = MovieModelImpl.getSingletonInstance(getApplication());
+            EventsModel movies = EventsModelImpl.getSingletonInstance(getApplication());
             //load data
             movieLiveData.setValue(movies.getMovieList());
         }

@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.e.assignment.controller.EditEventListener;
 import com.e.assignment.model.Event;
 import com.e.assignment.R;
 import com.e.assignment.model.EventImpl;
@@ -36,7 +37,9 @@ public class ListViewAdapter extends ArrayAdapter<Event>{
         TextView eventDate = eventItemView.findViewById(R.id.eventDate);
 
         Button myButton1 = eventItemView.findViewById(R.id.eventButton);
-        //myButton1.setOnClickListener(new EditListItemListener(context, itemId));
+
+
+        //myButton1.setOnClickListener(new EditEventListener(context, itemId));
 
         Event item = events.get(eventId);
         Log.d(TAG, "set view");
