@@ -21,7 +21,7 @@
         android:id="@+id/movieYear"
         android:layout_width="64dp"
         android:layout_height="40dp"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:text="Year"
         app:layout_constraintStart_toEndOf="@+id/movieTitle"
@@ -31,9 +31,17 @@
         android:id="@+id/moviePoster"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
-        android:layout_marginStart="13dp"
-        android:layout_marginTop="25dp"
         android:text="Poster"
+        tools:layout_editor_absoluteX="287dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <Button
+        android:id="@+id/addMovieButton"
+        android:layout_width="158dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="36dp"
+        android:text="Add"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/movieTitle" />
 </android.support.constraint.ConstraintLayout>

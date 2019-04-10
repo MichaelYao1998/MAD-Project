@@ -11,4 +11,6 @@ public interface EventsModel {
 
     Event getEventById(String EventId);
 
+    public void setMovieToEvent(String EventId, String MovieID);
+
 }

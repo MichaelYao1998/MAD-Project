@@ -6,9 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.e.assignment.R;
+import com.e.assignment.controller.EditEventListener;
+import com.e.assignment.controller.addMovieListener;
 import com.e.assignment.model.Movie;
 
 import java.util.Map;
@@ -17,11 +20,12 @@ public class MovieListViewAdapter extends ArrayAdapter<Movie> {
     private final String TAG = getClass().getName();
     private Context context;
     private Map<String, Movie> movies;
-
-    public MovieListViewAdapter(Context context, Map<String, Movie> movies) {
+    private String eventID;
+    public MovieListViewAdapter(Context context, Map<String, Movie> movies, String eventID) {
         super(context, 0, movies.values().toArray(new Movie[movies.size()]));
         this.context = context;
         this.movies = movies;
+        this.eventID = eventID;
     }
 
     public View getView(int position, View movieItemView, ViewGroup parent) {
@@ -42,6 +46,11 @@ public class MovieListViewAdapter extends ArrayAdapter<Movie> {
             movieYear.setText(item.getYear());
             moviePoster.setText(item.getPoster());
         }
+
+        Button addMovieButton = movieItemView.findViewById(R.id.addMovieButton);
+
+        addMovieButton.setOnClickListener(new addMovieListener(context,item.getId(),eventID));
+
         return movieItemView;
     }
 }

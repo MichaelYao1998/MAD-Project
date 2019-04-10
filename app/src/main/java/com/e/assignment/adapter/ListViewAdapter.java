@@ -39,7 +39,7 @@ public class ListViewAdapter extends ArrayAdapter<Event>{
         Button myButton1 = eventItemView.findViewById(R.id.eventButton);
 
 
-        //myButton1.setOnClickListener(new EditEventListener(context, itemId));
+        myButton1.setOnClickListener(new EditEventListener(context, eventId));
 
         Event item = events.get(eventId);
         Log.d(TAG, "set view");

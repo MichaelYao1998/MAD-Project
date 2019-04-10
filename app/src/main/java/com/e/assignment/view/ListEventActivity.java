@@ -20,13 +20,12 @@ public class ListEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_event);
         EventListViewModel myViewModel = ViewModelProviders.of(this).get(EventListViewModel.class);
-        myViewModel.getEvent().observe(this, new Observer<Map<String, Event>>() {
+        myViewModel.getEvents().observe(this, new Observer<Map<String, Event>>() {
             @Override
             public void onChanged(Map<String, Event> items) {
                 // Update your UI with the loaded data.
                 // Returns cached data automatically after a configuration change
                 // and this method will be called again if underlying Live Data object is modified
-
                 ListViewAdapter mAdapter = new ListViewAdapter(ListEventActivity.this, items);
                 ListView myListView3 = findViewById(R.id.EventListView);
                 myListView3.setAdapter(mAdapter);

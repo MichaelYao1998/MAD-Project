@@ -34,6 +34,14 @@ public class EventsModelImpl implements EventsModel {
     public Event getEventById(String EventId) {
         return events.get(EventId);
     }
+    @Override
+    public void setMovieToEvent(String EventId, String MovieID) {
+        Movie tempMovie = getMovieById(MovieID);
+        Event tempEvent = getEventById(EventId);
+        if (tempEvent!=null){
+            events.get(EventId).setMovie(tempMovie);
+        }
+    }
 
 
     public static EventsModel getSingletonInstance(Context appContext) {

@@ -1,6 +1,7 @@
 package com.e.assignment.model;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,7 +13,8 @@ public class AbstractEvent implements Event {
 
 
 
-    private Movie movie;
+
+    @Nullable private Movie movie;
     private String title;
     private Date startDate;
     private Date endDate;
@@ -60,11 +62,11 @@ public class AbstractEvent implements Event {
     }
 
     @Override
-    public void setMovie(Movie movie) {
+    public void setMovie(@Nullable Movie movie) {
         this.movie = movie;
     }
     @Override
-    public Movie getMovie() {
+    @Nullable public Movie getMovie() {
         return movie;
     }
     @Override

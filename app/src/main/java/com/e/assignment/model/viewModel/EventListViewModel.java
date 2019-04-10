@@ -21,7 +21,7 @@ public class EventListViewModel extends AndroidViewModel {
     public EventListViewModel(Application application){
         super(application);
     }
-    public LiveData<Map<String,Event>>getEvent(){
+    public LiveData<Map<String,Event>>getEvents(){
         if(eventLiveData == null){
             eventLiveData = new MutableLiveData<>();
             EventsModel events = EventsModelImpl.getSingletonInstance(getApplication());
