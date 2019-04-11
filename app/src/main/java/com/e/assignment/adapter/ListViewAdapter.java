@@ -43,8 +43,11 @@ public class ListViewAdapter extends ArrayAdapter<Event>{
 
         Event item = events.get(eventId);
         Log.d(TAG, "set view");
-        eventTitle.setText(item.getTitle());
-        eventDate.setText(item.getEndDate().toString());
+        if (item != null) {
+            eventTitle.setText(item.getTitle());
+            eventDate.setText(item.getEndDate().toString());
+        }
+
 
         return eventItemView;
     }
