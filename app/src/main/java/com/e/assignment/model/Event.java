@@ -1,6 +1,5 @@
 package com.e.assignment.model;
 
-import android.app.Person;
 
 import java.util.Date;
 import java.util.Map;
@@ -16,6 +15,7 @@ public interface Event {
     int getAttendeesNum();
     void setMovie(Movie movie);
     Movie getMovie();
-    String[] getAttendees();
-    void setAttendees(String[] attendees);
+    Map<String, String> getAttendees();
+    void setAttendees(String email, String name);
+    void rmAttendees(String email);
 }

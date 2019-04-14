@@ -8,10 +8,11 @@ public class EventsModelImpl implements EventsModel {
 
     private Map<String, Event> events = new HashMap<>();
     private Map<String, Movie> movies = new HashMap<>();
+
     private Fileloader loader = new Fileloader();
 
     private static Context applicationContext;
-    private EventsModelImpl() {
+    public EventsModelImpl() {
         loader.loadEvents(events,applicationContext);
         loader.loadMovies(movies,applicationContext);
     }
@@ -41,6 +42,12 @@ public class EventsModelImpl implements EventsModel {
         if (tempEvent!=null){
             events.get(EventId).setMovie(tempMovie);
         }
+    }
+
+    @Override
+    public void removeAttendeeFromEvent(String EventID, String attendeeEmail) {
+
+        events.get(EventID).rmAttendees(attendeeEmail);
     }
 
 

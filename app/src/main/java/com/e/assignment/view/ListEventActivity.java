@@ -20,6 +20,7 @@ public class ListEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_event);
         EventListViewModel myViewModel = ViewModelProviders.of(this).get(EventListViewModel.class);
+
         myViewModel.getEvents().observe(this, new Observer<Map<String, Event>>() {
             @Override
             public void onChanged(Map<String, Event> items) {
@@ -31,6 +32,14 @@ public class ListEventActivity extends AppCompatActivity {
                 myListView3.setAdapter(mAdapter);
             }
         });
+
+    }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+//refresh the updated data
+        finish();
+        startActivity(getIntent());
 
     }
 }

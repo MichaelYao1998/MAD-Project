@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.e.assignment">
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <!--android:name=".model.EventsModelImpl"-->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,7 +11,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".view.EditEventActivity" android:windowSoftInputMode="adjustPan">
-
         </activity>
         <activity android:name=".view.ListEventActivity">
             <intent-filter>
@@ -21,11 +21,6 @@
         </activity>
 
         <activity android:name=".view.ListMovieActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
 
 

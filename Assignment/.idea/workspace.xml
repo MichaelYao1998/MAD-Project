@@ -7,8 +7,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3631c43-c16e-4ab0-812d-239a461074c2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../app/src/main/java/com/e/assignment/controller/EditEventListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../app/src/main/java/com/e/assignment/view/EditEventActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/java/com/e/assignment/adapter/ListViewAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../app/src/main/java/com/e/assignment/adapter/ListViewAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/java/com/e/assignment/model/AbstractEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../app/src/main/java/com/e/assignment/model/AbstractEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/java/com/e/assignment/model/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/../app/src/main/java/com/e/assignment/model/Event.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/java/com/e/assignment/model/EventImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../app/src/main/java/com/e/assignment/model/EventImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/java/com/e/assignment/model/EventsModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/../app/src/main/java/com/e/assignment/model/EventsModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/java/com/e/assignment/view/EditEventActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../app/src/main/java/com/e/assignment/view/EditEventActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/java/com/e/assignment/view/ListEventActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../app/src/main/java/com/e/assignment/view/ListEventActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/java/com/e/assignment/view/ListMovieActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../app/src/main/java/com/e/assignment/view/ListMovieActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../app/src/main/res/layout/activity_list_event.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../app/src/main/res/layout/activity_list_event.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/build/classes/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -28,11 +37,11 @@
     <session id="-1251969647">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="6" />
-          <entry key="project.open.time.0" value="4" />
+          <entry key="project.closed" value="8" />
+          <entry key="project.open.time.0" value="6" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.7" value="1" />
-          <entry key="project.opened" value="6" />
+          <entry key="project.opened" value="8" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -93,7 +102,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-7" />
     <option name="width" value="1294" />
     <option name="height" value="1407" />
@@ -104,8 +113,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -152,6 +159,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -376,9 +385,9 @@
     </history-entry>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="0" width="1294" height="1407" extended-state="0" />
+    <frame x="-8" y="-8" width="2576" height="1416" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" side_tool="true" visible="true" weight="0.21496816" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" side_tool="true" visible="true" weight="0.10638298" />
       <window_info id="Captures" order="1" side_tool="true" weight="0.25" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -391,7 +400,7 @@
       <window_info anchor="bottom" id="TODO" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" />
       <window_info anchor="bottom" id="Terminal" order="4" />
-      <window_info anchor="bottom" id="Event Log" order="5" side_tool="true" />
+      <window_info anchor="bottom" id="Event Log" order="5" side_tool="true" visible="true" weight="0.32943013" />
       <window_info anchor="bottom" id="Version Control" order="6" show_stripe_button="false" />
       <window_info anchor="bottom" id="Build" order="7" visible="true" weight="0.25" />
       <window_info anchor="bottom" id="Android Profiler" order="8" show_stripe_button="false" />

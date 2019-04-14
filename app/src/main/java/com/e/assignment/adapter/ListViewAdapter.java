@@ -29,23 +29,31 @@ public class ListViewAdapter extends ArrayAdapter<Event>{
     public View getView(int position, View eventItemView, ViewGroup parent) {
 
         String eventId = String.valueOf(position + 1);
-
         if(eventItemView == null) {
             eventItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.event_list_item, parent, false);
         }
         TextView eventTitle = eventItemView.findViewById(R.id.eventTitle);
         TextView eventDate = eventItemView.findViewById(R.id.eventDate);
-
+        TextView eventAttendees = eventItemView.findViewById(R.id.eventAttend);
+        TextView eventMovie = eventItemView.findViewById(R.id.eventMovie);
         Button myButton1 = eventItemView.findViewById(R.id.eventButton);
 
 
         myButton1.setOnClickListener(new EditEventListener(context, eventId));
 
-        Event item = events.get(eventId);
-        Log.d(TAG, "set view");
+        Event item = getItem(position);
+        if (item.getMovie()!=null){
+            eventMovie.setText(item.getMovie().getTitle());
+
+        }
+
+        Log.d(TAG, item.getId()+"set view m:"+eventMovie.getText());
         eventTitle.setText(item.getTitle());
         eventDate.setText(item.getEndDate().toString());
-
+        if (!item.getAttendees().isEmpty())
+        {
+            eventAttendees.setText(item.getAttendees().size()+"");
+        }
         return eventItemView;
     }
 }

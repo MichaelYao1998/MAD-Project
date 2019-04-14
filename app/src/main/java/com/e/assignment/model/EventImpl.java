@@ -1,15 +1,6 @@
 package com.e.assignment.model;
 
-
-import android.content.Context;
-import android.util.Log;
-
-import com.e.assignment.R;
-
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
 
 public class EventImpl extends AbstractEvent {
 

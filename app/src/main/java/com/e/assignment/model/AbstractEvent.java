@@ -1,8 +1,5 @@
 package com.e.assignment.model;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,13 +11,13 @@ public class AbstractEvent implements Event {
 
 
 
-    @Nullable private Movie movie;
+    private Movie movie;
     private String title;
     private Date startDate;
     private Date endDate;
     private String venue;
     private String location;
-    private String[] attendees = new String[0];
+    private Map<String, String> attendees = new HashMap<>();
     public AbstractEvent(String id, String title, Date Start, Date end, String venue, String location){
         this.id = id;
         this.title  = title;
@@ -58,23 +55,28 @@ public class AbstractEvent implements Event {
 
     @Override
     public int getAttendeesNum() {
-        return attendees.length;
+        return attendees.size();
     }
 
     @Override
-    public void setMovie(@Nullable Movie movie) {
+    public void setMovie(Movie movie) {
         this.movie = movie;
     }
     @Override
-    @Nullable public Movie getMovie() {
+    public Movie getMovie() {
         return movie;
     }
     @Override
-    public String[] getAttendees() {
+    public Map<String, String> getAttendees() {
         return attendees;
     }
     @Override
-    public void setAttendees(String[] attendees) {
-        this.attendees = attendees;
+    public void setAttendees(String email, String name) {
+        attendees.put(email,name);
+    }
+
+    @Override
+    public void rmAttendees(String email) {
+        attendees.remove(email);
     }
 }
