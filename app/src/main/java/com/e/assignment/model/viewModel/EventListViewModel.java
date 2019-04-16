@@ -22,12 +22,13 @@ public class EventListViewModel extends AndroidViewModel {
     public EventListViewModel(Application application){
         super(application);
     }
-    public LiveData<Map<Date,Event>>getEvents(){
+    public LiveData<Map<Date,Event>>getEvents(boolean isReverse){
         if(eventLiveData == null){
             eventLiveData = new MutableLiveData<>();
             EventsModel events = EventsModelImpl.getSingletonInstance(getApplication());
             //load data
-            eventLiveData.setValue(events.sortTheEventList(false));
+
+            eventLiveData.setValue(events.sortTheEventList(isReverse));
         }
         return eventLiveData;
     }

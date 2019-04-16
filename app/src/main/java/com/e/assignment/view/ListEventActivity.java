@@ -28,7 +28,8 @@ import java.util.TreeMap;
 
 public class ListEventActivity extends AppCompatActivity {
     String LOG_TAG = getClass().getName();
-
+    //
+    private boolean isReverse = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,7 @@ public class ListEventActivity extends AppCompatActivity {
         Log.i(LOG_TAG, "onCreateListView()");
         EventListViewModel myViewModel = ViewModelProviders.of(this).get(EventListViewModel.class);
 
-        myViewModel.getEvents().observe(this, new Observer<Map<Date, Event>>() {
+        myViewModel.getEvents(isReverse).observe(this, new Observer<Map<Date, Event>>() {
             @Override
             public void onChanged(Map<Date, Event> items) {
                 // Update your UI with the loaded data.
@@ -49,8 +50,6 @@ public class ListEventActivity extends AppCompatActivity {
                 myListView3.setAdapter(mAdapter);
             }
         });
-        asd();
-
     }
     @Override
     protected void onRestart() {
@@ -70,22 +69,22 @@ public boolean onCreateOptionsMenu(Menu menu) {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
+        EventsModelImpl eventsModel = new EventsModelImpl();
         int id = item.getItemId();
         switch (id) {
             case R.id.ascending:
                 Toast.makeText(this, "ascending", Toast.LENGTH_SHORT).show();
+                isReverse=false;
+                finish();
+                startActivity(getIntent());
                 break;
             case R.id.dscending:
                 Toast.makeText(this, "descending", Toast.LENGTH_SHORT).show();
+                isReverse=true;
+                finish();
+                startActivity(getIntent());
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
-public void asd(){
-        EventsModel mmm = EventsModelImpl.getSingletonInstance(getApplicationContext());
-
-
-
-}
 }
