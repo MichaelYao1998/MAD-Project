@@ -23,14 +23,13 @@ public class ListMovieActivity extends AppCompatActivity {
         MovieListViewModel myViewModel = ViewModelProviders.of(this).get(MovieListViewModel.class);
         Intent intent = getIntent();
 
-        final String eventID = intent.getStringExtra("id");
         myViewModel.getMovie().observe(this, new Observer<Map<String, Movie>>() {
             @Override
             public void onChanged(Map<String, Movie> items) {
                 // Update your UI with the loaded data.
                 // Returns cached data automatically after a configuration change
                 // and this method will be called again if underlying Live Data object is modified);
-                MovieListViewAdapter mAdapter = new MovieListViewAdapter(ListMovieActivity.this, items,eventID);
+                MovieListViewAdapter mAdapter = new MovieListViewAdapter(ListMovieActivity.this, items);
                 ListView movieListView = findViewById(R.id.MovieListView);
                 movieListView.setAdapter(mAdapter);
             }

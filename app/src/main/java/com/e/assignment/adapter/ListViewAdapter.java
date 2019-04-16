@@ -13,14 +13,15 @@ import com.e.assignment.model.Event;
 import com.e.assignment.R;
 import com.e.assignment.model.EventImpl;
 
+import java.util.Date;
 import java.util.Map;
 
 public class ListViewAdapter extends ArrayAdapter<Event>{
     private final String TAG = getClass().getName();
     private Context context;
-    private Map<String, Event> events;
+    private Map<Date, Event> events;
 
-    public ListViewAdapter(Context context, Map<String, Event> events) {
+    public ListViewAdapter(Context context, Map<Date, Event> events) {
         super(context, 0, events.values().toArray(new Event[events.size()]));
         this.context = context;
         this.events = events;
@@ -28,7 +29,7 @@ public class ListViewAdapter extends ArrayAdapter<Event>{
     @Override
     public View getView(int position, View eventItemView, ViewGroup parent) {
 
-        String eventId = String.valueOf(position + 1);
+        String eventId = getItem(position).getId();
         if(eventItemView == null) {
             eventItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.event_list_item, parent, false);
         }
@@ -49,7 +50,7 @@ public class ListViewAdapter extends ArrayAdapter<Event>{
 
         Log.d(TAG, item.getId()+"set view m:"+eventMovie.getText());
         eventTitle.setText(item.getTitle());
-        eventDate.setText(item.getEndDate().toString());
+        eventDate.setText(item.getStartDate().toString());
         if (!item.getAttendees().isEmpty())
         {
             eventAttendees.setText(item.getAttendees().size()+"");

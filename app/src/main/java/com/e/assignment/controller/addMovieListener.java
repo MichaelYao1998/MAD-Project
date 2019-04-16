@@ -14,23 +14,22 @@ import com.e.assignment.view.ListMovieActivity;
 public class addMovieListener implements View.OnClickListener{
     private String TAG = getClass().getName();
 
-    private String eventID;
     private String movieID;
     private Context context;
 
 
-    public addMovieListener(Context context,String movieID, String eventID) {
+    public addMovieListener(Context context,String movieID) {
         this.context = context;
-        this.eventID = eventID;
+
         this.movieID = movieID;
     }
     @Override
     public void onClick(View v) {
-//        Toast.makeText(context, "Edit item " + itemId, Toast.LENGTH_SHORT).show();
-//        Log.i("Hello", "Edit item " + itemId);
-
-        EventsModel events = EventsModelImpl.getSingletonInstance(context);
-        events.setMovieToEvent(eventID,movieID);
+        //TODO
+        //REPLACE TO temp EVENT
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("result",movieID);
+        ((Activity)context).setResult(Activity.RESULT_OK,returnIntent);
         ((Activity)context).finish();
 
     }

@@ -14,9 +14,17 @@ import android.widget.Toast;
 import com.e.assignment.R;
 import com.e.assignment.adapter.ListViewAdapter;
 import com.e.assignment.model.Event;
+import com.e.assignment.model.EventsModel;
+import com.e.assignment.model.EventsModelImpl;
 import com.e.assignment.model.viewModel.EventListViewModel;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class ListEventActivity extends AppCompatActivity {
     String LOG_TAG = getClass().getName();
@@ -30,9 +38,9 @@ public class ListEventActivity extends AppCompatActivity {
         Log.i(LOG_TAG, "onCreateListView()");
         EventListViewModel myViewModel = ViewModelProviders.of(this).get(EventListViewModel.class);
 
-        myViewModel.getEvents().observe(this, new Observer<Map<String, Event>>() {
+        myViewModel.getEvents().observe(this, new Observer<Map<Date, Event>>() {
             @Override
-            public void onChanged(Map<String, Event> items) {
+            public void onChanged(Map<Date, Event> items) {
                 // Update your UI with the loaded data.
                 // Returns cached data automatically after a configuration change
                 // and this method will be called again if underlying Live Data object is modified
@@ -41,6 +49,7 @@ public class ListEventActivity extends AppCompatActivity {
                 myListView3.setAdapter(mAdapter);
             }
         });
+        asd();
 
     }
     @Override
@@ -73,5 +82,10 @@ public boolean onCreateOptionsMenu(Menu menu) {
         }
         return super.onOptionsItemSelected(item);
     }
+public void asd(){
+        EventsModel mmm = EventsModelImpl.getSingletonInstance(getApplicationContext());
 
+
+
+}
 }

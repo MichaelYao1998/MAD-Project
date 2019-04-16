@@ -12,21 +12,22 @@ import com.e.assignment.model.EventsModel;
 import com.e.assignment.model.EventsModelImpl;
 import com.e.assignment.model.Movie;
 
+import java.util.Date;
 import java.util.Map;
 
 public class EventListViewModel extends AndroidViewModel {
     //event list
-    private MutableLiveData<Map<String, Event>>eventLiveData;
+    private MutableLiveData<Map<Date, Event>>eventLiveData;
     //event list view model
     public EventListViewModel(Application application){
         super(application);
     }
-    public LiveData<Map<String,Event>>getEvents(){
+    public LiveData<Map<Date,Event>>getEvents(){
         if(eventLiveData == null){
             eventLiveData = new MutableLiveData<>();
             EventsModel events = EventsModelImpl.getSingletonInstance(getApplication());
             //load data
-            eventLiveData.setValue(events.getEventsList());
+            eventLiveData.setValue(events.sortTheEventList(false));
         }
         return eventLiveData;
     }

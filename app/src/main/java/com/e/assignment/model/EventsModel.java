@@ -1,5 +1,6 @@
 package com.e.assignment.model;
 
+import java.util.Date;
 import java.util.Map;
 
 public interface EventsModel {
@@ -13,5 +14,7 @@ public interface EventsModel {
 
     void setMovieToEvent(String EventId, String MovieID);
     void removeAttendeeFromEvent(String EventID, String attendeeEmail);
+    void updateEvent(Event event);
 
+    Map<Date, Event> sortTheEventList(boolean reverse);
 }

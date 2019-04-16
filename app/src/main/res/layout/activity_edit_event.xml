@@ -117,35 +117,66 @@
         app:layout_constraintTop_toBottomOf="@+id/startDate" />
 
     <EditText
-        android:id="@+id/editStartDate"
-        android:layout_width="195dp"
+        android:id="@+id/editStartTime"
+        android:layout_width="91dp"
         android:layout_height="50dp"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="24dp"
         android:ems="10"
+        android:focusable="false"
+        android:inputType="time"
+        android:text="time"
+        android:textSize="14sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editStartDate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/editStartDate"
+        tools:text="time" />
+
+    <EditText
+        android:id="@+id/editStartDate"
+        android:layout_width="91dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="56dp"
+        android:ems="10"
+        android:focusable="false"
         android:inputType="date"
         android:text="date"
         android:textSize="14sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/startDate"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/startDate"
         tools:text="date" />
 
     <EditText
         android:id="@+id/editEndDate"
-        android:layout_width="195dp"
+        android:layout_width="91dp"
         android:layout_height="50dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="56dp"
         android:ems="10"
+        android:focusable="false"
         android:inputType="date"
         android:text="date"
         android:textSize="14sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/endDate"
+        app:layout_constraintStart_toEndOf="@+id/endDate"
+        tools:text="date" />
+
+    <EditText
+        android:id="@+id/editEndTime"
+        android:layout_width="91dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:focusable="false"
+        android:inputType="time"
+        android:text="time"
+        android:textSize="14sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editEndDate"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/endDate" />
+        app:layout_constraintHorizontal_bias="0.272"
+        app:layout_constraintStart_toEndOf="@+id/editEndDate"
+        tools:text="time" />
 
     <TextView
         android:id="@+id/title"
@@ -204,7 +235,7 @@
         android:layout_height="38dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="24dp"
-        android:text="Add"
+        android:text="Add attendee"
         app:layout_constraintBaseline_toBaselineOf="@+id/attendees"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

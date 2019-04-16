@@ -1,5 +1,6 @@
 package com.e.assignment.controller;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -28,7 +29,7 @@ public class EditEventListener implements View.OnClickListener {
         editItemIntent.setType("text/plain");
 
         if(editItemIntent.resolveActivity(context.getPackageManager()) != null) {
-            context.startActivity(editItemIntent);
+            ((Activity)context).startActivityForResult(editItemIntent,Activity.RESULT_OK);
         } else {
             Log.i(TAG, "Cannot open activity for this intent");
         }

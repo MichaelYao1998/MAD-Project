@@ -20,12 +20,10 @@ public class MovieListViewAdapter extends ArrayAdapter<Movie> {
     private final String TAG = getClass().getName();
     private Context context;
     private Map<String, Movie> movies;
-    private String eventID;
-    public MovieListViewAdapter(Context context, Map<String, Movie> movies, String eventID) {
+    public MovieListViewAdapter(Context context, Map<String, Movie> movies) {
         super(context, 0, movies.values().toArray(new Movie[movies.size()]));
         this.context = context;
         this.movies = movies;
-        this.eventID = eventID;
     }
 
     public View getView(int position, View movieItemView, ViewGroup parent) {
@@ -49,7 +47,7 @@ public class MovieListViewAdapter extends ArrayAdapter<Movie> {
 
         Button addMovieButton = movieItemView.findViewById(R.id.addMovieButton);
 
-        addMovieButton.setOnClickListener(new addMovieListener(context,item.getId(),eventID));
+        addMovieButton.setOnClickListener(new addMovieListener(context,item.getId()));
 
         return movieItemView;
     }

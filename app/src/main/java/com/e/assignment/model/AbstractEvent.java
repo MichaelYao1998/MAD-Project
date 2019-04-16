@@ -18,6 +18,36 @@ public class AbstractEvent implements Event {
     private String venue;
     private String location;
     private Map<String, String> attendees = new HashMap<>();
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    @Override
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    @Override
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    @Override
+    public void setVenue(String venue) {
+        this.venue = venue;
+    }
+
+    @Override
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public AbstractEvent(String id, String title, Date Start, Date end, String venue, String location){
         this.id = id;
         this.title  = title;
@@ -73,6 +103,10 @@ public class AbstractEvent implements Event {
     @Override
     public void setAttendees(String email, String name) {
         attendees.put(email,name);
+    }
+    @Override
+    public void setAttendeesList(Map<String, String> list) {
+        attendees=list;
     }
 
     @Override

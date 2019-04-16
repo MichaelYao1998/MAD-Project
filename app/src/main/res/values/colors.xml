@@ -3,4 +3,9 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="grey">#a0a0a0</color>
+    <color name="calendar_number">#424A56</color>
+    <color name="pink">#FF4081</color>
+    <color name="green">#388E3C</color>
 </resources>
