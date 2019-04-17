@@ -1,4 +1,4 @@
-package com.e.assignment.model;
+package com.e.assignment.view;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import com.e.assignment.R;
 import com.e.assignment.adapter.CalendarAdapter;
+import com.e.assignment.controller.EditCalendarListener;
+import com.e.assignment.model.EventHandler;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,16 +32,25 @@ public class customCalendar extends LinearLayout {
     ImageView next;
     TextView current_Date;
     GridView gridView;
+    Context context;
     HashSet<Date> events = new HashSet<>();
     private static final int DAYS_COUNT = 42;
     Calendar currentDate = Calendar.getInstance();
     private EventHandler eventHandler = null;
-
-    public customCalendar(Context context, AttributeSet attrs) {
+    String eventId;
+    public customCalendar(Context context, AttributeSet attrs, String eventId) {
         super(context, attrs);
+        this.context = context;
+        this.eventId = eventId;
         initControl(context, attrs);
     }
 
+    public customCalendar(Context context, AttributeSet attrs)
+    {
+        super(context, attrs);
+        this.context = context;
+        initControl(context, attrs);
+    }
 
     public void setEventHandler(EventHandler eventHandler){
         this.eventHandler = eventHandler;
@@ -105,12 +116,6 @@ public class customCalendar extends LinearLayout {
                 updateCalendar(null);
             }
         });
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                
-            }
-        });
         // long-pressing a day
         gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -123,5 +128,6 @@ public class customCalendar extends LinearLayout {
                 return true;
             }
         });
+//        gridView.setOnItemLongClickListener( new EditCalendarListener(context, eventId));
     }
 }

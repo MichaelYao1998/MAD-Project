@@ -62,6 +62,7 @@ public class CalendarAdapter extends ArrayAdapter<Date> {
             ((TextView)view).setTypeface(null, Typeface.BOLD);
             ((TextView)view).setTextColor(Color.BLUE);
         }
+        //if the date has events, then set it color to red
         if (!model.eventsArrForDay(calendar.getTime()).isEmpty())
         {
             ((TextView)view).setTypeface(null, Typeface.BOLD);
