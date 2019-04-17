@@ -127,8 +127,10 @@ public class EventsModelImpl implements EventsModel {
         ArrayList<Event> eventsInDay = new ArrayList<>();
         Map<Date,Event> mapInDate = sortTheEventList(false);
         for (Map.Entry<Date, Event> entry : mapInDate.entrySet()) {
-            if (dateToString(entry.getKey())[0].equals(dateToString(date)[0]))
+            if (dateToString(entry.getKey())[0].equals(dateToString(date)[0])) {
+                Log.v("???", dateToString(entry.getKey())[0]);
                 eventsInDay.add(entry.getValue());
+            }
         }
         return eventsInDay;
     }
