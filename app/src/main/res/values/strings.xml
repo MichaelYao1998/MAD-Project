@@ -4,6 +4,7 @@
     <string name="dscend">Descending</string>
 
     //Days
+    <string name="current_date">"15 April"</string>
     <string name="Monday">Mon</string>
     <string name="Tuesday">Tue</string>
     <string name="Wednesday">Wed</string>
@@ -11,4 +12,5 @@
     <string name="Friday">Fri</string>
     <string name="Saturday">Sat</string>
     <string name="Sunday">Sun</string>
+    <string name="calendar_item">123</string>
 </resources>

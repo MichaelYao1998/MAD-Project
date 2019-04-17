@@ -17,9 +17,12 @@ import com.e.assignment.R;
 import com.e.assignment.adapter.ListViewAdapter;
 import com.e.assignment.model.DayCellsClickListener;
 import com.e.assignment.model.Event;
+import com.e.assignment.model.EventHandler;
 import com.e.assignment.model.customCalendar;
 import com.e.assignment.model.viewModel.EventListViewModel;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -30,15 +33,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        customCalendar calendar = findViewById(R.id.day_cells);
-        DayCellsClickListener dayCellsClickListener = new DayCellsClickListener() {
-            @Override
-            public void onDateDaysClick(View view) {
+        HashSet<Date> events = new HashSet<>();
+        events.add(new Date());
 
+        customCalendar calendar = findViewById(R.id.calendar_view);
+        calendar.updateCalendar(events);
+
+        EventHandler eventHandler = new EventHandler() {
+            @Override
+            public void onDayLongPress(Date date) {
+                DateFormat df = SimpleDateFormat.getDateInstance();
+                Toast.makeText(MainActivity.this,df.format(date), Toast.LENGTH_SHORT).show();
             }
         };
-        calendar.setCurrentDate(4, 2019);
-        calendar.setCallBack(dayCellsClickListener);
 
+        //event handler
+        calendar.setEventHandler(eventHandler);
     }
 }
