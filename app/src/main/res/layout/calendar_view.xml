@@ -1,169 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="30dp"
-    android:gravity = "center_horizontal"
+    android:orientation="vertical"
+    android:background="@android:color/white"
     android:id="@+id/calendar_id">
 
-
-    <ImageView
-        android:id="@+id/previous_button"
-        android:layout_width="35dp"
-        android:layout_height="20dp"
-        android:layout_marginEnd="30dp"
-        android:src="@drawable/left_arrow" />
-
     <LinearLayout
-        android:id="@+id/date_display"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_toEndOf="@+id/previous_button"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/year"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/year"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-            android:textColor="#222222"
-            android:textSize="25sp"
-            android:textStyle="normal" />
-
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/date"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-            android:textColor="#222222"
-            android:textSize="50sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="@string/day"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-            android:textColor="#222222"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/display_today"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/button2"
-            android:padding="5dp"
-            android:text="@string/go_to_today"
-            android:textColor="@android:color/white"
-            android:textSize="12sp" />
-
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/next_button"
-        android:layout_width="35dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="55dp"
-        android:layout_toEndOf="@+id/date_display"
-        android:src="@drawable/right_arrow" />
-
-    <LinearLayout
-        android:id="@+id/calendar_header"
         android:layout_width="match_parent"
-        android:layout_height="390dp"
-        android:gravity="center_vertical"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:orientation="horizontal">
 
-        <!--Mon-->
         <TextView
+            android:id="@+id/display_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="30dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="@string/Monday"
-            android:textColor="#222222" />
-        <!--Tue-->
+            android:textColor="@color/pink"
+            android:textSize="26sp"/>
+
         <TextView
+            android:id="@+id/display_month"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:text="@string/Tuesday"
-            android:textColor="#222222" />
-        <!--Wed-->
-        <TextView
+            android:paddingLeft="8dp"
+            android:textColor="@color/pink"
+            android:textSize="26sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="7">
+
+        <Button
+            android:id="@+id/button6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
             android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:text="@string/Wednesday"
-            android:textColor="#222222" />
-        <!--Thu-->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:text="@string/Thursday"
-            android:textColor="#222222" />
-        <!--Fri-->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:text="@string/Friday"
-            android:textColor="#222222" />
-        <!--Sat-->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
+            android:background="@android:color/transparent"
             android:text="@string/Saturday"
-            android:textColor="#222222" />
-        <!--Sun-->
-        <TextView
+            android:textColor="@color/pink"
+            android:textSize="14sp"/>
+
+        <Button
+            android:id="@+id/button7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
             android:layout_weight="1"
-            android:gravity="center_horizontal"
+            android:background="@android:color/transparent"
             android:text="@string/Sunday"
-            android:textColor="#222222" />
+            android:textColor="@color/pink"
+            android:textSize="14sp"/>
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="@string/Monday"
+            android:textColor="@color/pink"
+            android:textSize="14sp"/>
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="@string/Tuesday"
+            android:textColor="@color/pink"
+            android:textSize="14sp"/>
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="@string/Wednesday"
+            android:textColor="@color/pink"
+            android:textSize="14sp"/>
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="@string/Thursday"
+            android:textColor="@color/pink"
+            android:textSize="14sp"/>
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:text="@string/Friday"
+            android:textColor="@color/pink"
+            android:textSize="14sp"/>
 
     </LinearLayout>
 
-    <GridView
-        android:id="@+id/day_grid"
+    <LinearLayout
+        android:id="@+id/row1"
         android:layout_width="match_parent"
-        android:layout_height="490dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="1dp"
-        android:numColumns="7" />
-</RelativeLayout>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="7"/>
+
+    <LinearLayout
+        android:id="@+id/row2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="7"/>
+
+    <LinearLayout
+        android:id="@+id/row3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="7"/>
+
+    <LinearLayout
+        android:id="@+id/row4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="7"/>
+
+    <LinearLayout
+        android:id="@+id/row5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="7"/>
+
+    <LinearLayout
+        android:id="@+id/row6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="7"/>
+</LinearLayout>
 
