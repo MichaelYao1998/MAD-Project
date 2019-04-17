@@ -8,5 +8,9 @@
         android:id="@+id/ascending" />
     <item
         android:title="@string/dscend"
-        android:id="@+id/dscending" />
+        android:id="@+id/descending" />
+
+    <item
+        android:title="@string/addevent"
+        android:id="@+id/addEvent" />
 </menu>

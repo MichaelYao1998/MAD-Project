@@ -48,7 +48,7 @@ public class Fileloader {
 
                 Date startDate = format.parse ( components[2] );
                 Date endDate = format.parse ( components[3]);
-                events.put(components[0], new EventImpl(components[0], components[1], startDate, endDate, components[4], components[5]+","+components[6]));
+                events.put(components[0], new EventImpl(components[0], components[1], startDate, endDate, components[4], components[5]+","+components[6].replace(" ","")));
             }
         } catch (Exception e) {
             Log.i(TAG, e.getMessage());

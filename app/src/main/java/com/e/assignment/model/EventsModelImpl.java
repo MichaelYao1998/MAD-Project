@@ -3,6 +3,7 @@ package com.e.assignment.model;
 import android.content.Context;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -91,9 +92,37 @@ public class EventsModelImpl implements EventsModel {
         }
         return LazyHolder.INSTANCE;
     }
+    @Override
     public void updateEvent(Event event){
         if (event.getId()!=null)
         this.events.put(event.getId(),event);
+    }
+    @Override
+    public String eventIdGenerator(){
+        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String number = "1234567890";
+        String charRange = number+alphabet.toUpperCase()+alphabet;
+        StringBuilder sb = new StringBuilder();
+        int IdLength = 10;
+        while (IdLength-- != 0) {
+            int character = (int)(Math.random()*charRange.length());
+            sb.append(charRange.charAt(character));
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public String[] dateToString(Date date) {
+        String pattern = "dd-MM-yyyy h:mm a";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
+        String dateStr = simpleDateFormat.format(date);
+
+        return dateStr.split(" ");
+    }
+    @Override
+    public void deleteEvent(String eventID){
+        events.remove(eventID);
     }
 
 }

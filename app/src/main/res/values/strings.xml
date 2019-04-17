@@ -11,4 +11,5 @@
     <string name="friday">F</string>
     <string name="saturday">S</string>
     <string name="sunday">S</string>
+    <string name="addevent">addEvent</string>
 </resources>

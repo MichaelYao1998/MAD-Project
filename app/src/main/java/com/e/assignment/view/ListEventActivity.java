@@ -1,14 +1,18 @@
 package com.e.assignment.view;
 
+import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.e.assignment.R;
@@ -16,21 +20,17 @@ import com.e.assignment.adapter.ListViewAdapter;
 import com.e.assignment.model.Event;
 import com.e.assignment.model.EventsModel;
 import com.e.assignment.model.EventsModelImpl;
+import com.e.assignment.model.Movie;
 import com.e.assignment.model.viewModel.EventListViewModel;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class ListEventActivity extends AppCompatActivity {
     String LOG_TAG = getClass().getName();
     //
     ListViewAdapter mAdapter;
-
+    EventListViewModel myViewModel;
     EventsModel eventsModel;
 
     @Override
@@ -41,8 +41,7 @@ public class ListEventActivity extends AppCompatActivity {
         eventsModel = EventsModelImpl.getSingletonInstance(getApplicationContext());
         setContentView(R.layout.activity_list_event);
         Log.i(LOG_TAG, "onCreateListView()");
-        EventListViewModel myViewModel = ViewModelProviders.of(this).get(EventListViewModel.class);
-
+        myViewModel = ViewModelProviders.of(this).get(EventListViewModel.class);
         myViewModel.getEvents(eventsModel.isReverse()).observe(this, new Observer<Map<Date, Event>>() {
             @Override
             public void onChanged(Map<Date, Event> items) {
@@ -54,6 +53,13 @@ public class ListEventActivity extends AppCompatActivity {
                 myListView3.setAdapter(mAdapter);
             }
         });
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        refresh();
     }
 
 @Override
@@ -75,12 +81,18 @@ public boolean onCreateOptionsMenu(Menu menu) {
                     refresh();
                 }
                 break;
-            case R.id.dscending:
+            case R.id.descending:
                 Toast.makeText(this, "descending", Toast.LENGTH_SHORT).show();
                 if (!eventsModel.isReverse()) {
                     eventsModel.setReverse(true);
                     refresh();
                 }
+                break;
+            case R.id.addEvent:
+                Intent newEvent = new Intent(getApplicationContext(),EditEventActivity.class);
+                newEvent.putExtra(Intent.EXTRA_TEXT, "");
+                newEvent.setType("text/plain");
+                startActivity(newEvent);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -89,5 +101,15 @@ public boolean onCreateOptionsMenu(Menu menu) {
 
         finish();
         startActivity(getIntent());
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //TODO
+        //refactor
+
+        if (resultCode == RESULT_OK) {
+            refresh();
+        }
     }
 }

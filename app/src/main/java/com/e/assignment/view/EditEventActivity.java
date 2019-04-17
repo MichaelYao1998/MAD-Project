@@ -53,10 +53,12 @@ public class EditEventActivity extends AppCompatActivity {
     private static final int REQUEST_RUNTIME_PERMISSION = 123;
     String[] permissons = {Manifest.permission.READ_CONTACTS};
     Button addContactButton;
+    Button deleteButton;
     String eventID;
     ArrayAdapter<String> adapter;
 
     static Calendar calendar = Calendar.getInstance();
+    static Calendar calendarEnd = Calendar.getInstance();
     private Event selectedEvent = null;
     private Map<String,String> attendees = new HashMap<>();
     private AttendeeListAdapter attendeeListAdapter;
@@ -69,6 +71,7 @@ public class EditEventActivity extends AppCompatActivity {
     private EditText eventLng;
     private EditText eventEndTime;
     private EditText eventStartTime;
+    Intent intent;
     int year;
     int month;
     int day;
@@ -95,22 +98,54 @@ public class EditEventActivity extends AppCompatActivity {
             Movie tempMovie = new MovieImpl(reference.getId(),reference.getTitle(),reference.getYear(),reference.getPoster());
             selectedEvent.setMovie(tempMovie);
         }
+        deleteButton=findViewById(R.id.deleteEvent);
+        deleteButton.setVisibility(View.VISIBLE);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                model.deleteEvent(eventID);
+                finish();
+            }
+        });
+        calendar.setTime(selectedEvent.getStartDate());
+        calendarEnd.setTime(selectedEvent.getEndDate());
 
+    }
+    public void saveTempEvent()
+    {
+        selectedEvent.setTitle(eventTitle.getText().toString());
+        selectedEvent.setVenue(eventVenue.getText().toString());
+        selectedEvent.setLocation(eventLat.getText().toString()+","+eventLng.getText().toString());
+        Log.v("!!!!!","!!!"+selectedEvent.getLocation());
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        saveTempEvent();
+        // Save UI state changes to the savedInstanceState.
+        // This bundle will be passed to onCreate if the process is
+        // killed and restarted.
+
+        // etc.
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         model  = EventsModelImpl.getSingletonInstance(getApplicationContext());
-        Intent intent = getIntent();
+        intent = getIntent();
+
+        setContentView(R.layout.activity_edit_event);
         eventID = (String) intent.getExtras().get(Intent.EXTRA_TEXT);
-        if (eventID!=null)
+        if (!eventID.equals(""))
         {
             initSelectedEvent();
         }
         else {
-            selectedEvent=new EventImpl("","",new Date(),new Date(),"","");
+            calendar.setTime(new Date());
+            calendarEnd.setTime(new Date());
+            selectedEvent=new EventImpl(model.eventIdGenerator(),"",calendar.getTime(),calendarEnd.getTime(),"","");
+            Log.v("???",selectedEvent.getId());
         }
-        setContentView(R.layout.activity_edit_event);
         addContactButton = findViewById(R.id.addAttendee);
         if (CheckPermission(EditEventActivity.this, permissons[0])) {
             addContactButton.setOnClickListener(new View.OnClickListener() {
@@ -127,8 +162,6 @@ public class EditEventActivity extends AppCompatActivity {
             // you do not have permission go request runtime permissions
             RequestPermission(EditEventActivity.this, permissons, REQUEST_RUNTIME_PERMISSION);
         }
-        Toast.makeText(this, "asddsa" + eventID, Toast.LENGTH_SHORT).show();
-
     }
     public static void updateAttendeeListHeight(ListView listView) {
 
@@ -220,22 +253,28 @@ public class EditEventActivity extends AppCompatActivity {
     //How to update the UI? How to Notify them?
     //writing the reading function in onStart or in onRestart is good or not?
     //Which is better?
-    public  void newTimePickerDialog(final EditText editTime){
-        hour = calendar.get(Calendar.HOUR_OF_DAY);
-        minute = calendar.get(Calendar.MINUTE);
+    public  void newTimePickerDialog(final EditText editTime, final boolean isStartDate){
+        final Calendar temp;
+        if (isStartDate){
+            temp=calendar;
+        }else {
+            temp=calendarEnd;
+        }
+
+        hour = temp.get(Calendar.HOUR_OF_DAY);
+        minute = temp.get(Calendar.MINUTE);
         final TimePickerDialog timePickerDialog = new TimePickerDialog(this,
                 new TimePickerDialog.OnTimeSetListener() {
 
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minuteOfHour) {
-                        Calendar datetime = Calendar.getInstance();
-                        datetime.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                        datetime.set(Calendar.MINUTE, minuteOfHour);
+                        temp.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        temp.set(Calendar.MINUTE, minuteOfHour);
                         hour = hourOfDay;
                         minute = minuteOfHour;
                         String am_pm = "";
                         int hourIn12;
-                        if (datetime.get(Calendar.AM_PM) == Calendar.AM)
+                        if (temp.get(Calendar.AM_PM) == Calendar.AM)
                             am_pm = "AM";
                         else
                             am_pm = "PM";
@@ -246,10 +285,15 @@ public class EditEventActivity extends AppCompatActivity {
                         else
                             hourIn12=hourOfDay;
 
-                        editTime.setText(String.format("%02d:%02d %s",hourIn12,minuteOfHour,am_pm));
+                        editTime.setText(String.format("%d:%02d%s",hourIn12,minuteOfHour,am_pm));
+                        if (isStartDate)
+                            selectedEvent.setStartDate(calendar.getTime());
+                        else
+                            selectedEvent.setEndDate(calendarEnd.getTime());
 
                     }
                 }, hour,minute , false);
+
         editTime.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean  onTouch(View v, MotionEvent event) {
@@ -277,10 +321,16 @@ public class EditEventActivity extends AppCompatActivity {
                 year=yearSinceJesus;
                 month=monthOfYear;
                 day=dayOfMonth;
-                eventStartDate.setText(dayOfMonth+"/"+month+"/"+year);
+                eventStartDate.setText(String.format("%02d-%02d-%d",dayOfMonth,month+1,year));
                 if (isStartDate==true){
-                    calendar.set(year,month,day,hour,minute);
+                    calendar.set(year,month,day);
+                    selectedEvent.setStartDate(calendar.getTime());
                     Log.v("!!!!!",calendar.toString());
+                }
+                else
+                {
+                    calendarEnd.set(year,month,day);
+                    selectedEvent.setEndDate(calendarEnd.getTime());
                 }
             }
         }, year, month, day);
@@ -309,32 +359,39 @@ public class EditEventActivity extends AppCompatActivity {
         eventStartDate = findViewById(R.id.editStartDate);
         eventStartTime = findViewById(R.id.editStartTime);
         newDatePickerDialog(eventStartDate,eventStartDate,true);
-        newTimePickerDialog(eventStartTime);
+        newTimePickerDialog(eventStartTime,true);
 
 
         eventEndDate = findViewById(R.id.editEndDate);
 
         eventEndTime = findViewById(R.id.editEndTime);
         newDatePickerDialog(eventEndDate,eventEndTime,false);
-        newTimePickerDialog(eventEndTime);
+        newTimePickerDialog(eventEndTime,false);
 
 
         eventVenue = findViewById(R.id.editVenue);
         eventLat = findViewById(R.id.editLat);
         eventLng = findViewById(R.id.editLng);
-
-
-
-
         eventTitle.setText(selectedEvent.getTitle());
-        eventStartDate.setText(selectedEvent.getStartDate().toString());
 
-        eventEndDate.setText(selectedEvent.getEndDate().toString());
+
+
+        String[] startDateStr = model.dateToString(selectedEvent.getStartDate());
+        String[] endDateStr = model.dateToString(selectedEvent.getEndDate());
+
+        eventStartDate.setText(startDateStr[0]);
+        eventStartTime.setText(startDateStr[1]+startDateStr[2]);
+        eventEndDate.setText(endDateStr[0]);
+        eventEndTime.setText(endDateStr[1]+endDateStr[2]);
+
+
         eventVenue.setText(selectedEvent.getVenue());
         String[] latLng = selectedEvent.getLocation().split(",");
-        //if (latLng.length)
-        eventLat.setText(latLng[0]);
-        eventLng.setText(latLng[1]);
+        if (latLng.length>1){
+            eventLat.setText(latLng[0]);
+            eventLng.setText(latLng[1]);
+        }
+
         Button saveButton = findViewById(R.id.saveEvent);
         Button editMovieButton = findViewById(R.id.editMovieButton);
 
@@ -358,16 +415,26 @@ public class EditEventActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                selectedEvent.setTitle(eventTitle.getText().toString());
-                selectedEvent.setLocation(eventLat.getText().toString()+","+eventLng.getText().toString());
-                selectedEvent.setVenue(eventVenue.getText().toString());
-                model.updateEvent(selectedEvent);
-                finish();
+                saveTempEvent();
+                if (validation()) {
+                    model.updateEvent(selectedEvent);
+                    finish();
+                }
             }
         });
 
 
     }
+    public boolean validation(){
+        boolean isValid = true;
+        if (!selectedEvent.getStartDate().before(selectedEvent.getEndDate())){
+            isValid=false;
+            Toast warn = Toast.makeText(getApplicationContext(),"Invalid End Date!!",Toast.LENGTH_LONG);
+            warn.show();
+        }
+        return isValid;
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int permsRequestCode, String[] permissions, int[] grantResults) {

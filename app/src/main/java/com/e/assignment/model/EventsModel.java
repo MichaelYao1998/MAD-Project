@@ -18,4 +18,9 @@ public interface EventsModel {
     boolean isReverse();
     void setReverse(boolean reverse);
     Map<Date, Event> sortTheEventList(boolean reverse);
+
+    String eventIdGenerator();
+    String[] dateToString(Date date);
+
+    void deleteEvent(String eventID);
 }

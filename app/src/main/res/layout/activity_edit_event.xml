@@ -32,8 +32,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="lng"
+        android:inputType="numberSigned|number|numberDecimal"
         android:textSize="14sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/lng"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,8 +46,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="lat"
+        android:inputType="numberSigned|number|numberDecimal"
         android:textSize="14sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/lat"
         app:layout_constraintEnd_toEndOf="parent"
@@ -254,6 +252,21 @@
         app:layout_constraintTop_toBottomOf="@+id/attendeesList" />
 
     <Button
+        android:id="@+id/deleteEvent"
+        android:layout_width="367dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@android:color/holo_red_dark"
+        android:text="DELETE"
+        android:textColor="@android:color/white"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/saveEvent" />
+
+    <Button
         android:id="@+id/editMovieButton"
         android:layout_width="367dp"
         android:layout_height="40dp"
@@ -277,19 +290,17 @@
         app:layout_constraintStart_toEndOf="@+id/movie" />
 
 
-
-
-        <ListView
-            android:id="@+id/attendeesList"
-            android:layout_width="365dp"
-            android:layout_height="130dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.533"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/addAttendee" />
+    <ListView
+        android:id="@+id/attendeesList"
+        android:layout_width="365dp"
+        android:layout_height="81dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addAttendee" />
 
 
 

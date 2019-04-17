@@ -1,12 +1,14 @@
 package com.e.assignment.adapter;
 
 import android.content.Context;
+import android.media.ImageReader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.e.assignment.R;
@@ -29,20 +31,23 @@ public class MovieListViewAdapter extends ArrayAdapter<Movie> {
     public View getView(int position, View movieItemView, ViewGroup parent) {
 
         String movieId = String.valueOf(position + 1);
+        Movie item = movies.get(movieId);
+        String[] moviePosterPath = item.getPoster().split("\\.");
+        Log.v("!!!!!!!",item.getPoster());
 //        String eventId = String.valueOf(position + 1);
         if (movieItemView == null) {
             movieItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_list_item, parent, false);
         }
         TextView movieTitle = movieItemView.findViewById(R.id.movieTitle);
         TextView movieYear = movieItemView.findViewById(R.id.movieYear);
-        TextView moviePoster = movieItemView.findViewById(R.id.moviePoster);
-
-        Movie item = movies.get(movieId);
+        ImageView moviePoster = movieItemView.findViewById(R.id.imageView);
+        int imageRes = context.getResources().getIdentifier("@drawable/"+moviePosterPath[0].toLowerCase(),null,context.getPackageName());
+        moviePoster.setAdjustViewBounds(true);
+        moviePoster.setImageResource(imageRes);
         Log.d(TAG, "set view");
         if (item != null) {
             movieTitle.setText(item.getTitle());
             movieYear.setText(item.getYear());
-            moviePoster.setText(item.getPoster());
         }
 
         Button addMovieButton = movieItemView.findViewById(R.id.addMovieButton);

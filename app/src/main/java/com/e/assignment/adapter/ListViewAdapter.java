@@ -13,6 +13,8 @@ import com.e.assignment.model.Event;
 import com.e.assignment.R;
 import com.e.assignment.model.EventImpl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
@@ -37,6 +39,10 @@ public class ListViewAdapter extends ArrayAdapter<Event>{
         TextView eventDate = eventItemView.findViewById(R.id.eventDate);
         TextView eventAttendees = eventItemView.findViewById(R.id.eventAttend);
         TextView eventMovie = eventItemView.findViewById(R.id.eventMovie);
+        TextView eventEndDate = eventItemView.findViewById(R.id.eventEndDate);
+        TextView eventVenue = eventItemView.findViewById(R.id.eventVenue);
+        String pattern = "dd MMM yyyy  h:mm a";
+        DateFormat df = new SimpleDateFormat(pattern);
         Button myButton1 = eventItemView.findViewById(R.id.eventButton);
 
 
@@ -45,12 +51,13 @@ public class ListViewAdapter extends ArrayAdapter<Event>{
         Event item = getItem(position);
         if (item.getMovie()!=null){
             eventMovie.setText(item.getMovie().getTitle());
-
         }
 
         Log.d(TAG, item.getId()+"set view m:"+eventMovie.getText());
         eventTitle.setText(item.getTitle());
-        eventDate.setText(item.getStartDate().toString());
+        eventVenue.setText(item.getVenue());
+        eventEndDate.setText(df.format(item.getEndDate()));
+        eventDate.setText(df.format(item.getStartDate()));
         if (!item.getAttendees().isEmpty())
         {
             eventAttendees.setText(item.getAttendees().size()+"");
