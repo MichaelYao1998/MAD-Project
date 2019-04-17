@@ -62,13 +62,16 @@ public class ListEventActivity extends AppCompatActivity {
         refresh();
     }
 
-@Override
-public boolean onCreateOptionsMenu(Menu menu) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 
-    getMenuInflater().inflate(R.menu.my_menu, menu);
-    Log.i(LOG_TAG, "onCreateMenu()");
-    return true;
-}
+        getMenuInflater().inflate(R.menu.my_menu, menu);
+        Log.i(LOG_TAG, "onCreateMenu()");
+        // Intent to go to the calendar Activity
+        menu.findItem(R.id.menu_calendar).setIntent(
+                new Intent(this, CalendarActivity.class));
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -76,7 +79,7 @@ public boolean onCreateOptionsMenu(Menu menu) {
         switch (id) {
             case R.id.ascending:
                 Toast.makeText(this, "ascending", Toast.LENGTH_SHORT).show();
-                if (eventsModel.isReverse()){
+                if (eventsModel.isReverse()) {
                     eventsModel.setReverse(false);
                     refresh();
                 }
@@ -94,10 +97,17 @@ public boolean onCreateOptionsMenu(Menu menu) {
                 newEvent.setType("text/plain");
                 startActivity(newEvent);
                 break;
+            case R.id.menu_calendar:
+                Log.i(LOG_TAG, " calendar item selected");
+                Toast.makeText(this, "calendar", Toast.LENGTH_SHORT).show();
+                // return false so intent is fired
+                return false;
+
         }
         return super.onOptionsItemSelected(item);
     }
-    public void refresh(){
+
+    public void refresh() {
 
         finish();
         startActivity(getIntent());

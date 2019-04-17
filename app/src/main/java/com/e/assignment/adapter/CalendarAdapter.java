@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
 import com.e.assignment.R;
 
 import java.util.ArrayList;
@@ -44,7 +43,7 @@ public class CalendarAdapter extends ArrayAdapter<Date> {
 
         //inflate item if it does not exist yet
         if(view == null){
-            view = inflater.inflate(R.layout.calendar_view,parent,false);
+            view = inflater.inflate(R.layout.calendar_item,parent,false);
         }
         //clean styling
         ((TextView)view).setTypeface(null, Typeface.NORMAL);

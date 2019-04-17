@@ -1,169 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="30dp"
-    android:gravity = "center_horizontal"
-    android:id="@+id/calendar_id">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:id="@+id/calendar">
 
-
-    <ImageView
-        android:id="@+id/previous_button"
-        android:layout_width="35dp"
-        android:layout_height="20dp"
-        android:layout_marginEnd="30dp"
-        android:src="@drawable/left_arrow" />
-
-    <LinearLayout
-        android:id="@+id/date_display"
-        android:layout_width="wrap_content"
+    <!-- date toolbar -->
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_toEndOf="@+id/previous_button"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp">
 
-        <TextView
-            android:id="@+id/year"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/year"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-            android:textColor="#222222"
-            android:textSize="25sp"
-            android:textStyle="normal" />
-
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/date"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-            android:textColor="#222222"
-            android:textSize="50sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="@string/day"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-            android:textColor="#222222"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/display_today"
-            android:layout_width="wrap_content"
+        <!-- prev button -->
+        <ImageView
+            android:id="@+id/previous_button"
+            android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/button2"
-            android:padding="5dp"
-            android:text="@string/go_to_today"
-            android:textColor="@android:color/white"
-            android:textSize="12sp" />
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/left_arrow"/>
 
-    </LinearLayout>
+        <!-- date title -->
+        <TextView
+            android:id="@+id/current_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/previous_button"
+            android:layout_toStartOf="@+id/next_button"
+            android:gravity="center"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:textColor="#222222"
+            android:text="@string/current_date"/>
 
-    <ImageView
-        android:id="@+id/next_button"
-        android:layout_width="35dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="55dp"
-        android:layout_toEndOf="@+id/date_display"
-        android:src="@drawable/right_arrow" />
+        <!-- next button -->
+        <ImageView
+            android:id="@+id/next_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/right_arrow"/>
+    </RelativeLayout>
 
+    <!-- days header -->
     <LinearLayout
         android:id="@+id/calendar_header"
         android:layout_width="match_parent"
-        android:layout_height="390dp"
+        android:layout_height="40dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <!--Mon-->
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="30dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="@string/Monday"
-            android:textColor="#222222" />
-        <!--Tue-->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:text="@string/Tuesday"
-            android:textColor="#222222" />
-        <!--Wed-->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:text="@string/Wednesday"
-            android:textColor="#222222" />
-        <!--Thu-->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:text="@string/Thursday"
-            android:textColor="#222222" />
-        <!--Fri-->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:text="@string/Friday"
-            android:textColor="#222222" />
-        <!--Sat-->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:text="@string/Saturday"
-            android:textColor="#222222" />
-        <!--Sun-->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:text="@string/Sunday"
-            android:textColor="#222222" />
+            android:textColor="#222222"
+            android:text="@string/Sunday"/>
 
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:textColor="#222222"
+            android:text="@string/Monday"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:textColor="#222222"
+            android:text="@string/Tuesday"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:textColor="#222222"
+            android:text="@string/Wednesday"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:textColor="#222222"
+            android:text="@string/Thursday"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:textColor="#222222"
+            android:text="@string/Friday"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:textColor="#222222"
+            android:text="@string/Saturday"/>
     </LinearLayout>
 
+    <!-- days view -->
     <GridView
         android:id="@+id/day_grid"
         android:layout_width="match_parent"
-        android:layout_height="490dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="1dp"
-        android:numColumns="7" />
-</RelativeLayout>
+        android:layout_height="match_parent"
+        android:numColumns="7"/>
+</LinearLayout>
 
