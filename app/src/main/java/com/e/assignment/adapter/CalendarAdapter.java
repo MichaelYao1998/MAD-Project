@@ -29,6 +29,7 @@ public class CalendarAdapter extends ArrayAdapter<Date> {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
+
         Calendar calendar = Calendar.getInstance();
         Date date = getItem(position);
         calendar.setTime(date);

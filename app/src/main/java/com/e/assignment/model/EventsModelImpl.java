@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -120,6 +121,18 @@ public class EventsModelImpl implements EventsModel {
 
         return dateStr.split(" ");
     }
+
+    @Override
+    public ArrayList<Event> eventsArrForDay(Date date) {
+        ArrayList<Event> eventsInDay = new ArrayList<>();
+        Map<Date,Event> mapInDate = sortTheEventList(false);
+        for (Map.Entry<Date, Event> entry : mapInDate.entrySet()) {
+            if (dateToString(entry.getKey())[0].equals(dateToString(date)[0]))
+                eventsInDay.add(entry.getValue());
+        }
+        return eventsInDay;
+    }
+
     @Override
     public void deleteEvent(String eventID){
         events.remove(eventID);

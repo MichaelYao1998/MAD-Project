@@ -1,5 +1,6 @@
 package com.e.assignment.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
@@ -21,6 +22,6 @@ public interface EventsModel {
 
     String eventIdGenerator();
     String[] dateToString(Date date);
-
+    ArrayList<Event> eventsArrForDay(Date date);
     void deleteEvent(String eventID);
 }
