@@ -1,41 +1,37 @@
 package com.e.assignment.adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.e.assignment.R;
-import com.e.assignment.model.EventsModel;
-import com.e.assignment.model.EventsModelImpl;
-import com.e.assignment.view.EditEventActivity;
 
 import java.util.Map;
 
+/*
+ *  ArrayAdapter for Attendees' ListView
+ */
 public class AttendeeListAdapter extends ArrayAdapter<String> {
     private Map<String,String> attendee;
-    private Context context;
     private String[] mKeys;
+
+    /*
+     *  @param context      context from calling
+     *  @param attendee     HashMap for the editing event
+     */
     public AttendeeListAdapter(Context context, Map<String,String> attendee) {
         super(context, 0, attendee.values().toArray(new String[attendee.size()]));
         this.attendee=attendee;
-        this.context=context;
         mKeys = attendee.keySet().toArray(new String[attendee.size()]);
     }
 
     @Override
     public View getView(int position, View attendeeItemView, final ViewGroup parent){
         final String emailOfContact = mKeys[position];
-
-        Log.v("!!!!!!!!!!!!!attendee!!!!From get view:", mKeys[position]);
         final String nameOfContact = getItem(position) ;
         if(attendeeItemView == null) {
             attendeeItemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.attendee_list_item, parent, false);
