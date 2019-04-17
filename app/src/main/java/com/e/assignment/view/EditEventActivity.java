@@ -2,7 +2,6 @@ package com.e.assignment.view;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -11,18 +10,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Email;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.e.assignment.R;
 import com.e.assignment.adapter.AttendeeListAdapter;
 import com.e.assignment.controller.editMovieListener;
@@ -38,21 +35,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class EditEventActivity extends AppCompatActivity {
-    Context context;
-
-    EventsModel model;
+    private EventsModel model;
     private static final int REQUEST_RUNTIME_PERMISSION = 123;
-    String[] permissions = {Manifest.permission.READ_CONTACTS};
-    Button addContactButton;
-    Button deleteButton;
-    String eventID;
-    ArrayAdapter<String> adapter;
-
+    private String[] permissions = {Manifest.permission.READ_CONTACTS};
+    private Button addContactButton;
+    private String eventID;
     static Calendar calendar = Calendar.getInstance();
     static Calendar calendarEnd = Calendar.getInstance();
     private Event selectedEvent = null;
-    private Map<String,String> attendees = new HashMap<>();
-    private AttendeeListAdapter attendeeListAdapter;
     private EditText eventTitle;
     private TextView eventMovie;
     private EditText eventStartDate;
@@ -62,8 +52,6 @@ public class EditEventActivity extends AppCompatActivity {
     private EditText eventLng;
     private EditText eventEndTime;
     private EditText eventStartTime;
-    Intent intent;
-
     public final int PICK_CONTACT = 2015;
     public void initSelectedEvent(){
         //Init a temp object
@@ -83,7 +71,7 @@ public class EditEventActivity extends AppCompatActivity {
             Movie tempMovie = new MovieImpl(reference.getId(),reference.getTitle(),reference.getYear(),reference.getPoster());
             selectedEvent.setMovie(tempMovie);
         }
-        deleteButton=findViewById(R.id.deleteEvent);
+        Button deleteButton = findViewById(R.id.deleteEvent);
         deleteButton.setVisibility(View.VISIBLE);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +103,7 @@ public class EditEventActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         model  = EventsModelImpl.getSingletonInstance(getApplicationContext());
-        intent = getIntent();
+        Intent intent = getIntent();
         setContentView(R.layout.activity_edit_event);
         eventTitle = findViewById(R.id.editTitile);
         eventMovie = findViewById(R.id.editMovie);
@@ -169,18 +157,13 @@ public class EditEventActivity extends AppCompatActivity {
                 Movie tempMovie = model.getMovieById(result);
                 selectedEvent.setMovie(tempMovie);
             }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
-            }
         }
         if (requestCode == PICK_CONTACT && resultCode == RESULT_OK) {
             Uri result = data.getData();
-
             String emailIdOfContact = null;
             String contactName = null;
-
             Cursor cursor = getContentResolver().query(result, null, null, null, null);
-            if (cursor.getCount() > 0) {
+            if ((cursor != null ? cursor.getCount() : 0) > 0) {
                 while (cursor.moveToNext()) {
                     String id = result.getLastPathSegment();
                     contactName = cursor
@@ -196,15 +179,18 @@ public class EditEventActivity extends AppCompatActivity {
                     Cursor emails = getContentResolver().query(Email.CONTENT_URI, null,
                             Email.CONTACT_ID + " = " + id, null, null);
 
-                    while (emails.moveToNext()) {
+                    while (emails != null && emails.moveToNext()) {
                         emailIdOfContact = emails.getString(emails
                                 .getColumnIndex(Email.DATA));
 
                         selectedEvent.setAttendees(emailIdOfContact,contactName);
                     }
                     emails.close();
+                    cr.close();
                 }
             }
+
+            cursor.close();
         }
     }
 
@@ -219,10 +205,8 @@ public class EditEventActivity extends AppCompatActivity {
 
         eventTitle.setText(selectedEvent.getTitle());
 
-
         String[] startDateStr = model.dateToString(selectedEvent.getStartDate());
         String[] endDateStr = model.dateToString(selectedEvent.getEndDate());
-
         eventStartDate.setText(startDateStr[0]);
         eventStartTime.setText(startDateStr[1]+startDateStr[2]);
         eventEndDate.setText(endDateStr[0]);
@@ -237,10 +221,8 @@ public class EditEventActivity extends AppCompatActivity {
         Button editMovieButton = findViewById(R.id.editMovieButton);
         editMovieButton.setOnClickListener(new editMovieListener(selectedEvent,this));
 
-
-        attendees=selectedEvent.getAttendees();
-
-        attendeeListAdapter =new AttendeeListAdapter(this,attendees);
+        Map<String, String> attendees = selectedEvent.getAttendees();
+        AttendeeListAdapter attendeeListAdapter = new AttendeeListAdapter(this, attendees);
         ListView attendeeListView =findViewById(R.id.attendeesList);
         attendeeListView.setAdapter(attendeeListAdapter);
         if (selectedEvent.getMovie() != null){
