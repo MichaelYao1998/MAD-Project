@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,16 +71,18 @@ public class customCalendar extends LinearLayout {
         inflater.inflate(R.layout.calendar_view, this);
         assignUI();
         handleClickListener();
-        updateCalendar(null);
+        updateCalendar();
     }
 
-    public void updateCalendar(HashSet<Date> events) {
+    public void updateCalendar() {
         ArrayList<Date> cells = new ArrayList<>();
 
         Calendar calendar = (Calendar) currentDate.clone();
 
         //determine the value for current month's beginning
+        Log.v("?????","before"+calendar.get(Calendar.MONTH));
         calendar.set(Calendar.DAY_OF_MONTH, 1);
+        Log.v("?????","after"+calendar.get(Calendar.MONTH));
         int monthBeginningValue = calendar.get(Calendar.DAY_OF_WEEK) - 1;
 
         //move calendar backwards to the beginning of the week
@@ -92,10 +95,12 @@ public class customCalendar extends LinearLayout {
         }
 
         //update grid
-        gridView.setAdapter(new CalendarAdapter(getContext(), cells, events));
+
+        Log.v("?????","final"+calendar.get(Calendar.MONTH));
+        gridView.setAdapter(new CalendarAdapter(getContext(), cells, currentDate.get(Calendar.MONTH)));
 
         //update title
-        SimpleDateFormat sdf = new SimpleDateFormat(" dd MMMM yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("MMMM yyyy");
         current_Date.setText(sdf.format(currentDate.getTime()));
     }
 
@@ -105,7 +110,7 @@ public class customCalendar extends LinearLayout {
             @Override
             public void onClick(View v) {
                 currentDate.add(Calendar.MONTH, 1);
-                updateCalendar(null);
+                updateCalendar();
             }
         });
         // backwards one month and refresh UI
@@ -113,7 +118,7 @@ public class customCalendar extends LinearLayout {
             @Override
             public void onClick(View v) {
                 currentDate.add(Calendar.MONTH, -1);
-                updateCalendar(null);
+                updateCalendar();
             }
         });
         // long-pressing a day

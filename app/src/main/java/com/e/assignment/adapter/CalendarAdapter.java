@@ -3,6 +3,7 @@ package com.e.assignment.adapter;
 import android.animation.TypeEvaluator;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.Gravity;
@@ -22,52 +23,57 @@ import java.util.Date;
 import java.util.HashSet;
 
 public class CalendarAdapter extends ArrayAdapter<Date> {
-    private final HashSet<Date> eventDays;
     private LayoutInflater inflater;
     private Context context;
-    public CalendarAdapter(Context context, ArrayList<Date> days, HashSet<Date>eventDays){
+    private int currMonth;
+    public CalendarAdapter(Context context, ArrayList<Date> days, int currMonth){
         super(context, R.layout.calendar_view,days);
-        this.eventDays = eventDays;
         this.context = context;
         inflater = LayoutInflater.from(context);
-
+        this.currMonth = currMonth;
     }
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         EventsModel model = EventsModelImpl.getSingletonInstance(context);
         Calendar calendar = Calendar.getInstance();
+        ArrayList<Event> eventsListForDay;
         Date date = getItem(position);
         calendar.setTime(date);
         int day = calendar.get(Calendar.DATE);
         int month = calendar.get(Calendar.MONTH);
         int year = calendar.get(Calendar.YEAR);
-
+        eventsListForDay=model.eventsArrForDay(calendar.getTime());
         //today
         Date today = new Date();
         Calendar calendarToday = Calendar.getInstance();
         calendarToday.setTime(today);
 
+
         //inflate item if it does not exist yet
         if(view == null){
             view = inflater.inflate(R.layout.calendar_item,parent,false);
         }
+
+        Log.v("!?Month",month+",,,"+currMonth);Log.v("!?Day",month+",,,");
         //clean styling
         ((TextView)view).setTypeface(null, Typeface.NORMAL);
         ((TextView)view).setTextColor(Color.BLACK);
-        if(month!=calendarToday.get(Calendar.MONTH) || year != calendarToday.get(Calendar.YEAR)){
+        if(month!=currMonth){
             ((TextView)view).setTextColor(Color.parseColor("#E0E0E0"));
-        }else if(day == calendarToday.get(Calendar.DATE)){
+        }else if(day == calendarToday.get(Calendar.DATE) && month == calendarToday.get(Calendar.MONTH) && year == calendarToday.get(Calendar.YEAR)){
             //set it to blud/bold
             ((TextView)view).setTypeface(null, Typeface.BOLD);
             ((TextView)view).setTextColor(Color.BLUE);
         }
         //if the date has events, then set it color to red
-        if (!model.eventsArrForDay(calendar.getTime()).isEmpty())
+        if (!eventsListForDay.isEmpty())
         {
+            if (month==currMonth){
+                ((TextView)view).setTextColor(Color.RED);
+            }
             ((TextView)view).setTypeface(null, Typeface.BOLD);
-            ((TextView)view).setBackgroundColor(Color.RED);
-            ((TextView)view).setTextColor(Color.WHITE);
+            ((TextView)view).setPaintFlags(((TextView)view).getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         }
         // set text
         ((TextView)view).setText(String.valueOf(calendar.get(Calendar.DATE)));

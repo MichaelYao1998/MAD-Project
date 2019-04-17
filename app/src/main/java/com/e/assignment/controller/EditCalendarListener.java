@@ -23,9 +23,8 @@ public class EditCalendarListener implements EventHandler, AdapterView.OnItemLon
     private String TAG = getClass().getName();
     private EventHandler eventHandler = null;
 
-    public EditCalendarListener(Context context, String eventId) {
+    public EditCalendarListener(Context context) {
         this.context = context;
-        eventID = eventId;
 
     }
 
@@ -34,7 +33,6 @@ public class EditCalendarListener implements EventHandler, AdapterView.OnItemLon
     }
 
     @Override
-
     public void onDayLongPress(Date date) {
         final EventsModel model = EventsModelImpl.getSingletonInstance(context);
         DateFormat df = SimpleDateFormat.getDateInstance();
@@ -42,11 +40,11 @@ public class EditCalendarListener implements EventHandler, AdapterView.OnItemLon
 
         } else if (model.eventsArrForDay(date).size() == 1) {
             Intent intent = new Intent(context, EditEventActivity.class);
-            intent.putExtra(Intent.EXTRA_TEXT, eventID);
+            intent.putExtra(Intent.EXTRA_TEXT, model.eventsArrForDay(date).get(0).getId());
             intent.setType("text/plain");
 //            startActivity(intent);
             if (intent.resolveActivity(context.getPackageManager()) != null) {
-                ((Activity) context).startActivityForResult(intent, Activity.RESULT_OK);
+                ((Activity)context).startActivityForResult(intent, Activity.RESULT_OK);
             } else {
                 Log.i(TAG, "Cannot open activity for this intent");
             }
@@ -64,7 +62,6 @@ public class EditCalendarListener implements EventHandler, AdapterView.OnItemLon
             return false;
         }
         eventHandler.onDayLongPress((Date) parent.getItemAtPosition(position));
-
         return true;
     }
     
