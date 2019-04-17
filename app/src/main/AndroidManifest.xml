@@ -23,7 +23,7 @@
         <activity android:name=".view.ListMovieActivity">
         </activity>
 
-        <activity android:name=".view.MainActivity">
+        <activity android:name=".view.CalendarActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

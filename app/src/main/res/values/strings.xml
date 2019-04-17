@@ -13,4 +13,5 @@
     <string name="Saturday">Sat</string>
     <string name="Sunday">Sun</string>
     <string name="calendar_item">123</string>
+    <string name="calendar">calendar</string>
 </resources>

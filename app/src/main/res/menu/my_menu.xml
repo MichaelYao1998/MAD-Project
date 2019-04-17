@@ -9,4 +9,7 @@
     <item
         android:title="@string/dscend"
         android:id="@+id/dscending" />
+    <item
+        android:title="@string/calendar"
+        android:id="@+id/menu_calendar"/>
 </menu>

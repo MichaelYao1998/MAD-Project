@@ -2,13 +2,13 @@ package com.e.assignment.view;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.e.assignment.R;
@@ -18,13 +18,8 @@ import com.e.assignment.model.EventsModel;
 import com.e.assignment.model.EventsModelImpl;
 import com.e.assignment.model.viewModel.EventListViewModel;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class ListEventActivity extends AppCompatActivity {
     String LOG_TAG = getClass().getName();
@@ -56,13 +51,16 @@ public class ListEventActivity extends AppCompatActivity {
         });
     }
 
-@Override
-public boolean onCreateOptionsMenu(Menu menu) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 
-    getMenuInflater().inflate(R.menu.my_menu, menu);
-    Log.i(LOG_TAG, "onCreateMenu()");
-    return true;
-}
+        getMenuInflater().inflate(R.menu.my_menu, menu);
+        Log.i(LOG_TAG, "onCreateMenu()");
+        // Intent to go to the calendar Activity
+        menu.findItem(R.id.menu_calendar).setIntent(
+                new Intent(this, CalendarActivity.class));
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -70,7 +68,7 @@ public boolean onCreateOptionsMenu(Menu menu) {
         switch (id) {
             case R.id.ascending:
                 Toast.makeText(this, "ascending", Toast.LENGTH_SHORT).show();
-                if (eventsModel.isReverse()){
+                if (eventsModel.isReverse()) {
                     eventsModel.setReverse(false);
                     refresh();
                 }
@@ -82,10 +80,17 @@ public boolean onCreateOptionsMenu(Menu menu) {
                     refresh();
                 }
                 break;
+            case R.id.menu_calendar:
+                Log.i(LOG_TAG, " calendar item selected");
+                Toast.makeText(this, "calendar", Toast.LENGTH_SHORT).show();
+                // return false so intent is fired
+                return false;
+
         }
         return super.onOptionsItemSelected(item);
     }
-    public void refresh(){
+
+    public void refresh() {
 
         finish();
         startActivity(getIntent());

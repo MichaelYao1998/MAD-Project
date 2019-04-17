@@ -10,7 +10,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
-    tools:context="com.e.assignment.view.MainActivity">
+    tools:context="com.e.assignment.view.CalendarActivity">
 
     <com.e.assignment.model.customCalendar xmlns:calendarNS="http://schemas.android.com/apk/res/com.e.calendarView"
         android:id="@+id/calendar_view"
