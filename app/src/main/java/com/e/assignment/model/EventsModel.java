@@ -15,6 +15,7 @@ public interface EventsModel {
     void setMovieToEvent(String EventId, String MovieID);
     void removeAttendeeFromEvent(String EventID, String attendeeEmail);
     void updateEvent(Event event);
-
+    boolean isReverse();
+    void setReverse(boolean reverse);
     Map<Date, Event> sortTheEventList(boolean reverse);
 }

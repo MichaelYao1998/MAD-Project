@@ -15,11 +15,21 @@ public class EventsModelImpl implements EventsModel {
     private Map<String, Movie> movies = new HashMap<>();
     private Fileloader loader = new Fileloader();
 
+    private boolean isReverse = false;
     private static Context applicationContext;
     public EventsModelImpl() {
         loader.loadEvents(events,applicationContext);
         loader.loadMovies(movies,applicationContext);
     }
+
+    public boolean isReverse() {
+        return isReverse;
+    }
+
+    public void setReverse(boolean reverse) {
+        isReverse = reverse;
+    }
+
     private static class LazyHolder {
         static final EventsModel INSTANCE = new EventsModelImpl();
     }

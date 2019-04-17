@@ -29,36 +29,33 @@ import java.util.TreeMap;
 public class ListEventActivity extends AppCompatActivity {
     String LOG_TAG = getClass().getName();
     //
-    private boolean isReverse = false;
+    ListViewAdapter mAdapter;
+
+    EventsModel eventsModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        eventsModel = EventsModelImpl.getSingletonInstance(getApplicationContext());
         setContentView(R.layout.activity_list_event);
         Log.i(LOG_TAG, "onCreateListView()");
         EventListViewModel myViewModel = ViewModelProviders.of(this).get(EventListViewModel.class);
 
-        myViewModel.getEvents(isReverse).observe(this, new Observer<Map<Date, Event>>() {
+        myViewModel.getEvents(eventsModel.isReverse()).observe(this, new Observer<Map<Date, Event>>() {
             @Override
             public void onChanged(Map<Date, Event> items) {
                 // Update your UI with the loaded data.
                 // Returns cached data automatically after a configuration change
                 // and this method will be called again if underlying Live Data object is modified
-                ListViewAdapter mAdapter = new ListViewAdapter(ListEventActivity.this, items);
+                mAdapter = new ListViewAdapter(ListEventActivity.this, items);
                 ListView myListView3 = findViewById(R.id.EventListView);
                 myListView3.setAdapter(mAdapter);
             }
         });
     }
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-//refresh the updated data
-        finish();
-        startActivity(getIntent());
 
-    }
 @Override
 public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -69,22 +66,28 @@ public boolean onCreateOptionsMenu(Menu menu) {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        EventsModelImpl eventsModel = new EventsModelImpl();
         int id = item.getItemId();
         switch (id) {
             case R.id.ascending:
                 Toast.makeText(this, "ascending", Toast.LENGTH_SHORT).show();
-                isReverse=false;
-                finish();
-                startActivity(getIntent());
+                if (eventsModel.isReverse()){
+                    eventsModel.setReverse(false);
+                    refresh();
+                }
                 break;
             case R.id.dscending:
                 Toast.makeText(this, "descending", Toast.LENGTH_SHORT).show();
-                isReverse=true;
-                finish();
-                startActivity(getIntent());
+                if (!eventsModel.isReverse()) {
+                    eventsModel.setReverse(true);
+                    refresh();
+                }
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+    public void refresh(){
+
+        finish();
+        startActivity(getIntent());
     }
 }
