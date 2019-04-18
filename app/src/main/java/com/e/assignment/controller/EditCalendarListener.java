@@ -74,7 +74,7 @@ public class EditCalendarListener implements EventHandler, AdapterView.OnItemLon
             context.startActivity(intent);
         }
     }
-    
+
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 //        handle long-press
