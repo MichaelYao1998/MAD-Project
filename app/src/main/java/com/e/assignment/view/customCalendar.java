@@ -131,6 +131,5 @@ public class customCalendar extends LinearLayout {
                 return true;
             }
         });
-//        gridView.setOnItemLongClickListener( new EditCalendarListener(context, eventId));
     }
 }

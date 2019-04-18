@@ -1,13 +1,16 @@
 package com.e.assignment.controller;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
+import com.e.assignment.R;
 import com.e.assignment.model.EventHandler;
 import com.e.assignment.model.EventsModel;
 import com.e.assignment.model.EventsModelImpl;
@@ -36,7 +39,16 @@ public class EditCalendarListener implements EventHandler, AdapterView.OnItemLon
         Intent intent = new Intent(context, EditEventActivity.class);
         DateFormat df = SimpleDateFormat.getDateInstance();
         if (model.eventsArrForDay(date).size() >= 2) {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+            dialog.setTitle(R.string.title);
+            dialog.setItems(R.array.select_dialog_items, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
 
+                }
+            });
+            final AlertDialog alert = dialog.create();
+            alert.show();
         } else if (model.eventsArrForDay(date).size() == 1) {
             intent.putExtra(Intent.EXTRA_TEXT, model.eventsArrForDay(date).get(0).getId());
             intent.setType("text/plain");
@@ -58,5 +70,5 @@ public class EditCalendarListener implements EventHandler, AdapterView.OnItemLon
         eventHandler.onDayLongPress((Date) parent.getItemAtPosition(position));
         return true;
     }
-    
+
 }
