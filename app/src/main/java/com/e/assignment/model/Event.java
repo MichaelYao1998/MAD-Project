@@ -24,7 +24,7 @@ public interface Event {
     Date getEndDate();
     String getVenue();
     String getLocation();
-    int getAttendeesNum();
+
     void setMovie(Movie movie);
     Movie getMovie();
     Map<String, String> getAttendees();
@@ -32,5 +32,8 @@ public interface Event {
 
     void setAttendeesList(Map<String, String> list);
 
+    /*
+     *  @param email    remove the attendee from attendee list in a event by using email
+     */
     void rmAttendees(String email);
 }

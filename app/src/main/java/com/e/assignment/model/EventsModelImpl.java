@@ -51,20 +51,7 @@ public class EventsModelImpl implements EventsModel {
     public Event getEventById(String EventId) {
         return events.get(EventId);
     }
-    @Override
-    public void setMovieToEvent(String EventId, String MovieID) {
-        Movie tempMovie = getMovieById(MovieID);
-        Event tempEvent = getEventById(EventId);
-        if (tempEvent!=null){
-            events.get(EventId).setMovie(tempMovie);
-        }
-    }
 
-    @Override
-    public void removeAttendeeFromEvent(String EventID, String attendeeEmail) {
-
-        events.get(EventID).rmAttendees(attendeeEmail);
-    }
     @Override
     public Map<Date,Event> sortTheEventList(boolean reverse){
         Map<Date,Event> dateTemp;

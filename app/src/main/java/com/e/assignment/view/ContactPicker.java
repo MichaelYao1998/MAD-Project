@@ -10,7 +10,16 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 
+/*
+ *  The method class, using to set the add attendee button
+ *  Also responsible for checking the permission of reading contact on runtime and
+ *  if no permission,, ask for permission to access user's contacts data
+ */
 class ContactPicker {
+    /*
+     *  @param  addContactButton    the button refference
+     *  @param  permissions         check the permission for reading user's contact
+     */
     public void setPickerOnButton(Button addContactButton, String[] permissions, final Activity activity)
     {
         final int PICK_CONTACT = 2015;
@@ -27,11 +36,18 @@ class ContactPicker {
             RequestPermission(activity, permissions);
         }
     }
-
+    /*
+     *  check the permission of reading contact on runtime
+     */
     private boolean CheckPermission(Context context, String Permission) {
         return ContextCompat.checkSelfPermission(context,
                 Permission) == PackageManager.PERMISSION_GRANTED;
     }
+
+    /*
+     *  when no permission on runtime,
+     *  request the permission
+     */
     private void RequestPermission(Activity thisActivity, String[] Permission) {
         if (ContextCompat.checkSelfPermission(thisActivity,
                 Permission[0])

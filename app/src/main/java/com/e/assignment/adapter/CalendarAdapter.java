@@ -26,6 +26,12 @@ public class CalendarAdapter extends ArrayAdapter<Date> {
     private LayoutInflater inflater;
     private Context context;
     private int currMonth;
+
+    /*
+     *  @param context      context from calling
+     *  @param days         HashMap for the editing event
+     *  @param currMonth    the current month from Calendar
+     */
     public CalendarAdapter(Context context, ArrayList<Date> days, int currMonth){
         super(context, R.layout.calendar_view,days);
         this.context = context;

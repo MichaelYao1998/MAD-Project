@@ -19,14 +19,15 @@ import java.util.Date;
 import java.util.Map;
 
 public class ListViewAdapter extends ArrayAdapter<Event>{
-    private final String TAG = getClass().getName();
     private Context context;
-    private Map<Date, Event> events;
 
+    /*
+     *  @param context      context from calling
+     *  @param events       Event List from Activity
+     */
     public ListViewAdapter(Context context, Map<Date, Event> events) {
         super(context, 0, events.values().toArray(new Event[events.size()]));
         this.context = context;
-        this.events = events;
     }
     @Override
     public View getView(int position, View eventItemView, ViewGroup parent) {
@@ -53,7 +54,6 @@ public class ListViewAdapter extends ArrayAdapter<Event>{
             eventMovie.setText(item.getMovie().getTitle());
         }
 
-        Log.d(TAG, item.getId()+"set view m:"+eventMovie.getText());
         eventTitle.setText(item.getTitle());
         eventVenue.setText(item.getVenue());
         eventEndDate.setText(df.format(item.getEndDate()));

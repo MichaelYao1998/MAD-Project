@@ -1,6 +1,5 @@
 package com.e.assignment.model;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -81,11 +80,6 @@ public class AbstractEvent implements Event {
     @Override
     public String getLocation() {
         return location;
-    }
-
-    @Override
-    public int getAttendeesNum() {
-        return attendees.size();
     }
 
     @Override

@@ -22,6 +22,10 @@ public class MovieListViewAdapter extends ArrayAdapter<Movie> {
     private final String TAG = getClass().getName();
     private Context context;
     private Map<String, Movie> movies;
+    /*
+     *  @param context      context from calling
+     *  @param Movie        Movie List From Activity
+     */
     public MovieListViewAdapter(Context context, Map<String, Movie> movies) {
         super(context, 0, movies.values().toArray(new Movie[movies.size()]));
         this.context = context;

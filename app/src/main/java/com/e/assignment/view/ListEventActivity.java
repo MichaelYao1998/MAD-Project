@@ -27,8 +27,6 @@ import java.util.Date;
 import java.util.Map;
 
 public class ListEventActivity extends AppCompatActivity {
-    String LOG_TAG = getClass().getName();
-    //
     ListViewAdapter mAdapter;
     EventListViewModel myViewModel;
     EventsModel eventsModel;
@@ -40,7 +38,6 @@ public class ListEventActivity extends AppCompatActivity {
 
         eventsModel = EventsModelImpl.getSingletonInstance(getApplicationContext());
         setContentView(R.layout.activity_list_event);
-        Log.i(LOG_TAG, "onCreateListView()");
         myViewModel = ViewModelProviders.of(this).get(EventListViewModel.class);
         myViewModel.getEvents(eventsModel.isReverse()).observe(this, new Observer<Map<Date, Event>>() {
             @Override
@@ -66,13 +63,15 @@ public class ListEventActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.my_menu, menu);
-        Log.i(LOG_TAG, "onCreateMenu()");
         // Intent to go to the calendar Activity
         menu.findItem(R.id.menu_calendar).setIntent(
                 new Intent(this, CalendarActivity.class));
         return true;
     }
 
+    /*
+     *  handle menu option
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -99,7 +98,6 @@ public class ListEventActivity extends AppCompatActivity {
                 break;
                 //click calendar will redirect to CalendarActivity page
             case R.id.menu_calendar:
-                Log.i(LOG_TAG, " calendar item selected");
                 Toast.makeText(this, "calendar", Toast.LENGTH_SHORT).show();
                 // return false so intent is fired
                 return false;
@@ -108,17 +106,16 @@ public class ListEventActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /*
+     *  refresh the page
+     */
     public void refresh() {
-
         finish();
         startActivity(getIntent());
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //TODO
-        //refactor
-
         if (resultCode == RESULT_OK) {
             refresh();
         }

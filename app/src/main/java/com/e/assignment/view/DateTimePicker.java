@@ -24,6 +24,12 @@ public class DateTimePicker {
     private int hour;
     private int minute;
 
+    /*
+     *  @param context          context from editing event page
+     *  @param editTime         editTime Text field, when user ontouch the field, will popup the dialogs
+     *  @param isStartDate      check if the button is for start date
+     *  @param selectedEvent    the editing event
+     */
     public void newTimePickerDialog(Context context, final EditText editTime, final boolean isStartDate, final Event selectedEvent){
         final Calendar temp;
         if (isStartDate){
@@ -76,13 +82,15 @@ public class DateTimePicker {
 
     }
     @SuppressLint("ClickableViewAccessibility")
+    /*
+     *  similar to timepicker, but for editing date field.
+     *  Also, it will set minimum limit in picker dialog for event end date dependond the the startdate from selected event
+     */
     public void newDatePickerDialog(Context context, final EditText eventDate, final boolean isStartDate, final Event selectedEvent){
-
 
         year=calendar.get(Calendar.YEAR);
         month=calendar.get(Calendar.MONTH);
         day=calendar.get(Calendar.DAY_OF_MONTH);
-
         final DatePickerDialog datePickerDialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener()
         {
             @Override

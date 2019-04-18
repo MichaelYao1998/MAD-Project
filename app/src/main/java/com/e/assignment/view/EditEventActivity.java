@@ -34,7 +34,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
+/*
+ *  present the editing event page
+ */
 public class EditEventActivity extends AppCompatActivity {
     private EventsModel model;
     private static final int REQUEST_RUNTIME_PERMISSION = 123;
@@ -54,6 +56,53 @@ public class EditEventActivity extends AppCompatActivity {
     private EditText eventEndTime;
     private EditText eventStartTime;
     public final int PICK_CONTACT = 2015;
+    /*
+     *  Initialize the page
+     */
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        model  = EventsModelImpl.getSingletonInstance(getApplicationContext());
+        Intent intent = getIntent();
+        setContentView(R.layout.activity_edit_event);
+        eventTitle = findViewById(R.id.editTitile);
+        eventMovie = findViewById(R.id.editMovie);
+        eventStartDate = findViewById(R.id.editStartDate);
+        eventStartTime = findViewById(R.id.editStartTime);
+        eventEndDate = findViewById(R.id.editEndDate);
+        eventEndTime = findViewById(R.id.editEndTime);
+        eventVenue = findViewById(R.id.editVenue);
+        eventLat = findViewById(R.id.editLat);
+        eventLng = findViewById(R.id.editLng);
+        handleIntent(intent);
+        addContactButton = findViewById(R.id.addAttendee);
+        ContactPicker contactPicker = new ContactPicker();
+        contactPicker.setPickerOnButton(addContactButton, permissions,EditEventActivity.this);
+    }
+    /*
+     *  initialize the data for the calendar pickers
+     *  if the eventID passed by intend is null, means that is add event function
+     *  check if contain the date, means is from calendar or list
+     *  Otherwise, is editing, initialize the temporary event
+     */
+    public void handleIntent(Intent intent){
+        eventID = (String) Objects.requireNonNull(intent.getExtras()).get(Intent.EXTRA_TEXT);
+        Date newDate = new Date();
+        if (eventID == null ||  eventID.equals(""))
+        {
+            if (intent.getLongExtra("date", -1)!=-1)
+                newDate.setTime(intent.getLongExtra("date", -1));
+            calendar.setTime(newDate);
+            calendarEnd.setTime(newDate);
+            selectedEvent=new EventImpl(model.eventIdGenerator(),"",newDate,newDate,"","");
+        }
+        else {
+            initSelectedEvent();
+        }
+    }
+    /*
+     *  initialize a temporary event from selected event
+     */
     public void initSelectedEvent(){
         //Init a temp object
         selectedEvent = new EventImpl(model.getEventById(eventID).getId(),
@@ -85,6 +134,10 @@ public class EditEventActivity extends AppCompatActivity {
         calendarEnd.setTime(selectedEvent.getEndDate());
 
     }
+
+    /*
+     *  save the all text field into a temporary event
+     */
     public void saveTempEvent() {
         selectedEvent.setTitle(eventTitle.getText().toString());
         selectedEvent.setVenue(eventVenue.getText().toString());
@@ -100,38 +153,10 @@ public class EditEventActivity extends AppCompatActivity {
 
         // etc.
     }
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        model  = EventsModelImpl.getSingletonInstance(getApplicationContext());
-        Intent intent = getIntent();
-        setContentView(R.layout.activity_edit_event);
-        eventTitle = findViewById(R.id.editTitile);
-        eventMovie = findViewById(R.id.editMovie);
-        eventStartDate = findViewById(R.id.editStartDate);
-        eventStartTime = findViewById(R.id.editStartTime);
-        eventEndDate = findViewById(R.id.editEndDate);
-        eventEndTime = findViewById(R.id.editEndTime);
-        eventVenue = findViewById(R.id.editVenue);
-        eventLat = findViewById(R.id.editLat);
-        eventLng = findViewById(R.id.editLng);
-        eventID = (String) Objects.requireNonNull(intent.getExtras()).get(Intent.EXTRA_TEXT);
-        Date newDate = new Date();
-        if (eventID == null ||  eventID.equals(""))
-        {
-            if (intent.getLongExtra("date", -1)!=-1)
-                newDate.setTime(intent.getLongExtra("date", -1));
-            calendar.setTime(newDate);
-            calendarEnd.setTime(newDate);
-            selectedEvent=new EventImpl(model.eventIdGenerator(),"",newDate,newDate,"","");
-        }
-        else {
-            initSelectedEvent();
-        }
-        addContactButton = findViewById(R.id.addAttendee);
-        ContactPicker contactPicker = new ContactPicker();
-        contactPicker.setPickerOnButton(addContactButton, permissions,EditEventActivity.this);
-    }
+
+    /*
+     *  update the ListView for showing attendees
+     */
     public static void updateAttendeeListHeight(ListView listView) {
 
         ListAdapter adapter = listView.getAdapter();
@@ -152,7 +177,10 @@ public class EditEventActivity extends AppCompatActivity {
         listView.setLayoutParams(param);
         listView.requestLayout();
     }
-
+    /*
+     *  handle the result when user come back from selecting attendee or selecting movie
+     *  save them into the temporary event
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
@@ -198,6 +226,10 @@ public class EditEventActivity extends AppCompatActivity {
         }
     }
 
+    /*
+     *  display all data from temporary event
+     *  and set the dialog into each button
+     */
     @Override
     protected  void onStart() {
         super.onStart();
@@ -223,7 +255,7 @@ public class EditEventActivity extends AppCompatActivity {
         }
         Button saveButton = findViewById(R.id.saveEvent);
         Button editMovieButton = findViewById(R.id.editMovieButton);
-        editMovieButton.setOnClickListener(new editMovieListener(selectedEvent,this));
+        editMovieButton.setOnClickListener(new editMovieListener(this));
 
         Map<String, String> attendees = selectedEvent.getAttendees();
         AttendeeListAdapter attendeeListAdapter = new AttendeeListAdapter(this, attendees);
@@ -244,6 +276,9 @@ public class EditEventActivity extends AppCompatActivity {
             }
         });
     }
+    /*
+     *  check the endDate is after the start date
+     */
     public boolean validation(){
         boolean isValid = true;
         if (!selectedEvent.getStartDate().before(selectedEvent.getEndDate())){
@@ -253,6 +288,11 @@ public class EditEventActivity extends AppCompatActivity {
         }
         return isValid;
     }
+
+    /*
+     *  handle the permission result
+     *  only enable the add attendees button if gain the permission.
+     */
     @Override
     public void onRequestPermissionsResult(int permsRequestCode, String[] permissions, int[] grantResults) {
         switch (permsRequestCode) {

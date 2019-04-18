@@ -79,8 +79,6 @@ public class customCalendar extends LinearLayout {
         }
 
         //update grid
-
-        Log.v("?????","final"+calendar.get(Calendar.MONTH));
         gridView.setAdapter(new CalendarAdapter(getContext(), cells, currentDate.get(Calendar.MONTH)));
 
         //update title
