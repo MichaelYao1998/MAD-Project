@@ -12,7 +12,7 @@
     android:paddingTop="@dimen/space"
     tools:context="com.e.assignment.view.CalendarActivity">
 
-    <com.e.assignment.view.customCalendar
+    <com.e.assignment.view.CustomCalendar
         android:id="@+id/calendar_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
