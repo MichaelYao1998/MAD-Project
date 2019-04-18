@@ -89,7 +89,7 @@ public class customCalendar extends LinearLayout {
     }
 
     private void handleClickListener() {
-        //add one month and refresh UI
+        //If click on the right arrow image add one month and refresh UI
         next.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -97,7 +97,7 @@ public class customCalendar extends LinearLayout {
                 updateCalendar();
             }
         });
-        // backwards one month and refresh UI
+        // If click on the left arrow image then backwards one month and refresh UI
         prev.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,6 +105,7 @@ public class customCalendar extends LinearLayout {
                 updateCalendar();
             }
         });
+
         // long-pressing a day
         gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override

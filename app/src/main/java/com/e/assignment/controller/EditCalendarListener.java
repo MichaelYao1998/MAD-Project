@@ -34,6 +34,12 @@ public class EditCalendarListener implements EventHandler, AdapterView.OnItemLon
         this.eventHandler = eventHandler;
     }
 
+    /*
+            If the date has more than 1 event, when press on it will pop a dialog that filled with all the event.
+            Click on the distinct event will go to the corresponding edit event page.
+            If the date only has one event, when press on it will go to the corresponding edit event page directly
+            If the date does not have event, will go to the edit page and allows user to edit
+         */
     @Override
     public void onDayLongPress(final Date date) {
         final EventsModel model = EventsModelImpl.getSingletonInstance(context);

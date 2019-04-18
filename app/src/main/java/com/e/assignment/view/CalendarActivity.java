@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.HashSet;
 
 public class CalendarActivity extends AppCompatActivity {
+    //Call the customCalendar to run the CalendarActivity
     private customCalendar calendar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

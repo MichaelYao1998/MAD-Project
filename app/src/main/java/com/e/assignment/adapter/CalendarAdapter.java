@@ -49,7 +49,6 @@ public class CalendarAdapter extends ArrayAdapter<Date> {
         Calendar calendarToday = Calendar.getInstance();
         calendarToday.setTime(today);
 
-
         //inflate item if it does not exist yet
         if(view == null){
             view = inflater.inflate(R.layout.calendar_item,parent,false);
@@ -59,6 +58,11 @@ public class CalendarAdapter extends ArrayAdapter<Date> {
         //clean styling
         ((TextView)view).setTypeface(null, Typeface.NORMAL);
         ((TextView)view).setTextColor(Color.BLACK);
+
+        /*
+            if the month does not equal to the user's month, set it color to gray
+            if the date, month and year all match user's date and time, set it color to the bold blue
+         */
         if(month!=currMonth){
             ((TextView)view).setTextColor(Color.parseColor("#E0E0E0"));
         }else if(day == calendarToday.get(Calendar.DATE) && month == calendarToday.get(Calendar.MONTH) && year == calendarToday.get(Calendar.YEAR)){

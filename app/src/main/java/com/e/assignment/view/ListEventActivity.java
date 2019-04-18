@@ -97,6 +97,7 @@ public class ListEventActivity extends AppCompatActivity {
                 newEvent.setType("text/plain");
                 startActivity(newEvent);
                 break;
+                //click calendar will redirect to CalendarActivity page
             case R.id.menu_calendar:
                 Log.i(LOG_TAG, " calendar item selected");
                 Toast.makeText(this, "calendar", Toast.LENGTH_SHORT).show();
