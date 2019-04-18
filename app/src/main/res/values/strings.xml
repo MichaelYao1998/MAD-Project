@@ -15,7 +15,7 @@
     <string name="calendar_item">123</string>
     <string name="calendar">calendar</string>
     <string name="addevent">add Event</string>
-    <string name="title">Event List</string>
+    <string name="title">Events</string>
     <string name="first_event">Event 1</string>
     <string name="second_event">Event 2</string>
 </resources>

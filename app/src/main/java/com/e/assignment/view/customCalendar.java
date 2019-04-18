@@ -1,16 +1,11 @@
 package com.e.assignment.view;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,7 +13,6 @@ import android.widget.TextView;
 
 import com.e.assignment.R;
 import com.e.assignment.adapter.CalendarAdapter;
-import com.e.assignment.controller.EditCalendarListener;
 import com.e.assignment.model.EventHandler;
 
 import java.text.SimpleDateFormat;
@@ -34,17 +28,9 @@ public class customCalendar extends LinearLayout {
     TextView current_Date;
     GridView gridView;
     Context context;
-    HashSet<Date> events = new HashSet<>();
     private static final int DAYS_COUNT = 42;
     Calendar currentDate = Calendar.getInstance();
     private EventHandler eventHandler = null;
-    String eventId;
-    public customCalendar(Context context, AttributeSet attrs, String eventId) {
-        super(context, attrs);
-        this.context = context;
-        this.eventId = eventId;
-        initControl(context, attrs);
-    }
 
     public customCalendar(Context context, AttributeSet attrs)
     {

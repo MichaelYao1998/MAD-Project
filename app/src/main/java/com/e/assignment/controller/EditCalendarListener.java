@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.e.assignment.R;
+import com.e.assignment.model.Event;
 import com.e.assignment.model.EventHandler;
 import com.e.assignment.model.EventsModel;
 import com.e.assignment.model.EventsModelImpl;
@@ -34,33 +35,46 @@ public class EditCalendarListener implements EventHandler, AdapterView.OnItemLon
     }
 
     @Override
-    public void onDayLongPress(Date date) {
+    public void onDayLongPress(final Date date) {
         final EventsModel model = EventsModelImpl.getSingletonInstance(context);
-        Intent intent = new Intent(context, EditEventActivity.class);
+        final Intent intent = new Intent(context, EditEventActivity.class);
         DateFormat df = SimpleDateFormat.getDateInstance();
         if (model.eventsArrForDay(date).size() >= 2) {
+            Event[] eventsOnDay;
+            eventsOnDay = model.eventsArrForDay(date).toArray(new Event[0]);
+            String[] eventsTitleOnDay = new String[eventsOnDay.length];
+            for (int i = 0;i<eventsOnDay.length;i++)
+                eventsTitleOnDay[i] = eventsOnDay[i].getTitle();
             AlertDialog.Builder dialog = new AlertDialog.Builder(context);
             dialog.setTitle(R.string.title);
-            dialog.setItems(R.array.select_dialog_items, new DialogInterface.OnClickListener() {
+            dialog.setItems(eventsTitleOnDay, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
+                    intent.putExtra(Intent.EXTRA_TEXT, model.eventsArrForDay(date).get(which).getId());
+                    context.startActivity(intent);
                 }
             });
+            dialog.setPositiveButton("Add New Event", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            intent.putExtra("date", date.getTime());
+                            context.startActivity(intent);
+                        }
+                    }
+            );
+            dialog.setNegativeButton("CANCEL", null);
             final AlertDialog alert = dialog.create();
             alert.show();
         } else if (model.eventsArrForDay(date).size() == 1) {
             intent.putExtra(Intent.EXTRA_TEXT, model.eventsArrForDay(date).get(0).getId());
             intent.setType("text/plain");
             context.startActivity(intent);
-
         } else {
             intent.putExtra("date", date.getTime());
             context.startActivity(intent);
         }
     }
-
-
+    
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 //        handle long-press
