@@ -39,8 +39,8 @@ public class CustomCalendar extends LinearLayout {
         this.calendarHandler = calendarHandler;
     }
 
-    private void assignUI() {
-        //assign local variables to components
+    //map the variables to the local components
+    private void UIDesign() {
         header = findViewById(R.id.calendar_header);
         prev = findViewById(R.id.previous_button);
         next = findViewById(R.id.next_button);
@@ -48,14 +48,16 @@ public class CustomCalendar extends LinearLayout {
         gridView = findViewById(R.id.day_grid);
     }
 
+    //initialize the calendar
     public void initControl(Context context, AttributeSet attrs) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.calendar_view, this);
-        assignUI();
+        UIDesign();
         handleClickListener();
         updateCalendar();
     }
 
+    //calculate the dates for previous and next month
     public void updateCalendar() {
         ArrayList<Date> date = new ArrayList<>();
 
@@ -68,7 +70,7 @@ public class CustomCalendar extends LinearLayout {
         //move calendar backwards to the beginning of the week
         calendar.add(Calendar.DAY_OF_MONTH, -firstDayValue);
 
-        //fill value
+        //fill value to the layout page
         while (date.size() < DAYS_COUNT) {
             date.add(calendar.getTime());
             calendar.add(Calendar.DAY_OF_MONTH, 1);
@@ -82,8 +84,13 @@ public class CustomCalendar extends LinearLayout {
         current_Date.setText(sdf.format(currentDate.getTime()));
     }
 
+    /*
+        If click on the right arrow image add one month and refresh UI
+        If click on the left arrow image then backwards one month and refresh UI
+        If click on the date, implement the corresponding action that declared in the EditCalendarListener
+     */
     private void handleClickListener() {
-        //If click on the right arrow image add one month and refresh UI
+
         next.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,7 +98,7 @@ public class CustomCalendar extends LinearLayout {
                 updateCalendar();
             }
         });
-        // If click on the left arrow image then backwards one month and refresh UI
+
         prev.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,7 +107,6 @@ public class CustomCalendar extends LinearLayout {
             }
         });
 
-        // long-pressing a day
         gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
