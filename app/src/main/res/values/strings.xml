@@ -2,7 +2,10 @@
     <string name="app_name">Assignment</string>
     <string name="ascend">Ascending</string>
     <string name="dscend">Descending</string>
-
+    <string name="year">2019</string>
+    <string name="date">"15 April"</string>
+    <string name="day">Monday</string>
+    <string name="go_to_today">Go to today</string>
     //Days
     <string name="current_date">"15 April"</string>
     <string name="Monday">Mon</string>
@@ -13,9 +16,44 @@
     <string name="Saturday">Sat</string>
     <string name="Sunday">Sun</string>
     <string name="calendar_item">123</string>
-    <string name="calendar">calendar</string>
-    <string name="addevent">add Event</string>
+    <string name="calendar">Calendar</string>
+    <string name="addevent">Add Event</string>
     <string name="title">Events</string>
     <string name="first_event">Event 1</string>
     <string name="second_event">Event 2</string>
+    <string name="no_movie">No Movie</string>
+    <string name="venue">Venue</string>
+    <string name="none">None</string>
+    <string name="edit">Edit</string>
+    <string name="start">Start:</string>
+    <string name="end">End:</string>
+    <string name="event_movie">Movie:</string>
+    <string name="end_date">End Date</string>
+    <string name="attendee">Attendee:</string>
+    <string name="venue_title">Venue:</string>
+    <string name="start_date">date</string>
+    <string name="event_list_title">Title</string>
+    <string name="name">name</string>
+    <string name="textview">TextView</string>
+    <string name="x">X</string>
+    <string name="attendees_title">attendees</string>
+    <string name="longitude">Longitude</string>
+    <string name="latitude">Latitude</string>
+    <string name="edit_event_venue">venue</string>
+    <string name="edit_event_end_date_title">End Date:</string>
+    <string name="edit_event_start_time">time</string>
+    <string name="edit_event_start_date">date</string>
+    <string name="edit_event_end_date">date</string>
+    <string name="edit_event_end_time">time</string>
+    <string name="edit_event_title">Title:</string>
+    <string name="movie">Movie:</string>
+    <string name="start_date_title">Start Date:</string>
+    <string name="edittitile">editTitile</string>
+    <string name="add_attendee">Add attendee</string>
+    <string name="save">Save</string>
+    <string name="delete">DELETE</string>
+    <string name="change_movie">Change Movie</string>
+    <string name="movietitle">MovieTitle</string>
+    <string name="venue_name">Name</string>
+
 </resources>

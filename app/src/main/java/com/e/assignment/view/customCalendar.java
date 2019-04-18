@@ -9,11 +9,9 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.e.assignment.R;
 import com.e.assignment.adapter.CalendarAdapter;
 import com.e.assignment.model.CalendarHandler;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;

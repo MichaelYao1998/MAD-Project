@@ -6,14 +6,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
-
 import com.e.assignment.R;
 import com.e.assignment.model.Event;
 import com.e.assignment.model.CalendarHandler;
 import com.e.assignment.model.EventsModel;
 import com.e.assignment.model.EventsModelImpl;
 import com.e.assignment.view.EditEventActivity;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,17 +20,16 @@ public class EditCalendarListener implements CalendarHandler, AdapterView.OnItem
     private Context context;
     private String TAG = getClass().getName();
 
-
     public EditCalendarListener(Context context) {
         this.context = context;
     }
 
     /*
-            If the date has more than 1 event, when press on it will pop a dialog that filled with all the event.
-            Click on the distinct event will go to the corresponding edit event page.
-            If the date only has one event, when press on it will go to the corresponding edit event page directly
-            If the date does not have event, will go to the edit page and allows user to edit
-         */
+       If the date has more than 1 event, when press on it will pop a dialog that filled with all the event.
+       Click on the distinct event will go to the corresponding edit event page.
+       If the date only has one event, when press on it will go to the corresponding edit event page directly
+       If the date does not have event, will go to the edit page and allows user to edit
+    */
     @Override
     public void onDayLongPress(final Date date) {
         final EventsModel model = EventsModelImpl.getSingletonInstance(context);
