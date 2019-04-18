@@ -1,45 +1,35 @@
 package com.e.assignment.controller;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Toast;
-
 import com.e.assignment.R;
 import com.e.assignment.model.Event;
-import com.e.assignment.model.EventHandler;
+import com.e.assignment.model.CalendarHandler;
 import com.e.assignment.model.EventsModel;
 import com.e.assignment.model.EventsModelImpl;
 import com.e.assignment.view.EditEventActivity;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class EditCalendarListener implements EventHandler, AdapterView.OnItemLongClickListener {
+public class EditCalendarListener implements CalendarHandler, AdapterView.OnItemLongClickListener {
     private Context context;
     private String TAG = getClass().getName();
-    private EventHandler eventHandler = null;
 
     public EditCalendarListener(Context context) {
         this.context = context;
-
-    }
-    public void setEventHandler(EventHandler eventHandler) {
-        this.eventHandler = eventHandler;
     }
 
     /*
-            If the date has more than 1 event, when press on it will pop a dialog that filled with all the event.
-            Click on the distinct event will go to the corresponding edit event page.
-            If the date only has one event, when press on it will go to the corresponding edit event page directly
-            If the date does not have event, will go to the edit page and allows user to edit
-         */
+       If the date has more than 1 event, when press on it will pop a dialog that filled with all the event.
+       Click on the distinct event will go to the corresponding edit event page.
+       If the date only has one event, when press on it will go to the corresponding edit event page directly
+       If the date does not have event, will go to the edit page and allows user to edit
+    */
     @Override
     public void onDayLongPress(final Date date) {
         final EventsModel model = EventsModelImpl.getSingletonInstance(context);
@@ -49,7 +39,7 @@ public class EditCalendarListener implements EventHandler, AdapterView.OnItemLon
             Event[] eventsOnDay;
             eventsOnDay = model.eventsArrForDay(date).toArray(new Event[0]);
             String[] eventsTitleOnDay = new String[eventsOnDay.length];
-            for (int i = 0;i<eventsOnDay.length;i++)
+            for (int i = 0; i < eventsOnDay.length; i++)
                 eventsTitleOnDay[i] = eventsOnDay[i].getTitle();
             AlertDialog.Builder dialog = new AlertDialog.Builder(context);
             dialog.setTitle(R.string.title);
@@ -84,10 +74,7 @@ public class EditCalendarListener implements EventHandler, AdapterView.OnItemLon
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 //        handle long-press
-        if (eventHandler == null) {
-            return false;
-        }
-        eventHandler.onDayLongPress((Date) parent.getItemAtPosition(position));
+        onDayLongPress((Date) parent.getItemAtPosition(position));
         return true;
     }
 

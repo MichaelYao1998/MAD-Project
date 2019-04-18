@@ -1,12 +1,9 @@
 package com.e.assignment.adapter;
 
-import android.animation.TypeEvaluator;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +13,9 @@ import com.e.assignment.R;
 import com.e.assignment.model.Event;
 import com.e.assignment.model.EventsModel;
 import com.e.assignment.model.EventsModelImpl;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 
 public class CalendarAdapter extends ArrayAdapter<Date> {
     private LayoutInflater inflater;
@@ -50,17 +45,15 @@ public class CalendarAdapter extends ArrayAdapter<Date> {
         int month = calendar.get(Calendar.MONTH);
         int year = calendar.get(Calendar.YEAR);
         eventsListForDay=model.eventsArrForDay(calendar.getTime());
-        //today
+        // get today for calendar
         Date today = new Date();
         Calendar calendarToday = Calendar.getInstance();
         calendarToday.setTime(today);
 
-        //inflate item if it does not exist yet
         if(view == null){
             view = inflater.inflate(R.layout.calendar_item,parent,false);
         }
 
-        Log.v("!?Month",month+",,,"+currMonth);Log.v("!?Day",month+",,,");
         //clean styling
         ((TextView)view).setTypeface(null, Typeface.NORMAL);
         ((TextView)view).setTextColor(Color.BLACK);
@@ -72,7 +65,7 @@ public class CalendarAdapter extends ArrayAdapter<Date> {
         if(month!=currMonth){
             ((TextView)view).setTextColor(Color.parseColor("#E0E0E0"));
         }else if(day == calendarToday.get(Calendar.DATE) && month == calendarToday.get(Calendar.MONTH) && year == calendarToday.get(Calendar.YEAR)){
-            //set it to blud/bold
+            //set it to bold blue
             ((TextView)view).setTypeface(null, Typeface.BOLD);
             ((TextView)view).setTextColor(Color.BLUE);
         }
