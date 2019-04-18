@@ -18,7 +18,6 @@ import java.util.Date;
 
 public class EditCalendarListener implements CalendarHandler, AdapterView.OnItemLongClickListener {
     private Context context;
-    private String TAG = getClass().getName();
 
     public EditCalendarListener(Context context) {
         this.context = context;

@@ -26,7 +26,6 @@ public class addMovieListener implements View.OnClickListener{
     }
     @Override
     public void onClick(View v) {
-        //TODO
         //REPLACE TO temp EVENT
         Intent returnIntent = new Intent();
         returnIntent.putExtra("result",movieID);

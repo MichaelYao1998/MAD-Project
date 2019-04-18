@@ -2,7 +2,6 @@ package com.e.assignment.model;
 
 import android.content.Context;
 import android.util.Log;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;

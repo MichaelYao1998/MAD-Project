@@ -13,6 +13,7 @@ import java.util.Scanner;
 public class Fileloader {
 
     private final String TAG = getClass().getName();
+    //load elements from movies.txt
     protected void loadMovies(Map<String, Movie> movies, Context applicationContext) {
         movies.clear();
         Scanner scanner = null;
@@ -32,6 +33,8 @@ public class Fileloader {
             }
         }
     }
+
+    //load elements from event.txt
     protected void loadEvents(Map<String, Event> events, Context applicationContext) {
         events.clear();
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
