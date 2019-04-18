@@ -36,7 +36,7 @@ public class EditCalendarListener implements EventHandler, AdapterView.OnItemLon
     @Override
     public void onDayLongPress(Date date) {
         final EventsModel model = EventsModelImpl.getSingletonInstance(context);
-        Intent intent = new Intent(context, EditEventActivity.class);
+        final Intent intent = new Intent(context, EditEventActivity.class);
         DateFormat df = SimpleDateFormat.getDateInstance();
         if (model.eventsArrForDay(date).size() >= 2) {
             AlertDialog.Builder dialog = new AlertDialog.Builder(context);
@@ -44,7 +44,12 @@ public class EditCalendarListener implements EventHandler, AdapterView.OnItemLon
             dialog.setItems(R.array.select_dialog_items, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
+                    String[] items = context.getResources().getStringArray(
+                            R.array.select_dialog_items);
+//                    Intent firStIntent = new Intent()
+                    intent.putExtra("firstEvent",items[which]);
+                    Log.i("mmmm",items[which]);
+                    context.startActivity(intent);
                 }
             });
             final AlertDialog alert = dialog.create();
