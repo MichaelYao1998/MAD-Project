@@ -1,21 +1,11 @@
 package com.e.assignment.view;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toast;
-
 import com.e.assignment.R;
 import com.e.assignment.controller.EditCalendarListener;
-import com.e.assignment.fragment.DialogListDialogFragment;
-import com.e.assignment.model.Event;
-import com.e.assignment.model.EventHandler;
 import com.e.assignment.model.EventsModel;
 import com.e.assignment.model.EventsModelImpl;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 
