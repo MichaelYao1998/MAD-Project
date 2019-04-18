@@ -15,6 +15,7 @@
     <string name="Friday">Fri</string>
     <string name="Saturday">Sat</string>
     <string name="Sunday">Sun</string>
+
     <string name="calendar_item">123</string>
     <string name="calendar">Calendar</string>
     <string name="addevent">Add Event</string>
