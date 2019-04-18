@@ -13,7 +13,6 @@ import android.widget.Button;
 class ContactPicker {
     public void setPickerOnButton(Button addContactButton, String[] permissions, final Activity activity)
     {
-        final int REQUEST_RUNTIME_PERMISSION = 123;
         final int PICK_CONTACT = 2015;
         if (CheckPermission(activity.getApplicationContext(), permissions[0])) {
             addContactButton.setOnClickListener(new View.OnClickListener() {
@@ -25,28 +24,23 @@ class ContactPicker {
             });
         } else {
             // you do not have permission go request runtime permissions
-            RequestPermission(activity, permissions, REQUEST_RUNTIME_PERMISSION);
+            RequestPermission(activity, permissions);
         }
     }
 
-    public boolean CheckPermission(Context context, String Permission) {
-        if (ContextCompat.checkSelfPermission(context,
-                Permission) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        } else {
-            return false;
-        }
+    private boolean CheckPermission(Context context, String Permission) {
+        return ContextCompat.checkSelfPermission(context,
+                Permission) == PackageManager.PERMISSION_GRANTED;
     }
-    public void RequestPermission(Activity thisActivity, String[] Permission, int Code) {
+    private void RequestPermission(Activity thisActivity, String[] Permission) {
         if (ContextCompat.checkSelfPermission(thisActivity,
                 Permission[0])
                 != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(thisActivity,
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(thisActivity,
                     Permission[0])) {
-            } else {
-                ActivityCompat.requestPermissions(thisActivity, Permission,
-                        Code);
-            }
+                        ActivityCompat.requestPermissions(thisActivity, Permission,
+                                123);
+                    }
         }
     }
 }

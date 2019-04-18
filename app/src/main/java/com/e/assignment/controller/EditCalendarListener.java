@@ -18,7 +18,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class EditCalendarListener implements EventHandler, AdapterView.OnItemLongClickListener {
-    private String eventID;
     private Context context;
     private String TAG = getClass().getName();
     private EventHandler eventHandler = null;
@@ -27,7 +26,6 @@ public class EditCalendarListener implements EventHandler, AdapterView.OnItemLon
         this.context = context;
 
     }
-
     public void setEventHandler(EventHandler eventHandler) {
         this.eventHandler = eventHandler;
     }
@@ -35,22 +33,18 @@ public class EditCalendarListener implements EventHandler, AdapterView.OnItemLon
     @Override
     public void onDayLongPress(Date date) {
         final EventsModel model = EventsModelImpl.getSingletonInstance(context);
+        Intent intent = new Intent(context, EditEventActivity.class);
         DateFormat df = SimpleDateFormat.getDateInstance();
         if (model.eventsArrForDay(date).size() >= 2) {
 
         } else if (model.eventsArrForDay(date).size() == 1) {
-            Intent intent = new Intent(context, EditEventActivity.class);
             intent.putExtra(Intent.EXTRA_TEXT, model.eventsArrForDay(date).get(0).getId());
             intent.setType("text/plain");
-//            startActivity(intent);
-            if (intent.resolveActivity(context.getPackageManager()) != null) {
-                ((Activity)context).startActivityForResult(intent, Activity.RESULT_OK);
-            } else {
-                Log.i(TAG, "Cannot open activity for this intent");
-            }
+            context.startActivity(intent);
+
         } else {
-            //do nothing
-            Toast.makeText(context, df.format(date), Toast.LENGTH_SHORT).show();
+            intent.putExtra("date", date.getTime());
+            context.startActivity(intent);
         }
     }
 

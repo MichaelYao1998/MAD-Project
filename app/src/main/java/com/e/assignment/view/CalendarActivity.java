@@ -27,11 +27,7 @@ public class CalendarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         HashSet<Date> events = new HashSet<>();
         events.add(new Date());
-        final EventsModel model = EventsModelImpl.getSingletonInstance(getApplicationContext());
         calendar = findViewById(R.id.calendar_view);
-
-
-
         //event handler
         calendar.setEventHandler(new EditCalendarListener(this));
     }

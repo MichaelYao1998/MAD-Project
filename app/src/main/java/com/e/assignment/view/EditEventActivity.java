@@ -33,6 +33,7 @@ import com.e.assignment.model.MovieImpl;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class EditEventActivity extends AppCompatActivity {
     private EventsModel model;
@@ -114,15 +115,18 @@ public class EditEventActivity extends AppCompatActivity {
         eventVenue = findViewById(R.id.editVenue);
         eventLat = findViewById(R.id.editLat);
         eventLng = findViewById(R.id.editLng);
-        eventID = (String) intent.getExtras().get(Intent.EXTRA_TEXT);
-        if (!eventID.equals(""))
+        eventID = (String) Objects.requireNonNull(intent.getExtras()).get(Intent.EXTRA_TEXT);
+        Date newDate = new Date();
+        if (eventID == null ||  eventID.equals(""))
         {
-            initSelectedEvent();
+            if (intent.getLongExtra("date", -1)!=-1)
+                newDate.setTime(intent.getLongExtra("date", -1));
+            calendar.setTime(newDate);
+            calendarEnd.setTime(newDate);
+            selectedEvent=new EventImpl(model.eventIdGenerator(),"",newDate,newDate,"","");
         }
         else {
-            calendar.setTime(new Date());
-            calendarEnd.setTime(new Date());
-            selectedEvent=new EventImpl(model.eventIdGenerator(),"",calendar.getTime(),calendarEnd.getTime(),"","");
+            initSelectedEvent();
         }
         addContactButton = findViewById(R.id.addAttendee);
         ContactPicker contactPicker = new ContactPicker();
@@ -208,9 +212,9 @@ public class EditEventActivity extends AppCompatActivity {
         String[] startDateStr = model.dateToString(selectedEvent.getStartDate());
         String[] endDateStr = model.dateToString(selectedEvent.getEndDate());
         eventStartDate.setText(startDateStr[0]);
-        eventStartTime.setText(startDateStr[1]+startDateStr[2]);
+        eventStartTime.setText(String.format("%s%s", startDateStr[1], startDateStr[2]));
         eventEndDate.setText(endDateStr[0]);
-        eventEndTime.setText(endDateStr[1]+endDateStr[2]);
+        eventEndTime.setText(String.format("%s%s", endDateStr[1], endDateStr[2]));
         eventVenue.setText(selectedEvent.getVenue());
         String[] latLng = selectedEvent.getLocation().split(",");
         if (latLng.length>1){

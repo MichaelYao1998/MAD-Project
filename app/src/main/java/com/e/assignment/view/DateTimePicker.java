@@ -75,7 +75,6 @@ public class DateTimePicker {
         });
 
     }
-
     @SuppressLint("ClickableViewAccessibility")
     public void newDatePickerDialog(Context context, final EditText eventDate, final boolean isStartDate, final Event selectedEvent){
 

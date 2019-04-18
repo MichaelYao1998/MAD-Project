@@ -80,9 +80,7 @@ public class customCalendar extends LinearLayout {
         Calendar calendar = (Calendar) currentDate.clone();
 
         //determine the value for current month's beginning
-        Log.v("?????","before"+calendar.get(Calendar.MONTH));
         calendar.set(Calendar.DAY_OF_MONTH, 1);
-        Log.v("?????","after"+calendar.get(Calendar.MONTH));
         int monthBeginningValue = calendar.get(Calendar.DAY_OF_WEEK) - 1;
 
         //move calendar backwards to the beginning of the week
