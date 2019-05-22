@@ -2,6 +2,7 @@ package com.e.assignment.view;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -65,6 +66,7 @@ public class EditEventActivity extends AppCompatActivity {
     private EventsModelImpl eventsModelImpl = new EventsModelImpl();
     private Movie movie;
 
+
     /*
      *  Initialize the page
      */
@@ -88,8 +90,8 @@ public class EditEventActivity extends AppCompatActivity {
         ContactPicker contactPicker = new ContactPicker();
         contactPicker.setPickerOnButton(addContactButton, permissions, EditEventActivity.this);
 
-        database = openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
-        databaseHelper =  new databaseHelper(this, database);
+        database = openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
+        databaseHelper = new databaseHelper(this, database);
     }
 
     /*
@@ -140,8 +142,10 @@ public class EditEventActivity extends AppCompatActivity {
             public void onClick(View v) {
                 model.deleteEvent(eventID);
                 if (v.getId() == R.id.deleteEvent) {
-                    databaseHelper.deleteRecord(selectedEvent);
+                    databaseHelper.deleteRecord(eventID);
+
                 }
+
                 finish();
             }
         });
@@ -163,6 +167,11 @@ public class EditEventActivity extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         saveTempEvent();
+//        if (alertDialog != null) {
+//            alertDialog.dismiss();
+//            alertDialog = null;
+//        }
+
         // Save UI state changes to the savedInstanceState.
         // This bundle will be passed to onCreate if the process is
         // killed and restarted.
@@ -339,32 +348,32 @@ public class EditEventActivity extends AppCompatActivity {
      * retrieve data from the edit event activity view
      * then add them to the database
 
-    public void addEvent(Event selectedEvent) {
-        String id = eventsModelImpl.eventIdGenerator();
-        String event = eventTitle.getText().toString().trim();
-        String startDate = eventStartDate.getText().toString().trim();
-        String startTime = eventStartTime.getText().toString().trim();
-        String endDate = eventEndDate.getText().toString().trim();
-        String endTime = eventEndTime.getText().toString().trim();
-        String venue = eventVenue.getText().toString().trim();
-        String latitude = eventLat.getText().toString().trim();
-        String longitude = eventLng.getText().toString().trim();
-//        String movieTitle = eventMovie.getText().toString().trim();
-        String movieId = movie.getId();
-        String attendees = "";
+     public void addEvent(Event selectedEvent) {
+     String id = eventsModelImpl.eventIdGenerator();
+     String event = eventTitle.getText().toString().trim();
+     String startDate = eventStartDate.getText().toString().trim();
+     String startTime = eventStartTime.getText().toString().trim();
+     String endDate = eventEndDate.getText().toString().trim();
+     String endTime = eventEndTime.getText().toString().trim();
+     String venue = eventVenue.getText().toString().trim();
+     String latitude = eventLat.getText().toString().trim();
+     String longitude = eventLng.getText().toString().trim();
+     //        String movieTitle = eventMovie.getText().toString().trim();
+     String movieId = movie.getId();
+     String attendees = "";
 
-        String insertSQL = "INSERT INTO event \n" +
-                "(id, eventTitle, startDate, startTime, endDate, endTime, venue,latitude, longitude,movieTitle,attendee)\n" +
-                "VALUES \n" +
-                "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-        if (selectedEvent.getId().equals(id)) {
-            //update
-        } else {
-            database.execSQL(insertSQL, new String[]{id, event, startDate, startTime, endDate,
-                    endTime, venue, latitude, longitude, movieId, attendees});
-        }
-        Toast.makeText(this, "event added successfully", Toast.LENGTH_SHORT).show();
-    }
-*/
+     String insertSQL = "INSERT INTO event \n" +
+     "(id, eventTitle, startDate, startTime, endDate, endTime, venue,latitude, longitude,movieTitle,attendee)\n" +
+     "VALUES \n" +
+     "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+     if (selectedEvent.getId().equals(id)) {
+     //update
+     } else {
+     database.execSQL(insertSQL, new String[]{id, event, startDate, startTime, endDate,
+     endTime, venue, latitude, longitude, movieId, attendees});
+     }
+     Toast.makeText(this, "event added successfully", Toast.LENGTH_SHORT).show();
+     }
+     */
 
 }

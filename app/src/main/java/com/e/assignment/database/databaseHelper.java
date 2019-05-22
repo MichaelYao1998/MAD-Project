@@ -25,7 +25,7 @@ public class databaseHelper {
     private SQLiteDatabase database;
     private final String TAG = getClass().getName();
     private EventsModelImpl emi = new EventsModelImpl();
-
+    public static AlertDialog.Builder builder;
     public databaseHelper(Context context, SQLiteDatabase database) {
         this.context = context;
         this.database = database;
@@ -110,6 +110,7 @@ public class databaseHelper {
         }
 
         Log.d(TAG, String.valueOf(isDataAvailable(id)));
+
         if (isDataAvailable(id) != 0) {
             // update
             database.execSQL(updateSQL, new String[]{eventTitle, startDate, endDate,
@@ -151,29 +152,35 @@ public class databaseHelper {
     /**
      * delete the record when click the delete button
      */
-    public void deleteRecord(final Event selectedEvent) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Do you want to delete this record?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String sql = "DELETE FROM event WHERE id = ?";
-                database.execSQL(sql, new String[]{selectedEvent.getId()});
-            }
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+    public void deleteRecord(String id){
+        String sql = "DELETE FROM event WHERE id = ?";
+        database.execSQL(sql, new String[]{id});
     }
+//    public void deleteRecord(String id) {
+//        builder = new AlertDialog.Builder(context);
+//        builder.setTitle("Do you want to delete this record?");
+//        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                String sql = "DELETE FROM event WHERE id = ?";
+//                database.execSQL(sql, new String[]{id});
+//            }
+//        });
+//        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//
+//            }
+//        });
+//
+//        AlertDialog alertDialog = builder.create();
+//        alertDialog.show();
+//    }
+
 
     /**
-     * check eventId whether in the database
+     * check whether eventId in the database, if exist, return the exact number of occurance
+     * otherwise return 0
      */
 
     public int isDataAvailable(String eventId) {
@@ -191,6 +198,10 @@ public class databaseHelper {
         return total;
     }
 
+    /**
+     * check whether movieId in the database, if exist, return the exact number of occurance
+     * otherwise return 0
+     */
     public int numOfMovies(String movieId) {
         int total = 0;
         try {
@@ -205,4 +216,6 @@ public class databaseHelper {
         }
         return total;
     }
+
+
 }
