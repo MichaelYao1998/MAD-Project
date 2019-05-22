@@ -18,12 +18,12 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class CustomCalendar extends LinearLayout {
-    LinearLayout header;
-    ImageView prev;
-    ImageView next;
-    TextView current_Date;
-    GridView gridView;
-    Context context;
+    private LinearLayout header;
+    private ImageView prev;
+    private ImageView next;
+    private TextView current_Date;
+    private GridView gridView;
+    private Context context;
     private static final int DAYS_COUNT = 40;
     Calendar currentDate = Calendar.getInstance();
     private CalendarHandler calendarHandler = null;
