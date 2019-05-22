@@ -12,6 +12,9 @@
         android:title="@string/addevent"
         android:id="@+id/addEvent" />
     <item
-        android:title="@string/calendar"
-        android:id="@+id/menu_calendar"/>
+    android:title="@string/calendar"
+    android:id="@+id/menu_calendar"/>
+    <item
+        android:title="@string/map"
+        android:id="@+id/menu_map"/>
 </menu>

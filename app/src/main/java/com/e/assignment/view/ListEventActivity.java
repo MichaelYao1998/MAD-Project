@@ -3,12 +3,13 @@ package com.e.assignment.view;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import com.e.assignment.R;
 import com.e.assignment.adapter.ListViewAdapter;
 import com.e.assignment.model.Event;
@@ -28,6 +29,10 @@ public class ListEventActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+//        Intent intent = new Intent(getApplicationContext(), NotificationService.class);
+//        startService(intent);
+
 
         eventsModel = EventsModelImpl.getSingletonInstance(getApplicationContext());
         setContentView(R.layout.activity_list_event);
@@ -88,6 +93,10 @@ public class ListEventActivity extends AppCompatActivity {
                 newEvent.putExtra(Intent.EXTRA_TEXT, "");
                 newEvent.setType("text/plain");
                 startActivity(newEvent);
+                break;
+            case R.id.menu_map:
+                Intent mapIntent = new Intent(getApplicationContext(),MapsActivity.class);
+                startActivity(mapIntent);
                 break;
                 //click calendar will redirect to CalendarActivity page
             case R.id.menu_calendar:

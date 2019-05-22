@@ -25,9 +25,9 @@ public interface Event {
     String getVenue();
     String getLocation();
 
-    void setMovie(Movie movie);
     Movie getMovie();
     Map<String, String> getAttendees();
+    void setMovie(Movie movie);
     void setAttendees(String email, String name);
 
     void setAttendeesList(Map<String, String> list);

@@ -1,6 +1,5 @@
 package com.e.assignment.adapter;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,10 +7,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.e.assignment.R;
 import com.e.assignment.controller.EditEventListener;
 import com.e.assignment.model.Event;
-import com.e.assignment.R;
-import com.e.assignment.model.EventImpl;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
