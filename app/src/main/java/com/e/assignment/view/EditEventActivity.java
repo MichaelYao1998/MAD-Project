@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 import com.e.assignment.R;
 import com.e.assignment.adapter.AttendeeListAdapter;
 import com.e.assignment.controller.editMovieListener;
+import com.e.assignment.database.databaseHelper;
 import com.e.assignment.model.Event;
 import com.e.assignment.model.EventImpl;
 import com.e.assignment.model.EventsModel;
@@ -34,6 +36,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
 /*
  *  present the editing event page
  */
@@ -56,13 +59,19 @@ public class EditEventActivity extends AppCompatActivity {
     private EditText eventEndTime;
     private EditText eventStartTime;
     public final int PICK_CONTACT = 2015;
+    public static final String DATABASE_NAME = "MADPROJECT";
+    private SQLiteDatabase database;
+    private databaseHelper databaseHelper;
+    private EventsModelImpl eventsModelImpl = new EventsModelImpl();
+    private Movie movie;
+
     /*
      *  Initialize the page
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        model  = EventsModelImpl.getSingletonInstance(getApplicationContext());
+        model = EventsModelImpl.getSingletonInstance(getApplicationContext());
         Intent intent = getIntent();
         setContentView(R.layout.activity_edit_event);
         eventTitle = findViewById(R.id.editTitile);
@@ -77,33 +86,36 @@ public class EditEventActivity extends AppCompatActivity {
         handleIntent(intent);
         addContactButton = findViewById(R.id.addAttendee);
         ContactPicker contactPicker = new ContactPicker();
-        contactPicker.setPickerOnButton(addContactButton, permissions,EditEventActivity.this);
+        contactPicker.setPickerOnButton(addContactButton, permissions, EditEventActivity.this);
+
+        database = openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
+        databaseHelper =  new databaseHelper(this, database);
     }
+
     /*
      *  initialize the data for the calendar pickers
      *  if the eventID passed by intend is null, means that is add event function
      *  check if contain the date, means is from calendar or list
      *  Otherwise, is editing, initialize the temporary event
      */
-    public void handleIntent(Intent intent){
+    public void handleIntent(Intent intent) {
         eventID = (String) Objects.requireNonNull(intent.getExtras()).get(Intent.EXTRA_TEXT);
         Date newDate = new Date();
-        if (eventID == null ||  eventID.equals(""))
-        {
-            if (intent.getLongExtra("date", -1)!=-1)
+        if (eventID == null || eventID.equals("")) {
+            if (intent.getLongExtra("date", -1) != -1)
                 newDate.setTime(intent.getLongExtra("date", -1));
             calendar.setTime(newDate);
             calendarEnd.setTime(newDate);
-            selectedEvent=new EventImpl(model.eventIdGenerator(),"",newDate,newDate,"","");
-        }
-        else {
+            selectedEvent = new EventImpl(model.eventIdGenerator(), "", newDate, newDate, "", "");
+        } else {
             initSelectedEvent();
         }
     }
+
     /*
      *  initialize a temporary event from selected event
      */
-    public void initSelectedEvent(){
+    public void initSelectedEvent() {
         //Init a temp object
         selectedEvent = new EventImpl(model.getEventById(eventID).getId(),
                 model.getEventById(eventID).getTitle(),
@@ -112,13 +124,13 @@ public class EditEventActivity extends AppCompatActivity {
                 model.getEventById(eventID).getVenue(),
                 model.getEventById(eventID).getLocation()
         );
-        if (model.getEventById(eventID).getAttendees()!=null){
-            Map<String,String> tempList = new HashMap<>(model.getEventById(eventID).getAttendees());
+        if (model.getEventById(eventID).getAttendees() != null) {
+            Map<String, String> tempList = new HashMap<>(model.getEventById(eventID).getAttendees());
             selectedEvent.setAttendeesList(tempList);
         }
-        if (model.getEventById(eventID).getMovie()!=null){
+        if (model.getEventById(eventID).getMovie() != null) {
             Movie reference = model.getEventById(eventID).getMovie();
-            Movie tempMovie = new MovieImpl(reference.getId(),reference.getTitle(),reference.getYear(),reference.getPoster());
+            Movie tempMovie = new MovieImpl(reference.getId(), reference.getTitle(), reference.getYear(), reference.getPoster());
             selectedEvent.setMovie(tempMovie);
         }
         Button deleteButton = findViewById(R.id.deleteEvent);
@@ -127,6 +139,9 @@ public class EditEventActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 model.deleteEvent(eventID);
+                if (v.getId() == R.id.deleteEvent) {
+                    databaseHelper.deleteRecord(selectedEvent);
+                }
                 finish();
             }
         });
@@ -141,8 +156,9 @@ public class EditEventActivity extends AppCompatActivity {
     public void saveTempEvent() {
         selectedEvent.setTitle(eventTitle.getText().toString());
         selectedEvent.setVenue(eventVenue.getText().toString());
-        selectedEvent.setLocation(eventLat.getText().toString()+","+eventLng.getText().toString());
+        selectedEvent.setLocation(eventLat.getText().toString() + "," + eventLng.getText().toString());
     }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -177,6 +193,7 @@ public class EditEventActivity extends AppCompatActivity {
         listView.setLayoutParams(param);
         listView.requestLayout();
     }
+
     /*
      *  handle the result when user come back from selecting attendee or selecting movie
      *  save them into the temporary event
@@ -184,8 +201,8 @@ public class EditEventActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
-            if(resultCode == Activity.RESULT_OK){
-                String result=data.getStringExtra("result");
+            if (resultCode == Activity.RESULT_OK) {
+                String result = data.getStringExtra("result");
                 Movie tempMovie = model.getMovieById(result);
                 selectedEvent.setMovie(tempMovie);
             }
@@ -215,7 +232,7 @@ public class EditEventActivity extends AppCompatActivity {
                         emailIdOfContact = emails.getString(emails
                                 .getColumnIndex(Email.DATA));
 
-                        selectedEvent.setAttendees(emailIdOfContact,contactName);
+                        selectedEvent.setAttendees(emailIdOfContact, contactName);
                     }
                     emails.close();
                     cr.close();
@@ -231,13 +248,13 @@ public class EditEventActivity extends AppCompatActivity {
      *  and set the dialog into each button
      */
     @Override
-    protected  void onStart() {
+    protected void onStart() {
         super.onStart();
         DateTimePicker dateTimePicker = new DateTimePicker();
-        dateTimePicker.newDatePickerDialog(this,eventStartDate,true,selectedEvent);
-        dateTimePicker.newTimePickerDialog(this,eventStartTime,true,selectedEvent);
-        dateTimePicker.newDatePickerDialog(this,eventEndDate,false,selectedEvent);
-        dateTimePicker.newTimePickerDialog(this,eventEndTime,false,selectedEvent);
+        dateTimePicker.newDatePickerDialog(this, eventStartDate, true, selectedEvent);
+        dateTimePicker.newTimePickerDialog(this, eventStartTime, true, selectedEvent);
+        dateTimePicker.newDatePickerDialog(this, eventEndDate, false, selectedEvent);
+        dateTimePicker.newTimePickerDialog(this, eventEndTime, false, selectedEvent);
 
         eventTitle.setText(selectedEvent.getTitle());
 
@@ -249,7 +266,7 @@ public class EditEventActivity extends AppCompatActivity {
         eventEndTime.setText(String.format("%s%s", endDateStr[1], endDateStr[2]));
         eventVenue.setText(selectedEvent.getVenue());
         String[] latLng = selectedEvent.getLocation().split(",");
-        if (latLng.length>1){
+        if (latLng.length > 1) {
             eventLat.setText(latLng[0]);
             eventLng.setText(latLng[1]);
         }
@@ -257,11 +274,12 @@ public class EditEventActivity extends AppCompatActivity {
         Button editMovieButton = findViewById(R.id.editMovieButton);
         editMovieButton.setOnClickListener(new editMovieListener(this));
 
+
         Map<String, String> attendees = selectedEvent.getAttendees();
         AttendeeListAdapter attendeeListAdapter = new AttendeeListAdapter(this, attendees);
-        ListView attendeeListView =findViewById(R.id.attendeesList);
+        ListView attendeeListView = findViewById(R.id.attendeesList);
         attendeeListView.setAdapter(attendeeListAdapter);
-        if (selectedEvent.getMovie() != null){
+        if (selectedEvent.getMovie() != null) {
             eventMovie.setText(selectedEvent.getMovie().getTitle());
         }
         updateAttendeeListHeight(attendeeListView);
@@ -270,20 +288,25 @@ public class EditEventActivity extends AppCompatActivity {
             public void onClick(View v) {
                 saveTempEvent();
                 if (validation()) {
+                    if (v.getId() == R.id.saveEvent) {
+                        //id not same
+                        databaseHelper.addEvent(selectedEvent);
+                    }
                     model.updateEvent(selectedEvent);
                     finish();
                 }
             }
         });
     }
+
     /*
      *  check the endDate is after the start date
      */
-    public boolean validation(){
+    public boolean validation() {
         boolean isValid = true;
-        if (!selectedEvent.getStartDate().before(selectedEvent.getEndDate())){
-            isValid=false;
-            Toast warn = Toast.makeText(getApplicationContext(),"Invalid End Date!!",Toast.LENGTH_LONG);
+        if (!selectedEvent.getStartDate().before(selectedEvent.getEndDate())) {
+            isValid = false;
+            Toast warn = Toast.makeText(getApplicationContext(), "Invalid End Date!!", Toast.LENGTH_LONG);
             warn.show();
         }
         return isValid;
@@ -311,4 +334,37 @@ public class EditEventActivity extends AppCompatActivity {
             }
         }
     }
+
+    /**
+     * retrieve data from the edit event activity view
+     * then add them to the database
+
+    public void addEvent(Event selectedEvent) {
+        String id = eventsModelImpl.eventIdGenerator();
+        String event = eventTitle.getText().toString().trim();
+        String startDate = eventStartDate.getText().toString().trim();
+        String startTime = eventStartTime.getText().toString().trim();
+        String endDate = eventEndDate.getText().toString().trim();
+        String endTime = eventEndTime.getText().toString().trim();
+        String venue = eventVenue.getText().toString().trim();
+        String latitude = eventLat.getText().toString().trim();
+        String longitude = eventLng.getText().toString().trim();
+//        String movieTitle = eventMovie.getText().toString().trim();
+        String movieId = movie.getId();
+        String attendees = "";
+
+        String insertSQL = "INSERT INTO event \n" +
+                "(id, eventTitle, startDate, startTime, endDate, endTime, venue,latitude, longitude,movieTitle,attendee)\n" +
+                "VALUES \n" +
+                "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        if (selectedEvent.getId().equals(id)) {
+            //update
+        } else {
+            database.execSQL(insertSQL, new String[]{id, event, startDate, startTime, endDate,
+                    endTime, venue, latitude, longitude, movieId, attendees});
+        }
+        Toast.makeText(this, "event added successfully", Toast.LENGTH_SHORT).show();
+    }
+*/
+
 }

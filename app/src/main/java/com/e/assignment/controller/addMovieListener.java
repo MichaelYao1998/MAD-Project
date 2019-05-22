@@ -3,18 +3,15 @@ package com.e.assignment.controller;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
-import android.arch.lifecycle.AndroidViewModel;
 
-import com.e.assignment.model.EventsModel;
-import com.e.assignment.model.EventsModelImpl;
-import com.e.assignment.view.ListMovieActivity;
+import com.e.assignment.database.databaseHelper;
+
 
 public class addMovieListener implements View.OnClickListener{
     private String movieID;
     private Context context;
-
+    databaseHelper dbAdapter;
     /*
      *  @param context      context from calling
      *  @param movieID      MovieID, Pass from movieList Adapter for each item, when a movie is selected

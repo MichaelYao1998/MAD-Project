@@ -3,6 +3,8 @@ package com.e.assignment.view;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 
 import com.e.assignment.R;
 import com.e.assignment.adapter.ListViewAdapter;
+import com.e.assignment.database.databaseHelper;
 import com.e.assignment.model.Event;
 import com.e.assignment.model.EventsModel;
 import com.e.assignment.model.EventsModelImpl;
@@ -24,7 +27,10 @@ public class ListEventActivity extends AppCompatActivity {
     ListViewAdapter mAdapter;
     EventListViewModel myViewModel;
     EventsModel eventsModel;
-
+    public static final String DATABASE_NAME = "MADPROJECT";
+    SQLiteDatabase database;
+    databaseHelper dbActivity;
+    ListMovieActivity lma;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -49,6 +55,16 @@ public class ListEventActivity extends AppCompatActivity {
             }
         });
 
+
+        database = openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
+        dbActivity = new databaseHelper(this,database);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                dbActivity.CreateEventTable(eventsModel.getEventsList());
+                dbActivity.CreateMovieTable(eventsModel.getMovieList());
+            }
+        }).start();
     }
 
     @Override
@@ -122,4 +138,6 @@ public class ListEventActivity extends AppCompatActivity {
             refresh();
         }
     }
+
+
 }
