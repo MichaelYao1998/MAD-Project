@@ -2,6 +2,13 @@ package com.e.assignment.model;
 
 import android.content.Context;
 import android.util.Log;
+
+import com.e.assignment.database.ReadEventFromDB;
+import com.e.assignment.database.WriteEventMapToDB;
+import com.e.assignment.database.WriteMovieMapToDB;
+import com.e.assignment.database.databaseHelper;
+
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,6 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.ExecutionException;
 
 public class EventsModelImpl implements EventsModel {
 
@@ -19,10 +27,31 @@ public class EventsModelImpl implements EventsModel {
     private boolean isReverse = false;
     private static Context applicationContext;
     public EventsModelImpl() {
-        loader.loadEvents(events,applicationContext);
-        loader.loadMovies(movies,applicationContext);
-    }
+        if (doesDatabaseExist(applicationContext, databaseHelper.DATABASE_NAME)){
+            ReadEventFromDB re = new ReadEventFromDB(applicationContext);
+            try {
+                events = re.execute().get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            new databaseHelper(applicationContext);
+            loader.loadEvents(events,applicationContext);
+            loader.loadMovies(movies,applicationContext);
+            WriteEventMapToDB we = new WriteEventMapToDB(applicationContext);
+            WriteMovieMapToDB wm = new WriteMovieMapToDB(applicationContext);
+            we.execute(events);
+            wm.execute(movies);
+        }
 
+    }
+    private static boolean doesDatabaseExist(Context context, String dbName) {
+        File dbFile = context.getDatabasePath(dbName);
+        return dbFile.exists();
+    }
     public boolean isReverse() {
         return isReverse;
     }

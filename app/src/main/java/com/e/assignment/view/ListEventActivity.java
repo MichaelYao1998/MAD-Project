@@ -4,7 +4,6 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -27,7 +26,6 @@ public class ListEventActivity extends AppCompatActivity {
     ListViewAdapter mAdapter;
     EventListViewModel myViewModel;
     EventsModel eventsModel;
-    public static final String DATABASE_NAME = "MADPROJECT";
     SQLiteDatabase database;
     databaseHelper dbActivity;
     ListMovieActivity lma;
@@ -54,17 +52,6 @@ public class ListEventActivity extends AppCompatActivity {
                 myListView3.setAdapter(mAdapter);
             }
         });
-
-
-        database = openOrCreateDatabase(DATABASE_NAME,MODE_PRIVATE,null);
-        dbActivity = new databaseHelper(this,database);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                dbActivity.CreateEventTable(eventsModel.getEventsList());
-                dbActivity.CreateMovieTable(eventsModel.getMovieList());
-            }
-        }).start();
     }
 
     @Override

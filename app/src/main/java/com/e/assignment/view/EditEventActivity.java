@@ -2,7 +2,6 @@ package com.e.assignment.view;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -91,7 +90,7 @@ public class EditEventActivity extends AppCompatActivity {
         contactPicker.setPickerOnButton(addContactButton, permissions, EditEventActivity.this);
 
         database = openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
-        databaseHelper = new databaseHelper(this, database);
+        databaseHelper = new databaseHelper(this);
     }
 
     /*
@@ -142,7 +141,7 @@ public class EditEventActivity extends AppCompatActivity {
             public void onClick(View v) {
                 model.deleteEvent(eventID);
                 if (v.getId() == R.id.deleteEvent) {
-                    databaseHelper.deleteRecord(eventID);
+                    databaseHelper.deleteRecord(database,eventID);
 
                 }
 
@@ -299,7 +298,7 @@ public class EditEventActivity extends AppCompatActivity {
                 if (validation()) {
                     if (v.getId() == R.id.saveEvent) {
                         //id not same
-                        databaseHelper.addEvent(selectedEvent);
+                        databaseHelper.addEvent(database,selectedEvent);
                     }
                     model.updateEvent(selectedEvent);
                     finish();

@@ -1,44 +1,38 @@
 package com.e.assignment.database;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.e.assignment.model.Event;
-import com.e.assignment.model.EventsModelImpl;
+import com.e.assignment.model.EventImpl;
 import com.e.assignment.model.Movie;
+import com.e.assignment.model.MovieImpl;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.Map;
 
-public class databaseHelper {
+
+
+public class databaseHelper extends SQLiteOpenHelper {
     //    private Event event;
     private Movie movie;
     private Context context;
-    private SQLiteDatabase database;
+   // private SQLiteDatabase database;
     private final String TAG = getClass().getName();
-    private EventsModelImpl emi = new EventsModelImpl();
-    public static AlertDialog.Builder builder;
-    public databaseHelper(Context context, SQLiteDatabase database) {
-        this.context = context;
-        this.database = database;
+    public static final String DATABASE_NAME = "MADPROJECT";
+    public databaseHelper(Context context) {
+        super(context, DATABASE_NAME, null,1);
     }
 
-
-    /**
-     * create event table if it does not exist
-     */
-    public void CreateEventTable(Map<String, Event> events) {
-
-
-        database.execSQL(
+    @Override
+    public void onCreate(SQLiteDatabase sqLiteDatabase) {
+        sqLiteDatabase.execSQL(
                 "CREATE TABLE IF NOT EXISTS event (\n" +
                         "    id varchar(100) NOT NULL PRIMARY KEY,\n" +
                         "    eventTitle varchar(200) NOT NULL ,\n" +
@@ -50,17 +44,7 @@ public class databaseHelper {
                         "    attendee varchar(200) NOT NULL\n" +
                         ");"
         );
-
-        for (Map.Entry<String, Event> entry : events.entrySet()) {
-            addEvent(entry.getValue());
-        }
-    }
-
-    /**
-     * create movie table if it does not exist
-     */
-    public void CreateMovieTable(Map<String, Movie> movies) {
-        database.execSQL(
+        sqLiteDatabase.execSQL(
                 "CREATE TABLE IF NOT EXISTS movie (\n" +
                         "    id varchar(100) NOT NULL PRIMARY KEY,\n" +
                         "    title varchar(200) NOT NULL ,\n" +
@@ -68,9 +52,28 @@ public class databaseHelper {
                         "    poster varchar(200) NOT NULL\n" +
                         ");"
         );
+    }
 
+    @Override
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+
+    }
+
+    /**
+     * create event table if it does not exist
+     */
+    public void addEventFromMap(SQLiteDatabase database, Map<String, Event> events) {
+        for (Map.Entry<String, Event> entry : events.entrySet()) {
+            addEvent(database,entry.getValue());
+        }
+    }
+
+    /**
+     * create movie table if it does not exist
+     */
+    public void addMovieFromMap(SQLiteDatabase database, Map<String, Movie> movies) {
         for (Map.Entry<String, Movie> entry : movies.entrySet()) {
-            addMovie(entry.getValue());
+            addMovie(database,entry.getValue());
         }
     }
 
@@ -79,7 +82,7 @@ public class databaseHelper {
      * then add them to the database. If movie does not exist, then add the record to the database
      * otherwise update the data in the database
      */
-    public void addEvent(Event selectedEvent) {
+    public void addEvent(SQLiteDatabase database,Event selectedEvent) {
         String id = selectedEvent.getId();
         String eventTitle = selectedEvent.getTitle();
         SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy  h:mm a");
@@ -109,9 +112,9 @@ public class databaseHelper {
             movieId = selectedEvent.getMovie().getId();
         }
 
-        Log.d(TAG, String.valueOf(isDataAvailable(id)));
+        Log.d(TAG, String.valueOf(isDataAvailable(database,id)));
 
-        if (isDataAvailable(id) != 0) {
+        if (isDataAvailable(database,id) != 0) {
             // update
             database.execSQL(updateSQL, new String[]{eventTitle, startDate, endDate,
                     venue, location, movieId, attendees, id});
@@ -125,7 +128,7 @@ public class databaseHelper {
     /**
      * retrieve the value from activity then add to database
      */
-    public void addMovie(Movie movie) {
+    public void addMovie(SQLiteDatabase database, Movie movie) {
         String id = movie.getId();
         String title = movie.getTitle();
         String year = movie.getYear();
@@ -141,8 +144,8 @@ public class databaseHelper {
                 "year = ?, \n" +
                 "poster = ? \n" +
                 "WHERE id = ?;\n";
-        Log.d(TAG, String.valueOf(numOfMovies(id)));
-        if (numOfMovies(id) != 0) {
+        Log.d(TAG, String.valueOf(numOfMovies(database,id)));
+        if (numOfMovies(database,id) != 0) {
             database.execSQL(updateSQL, new String[]{title, year, poster, id});
         } else {
             database.execSQL(insertSQL, new String[]{id, title, year, poster});
@@ -152,7 +155,7 @@ public class databaseHelper {
     /**
      * delete the record when click the delete button
      */
-    public void deleteRecord(String id){
+    public void deleteRecord(SQLiteDatabase database, String id){
         String sql = "DELETE FROM event WHERE id = ?";
         database.execSQL(sql, new String[]{id});
     }
@@ -183,7 +186,7 @@ public class databaseHelper {
      * otherwise return 0
      */
 
-    public int isDataAvailable(String eventId) {
+    public int isDataAvailable(SQLiteDatabase database, String eventId) {
         int total = 0;
         try {
             Cursor c = null;
@@ -202,7 +205,7 @@ public class databaseHelper {
      * check whether movieId in the database, if exist, return the exact number of occurance
      * otherwise return 0
      */
-    public int numOfMovies(String movieId) {
+    public int numOfMovies(SQLiteDatabase database, String movieId) {
         int total = 0;
         try {
             Cursor c = null;
@@ -216,6 +219,75 @@ public class databaseHelper {
         }
         return total;
     }
+    public Movie readMovieByID(SQLiteDatabase database,String movieID){
+        Cursor  cursor = database.rawQuery("select * from movie WHERE id="+movieID,null);
+        Movie m = null;
+        if (cursor.moveToFirst()){
+            String id = cursor.getString(0);
+            String title = cursor.getString(1);
+            String year = cursor.getString(2);
+            String poster = cursor.getString(3);
+            m = new MovieImpl(id,title,year,poster);
+            cursor.close();
+        }
 
+        return m;
+    }
+    public Map<String,Event> readEvents(SQLiteDatabase database) {
+        Cursor  cursor = database.rawQuery("select * from event",null);
+
+
+        Map<String,Event> m = new HashMap<String,Event>();
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                String id = cursor.getString(0);
+                String eventTitle = cursor.getString(1);
+                SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy  h:mm a");
+                Date startDate = new Date();
+                Date endDate = new Date();
+                try {
+                    startDate = sdf.parse(cursor.getString(2));
+                    endDate = sdf.parse(cursor.getString(3));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                String venue = cursor.getString(4);
+                String location = cursor.getString(5);
+
+                String[] attendeeString = cursor.getString(7).replace("{","").replace("}","").split(", ");
+
+                Map<String,String> attendees =new HashMap<>();
+                for (String i: attendeeString) {
+                    String[] keyValue = i.split("=");
+                    if(keyValue.length ==2){
+                        attendees.put(keyValue[0],keyValue[1]);
+                    }
+                }
+                Log.i("db!!","1:"+ cursor.getString(0));
+
+                Log.i("db!!","2:"+ cursor.getString(1));
+
+                Log.i("db!!","3:"+ cursor.getString(2));
+
+                Log.i("db!!","4:"+ cursor.getString(3));
+
+                Log.i("db!!","5:"+ cursor.getString(4));
+                Log.i("db!!","6:"+ cursor.getString(5));
+                Log.i("db!!","7:"+ cursor.getString(6));
+                Log.i("db!!", "8:"+cursor.getString(7));
+                Event item = new EventImpl(id,eventTitle,startDate,endDate,venue,location);
+                item.setAttendeesList(attendees);
+                //item.setAttendeesList();
+                m.put(cursor.getString(0),item);
+
+                cursor.moveToNext();
+            }
+            cursor.close();
+        }
+
+
+        return m;
+    }
 
 }

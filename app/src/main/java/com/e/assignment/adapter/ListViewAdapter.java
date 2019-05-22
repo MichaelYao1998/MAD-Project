@@ -1,5 +1,6 @@
 package com.e.assignment.adapter;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,11 @@ public class ListViewAdapter extends ArrayAdapter<Event>{
         eventDate.setText(df.format(item.getStartDate()));
         if (!item.getAttendees().isEmpty())
         {
+            Log.i("attendeesN", "getView: "+item.getAttendees().size());
             eventAttendees.setText(item.getAttendees().size()+"");
+        }
+        else {
+            eventAttendees.setText(R.string.NoAttendees);
         }
         return eventItemView;
     }
