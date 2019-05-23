@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.e.assignment.database.ReadEventFromDB;
+import com.e.assignment.database.ReadMoviesFromDB;
 import com.e.assignment.database.WriteEventMapToDB;
 import com.e.assignment.database.WriteMovieMapToDB;
 import com.e.assignment.database.databaseHelper;
@@ -29,8 +30,10 @@ public class EventsModelImpl implements EventsModel {
     public EventsModelImpl() {
         if (doesDatabaseExist(applicationContext, databaseHelper.DATABASE_NAME)){
             ReadEventFromDB re = new ReadEventFromDB(applicationContext);
+            ReadMoviesFromDB rm = new ReadMoviesFromDB(applicationContext);
             try {
                 events = re.execute().get();
+                movies = rm.execute().get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {

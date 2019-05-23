@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.e.assignment.R;
+import com.e.assignment.Service.NotificationService;
 import com.e.assignment.adapter.ListViewAdapter;
 import com.e.assignment.database.databaseHelper;
 import com.e.assignment.model.Event;
@@ -34,8 +35,8 @@ public class ListEventActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-//        Intent intent = new Intent(getApplicationContext(), NotificationService.class);
-//        startService(intent);
+        Intent intent = new Intent(getApplicationContext(), NotificationService.class);
+        startService(intent);
 
 
         eventsModel = EventsModelImpl.getSingletonInstance(getApplicationContext());

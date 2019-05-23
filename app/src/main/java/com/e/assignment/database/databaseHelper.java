@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
+import java.util.Objects;
 
 
 public class databaseHelper extends SQLiteOpenHelper {
@@ -233,6 +233,19 @@ public class databaseHelper extends SQLiteOpenHelper {
 
         return m;
     }
+    public Map<String,Movie> readMovies(SQLiteDatabase database){
+        Cursor cursor = database.rawQuery("select * from movie",null);
+        Map<String,Movie> m = new HashMap<String,Movie>();
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                Movie item = new MovieImpl(cursor.getString(0),cursor.getString(1),cursor.getString(2),cursor.getString(3));
+                m.put(cursor.getString(0),item);
+                cursor.moveToNext();
+            }
+            cursor.close();
+        }
+        return m;
+    }
     public Map<String,Event> readEvents(SQLiteDatabase database) {
         Cursor  cursor = database.rawQuery("select * from event",null);
 
@@ -278,7 +291,11 @@ public class databaseHelper extends SQLiteOpenHelper {
                 Log.i("db!!", "8:"+cursor.getString(7));
                 Event item = new EventImpl(id,eventTitle,startDate,endDate,venue,location);
                 item.setAttendeesList(attendees);
+                if(!Objects.equals(cursor.getString(6), "")){
+                    item.setMovie(readMovieByID(database,cursor.getString(6)));
+                }
                 //item.setAttendeesList();
+
                 m.put(cursor.getString(0),item);
 
                 cursor.moveToNext();

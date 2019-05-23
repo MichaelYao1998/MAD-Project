@@ -18,13 +18,33 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.e.assignment.R;
+import com.e.assignment.database.databaseHelper;
+import com.e.assignment.model.Event;
 import com.e.assignment.view.ListEventActivity;
 
-public class NotificationService extends IntentService implements LocationListener {
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Calendar;
+import java.util.Map;
+import java.util.Objects;
+
+public class NotificationService extends IntentService implements LocationListener {
+    public static final String URL_HEAD = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=";
+    private static final String API = "&mode=driving&key=AIzaSyAIHxjxhZivpxuh-G_HeQHgTU8XRpcjpiE";
     private boolean isGPSEnable = false;
     private boolean isNetworkEnable = false;
-    private Location location;
+    private String Originlocation;
+    private int threadhold = 5000;
+    private String DestiLocation="&destinations=";
+
     protected LocationManager locationManager;
     private Intent i;
     public NotificationService() {
@@ -37,22 +57,82 @@ public class NotificationService extends IntentService implements LocationListen
     public void onHandleIntent(Intent intent) {
         super.onCreate();
         AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Activity.ALARM_SERVICE);
-        PendingIntent broadcast;
-        broadcast = PendingIntent.getService(getApplicationContext(), 100, intent, 0);
-        i = intent;
-        am.setExact(AlarmManager.RTC_WAKEUP,getNextTime(),broadcast);
-        Log.i("???", "onCreate: ");
-        location= getLocation();
-
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        PendingIntent pi;
+        pi = PendingIntent.getService(getApplicationContext(), 100, intent, 0);
+        i = intent;
+        am.setExact(AlarmManager.RTC_WAKEUP,getNextTime(),pi);
+
+        Originlocation = getOriginlocation();
+        databaseHelper dh = new databaseHelper(getApplicationContext());
+        Map<String, Event> m = dh.readEvents(dh.getReadableDatabase());
+        for (Event value : m.values()) {
+            if(Objects.equals(value.getLocation(), "")){
+                continue;
+            }
+            Calendar arriveTimePlus = Calendar.getInstance();
+
+
+            arriveTimePlus.add(Calendar.SECOND,getDuration(readFromUrl(value.getLocation())));
+            arriveTimePlus.add(Calendar.SECOND,threadhold);
+
+            Log.i("calendar", "time: "+ arriveTimePlus.getTime().toString());
+            if(arriveTimePlus.getTime().after(value.getStartDate())){
+                makeNotification(value.getId());
+            }
+
+        }
+
+    }
+    public int getDuration(String jsonStr){
+        int durationInSec = 0;
+
+        try {
+            JSONObject body = new JSONObject(jsonStr);
+            JSONArray rowArray = body.getJSONArray("rows");
+            JSONObject row = rowArray.getJSONObject(0);
+            JSONArray elementsArray = row.getJSONArray("elements");
+            JSONObject elements = elementsArray.getJSONObject(0);
+            JSONObject duration = elements.getJSONObject("duration");
+            durationInSec = duration.getInt("value");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return durationInSec;
+    }
+    public String readFromUrl(String destination){
+        HttpURLConnection urlConnection = null;
+        StringBuilder result = new StringBuilder();
+
+        try {
+            Log.i("URL:",URL_HEAD+Originlocation+DestiLocation+destination+API);
+            URL url = new URL(URL_HEAD+Originlocation+DestiLocation+destination+API);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                result.append(line);
+            }
+
+        }catch( Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            urlConnection.disconnect();
+        }
+
+
+        return result.toString();
+    }
+    private void makeNotification(String eventID){
         RemoteViews contentView = new RemoteViews(getPackageName(),
                 R.layout.activity_notification);
         contentView.setTextViewText(R.id.NotifyText,"notify test");
-        mNotificationManager.notify(1,createDefaultNotificationBuilder("test","1").setCustomContentView(contentView).build());
-        mNotificationManager.notify(2,createDefaultNotificationBuilder("test","1").setCustomContentView(contentView).build());
-        if (location!=null)
-            Log.i("???", "onCreate: "+location.toString());
-
+        mNotificationManager.notify(1,createDefaultNotificationBuilder("test",eventID).setCustomContentView(contentView).build());
     }
     private long getNextTime() {
         long now = System.currentTimeMillis();
@@ -66,26 +146,25 @@ public class NotificationService extends IntentService implements LocationListen
         Log.d("MyIntentService", "onDestroy");
     }
     @SuppressLint("MissingPermission")
-    public Location getLocation() {
+    public String getOriginlocation() {
+        Location location = null;
         locationManager = (LocationManager)getApplicationContext().getSystemService(LOCATION_SERVICE);
         isGPSEnable = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         isNetworkEnable = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         if (isGPSEnable || isNetworkEnable) {
             if (isNetworkEnable){
-                location = null;
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,1000,0,this);
                 if (locationManager!=null)
                     location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             }
 
             if (isGPSEnable){
-                location = null;
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,0,this);
                 if (locationManager!=null)
                     location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             }
         }
-        return location;
+        return location.getLatitude() + "," + location.getLongitude();
     }
 
     @Override

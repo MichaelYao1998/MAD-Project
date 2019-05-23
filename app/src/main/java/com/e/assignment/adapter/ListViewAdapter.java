@@ -52,6 +52,9 @@ public class ListViewAdapter extends ArrayAdapter<Event>{
         if (item.getMovie()!=null){
             eventMovie.setText(item.getMovie().getTitle());
         }
+        else{
+            eventMovie.setText(R.string.NoMoive);
+        }
 
         eventTitle.setText(item.getTitle());
         eventVenue.setText(item.getVenue());
