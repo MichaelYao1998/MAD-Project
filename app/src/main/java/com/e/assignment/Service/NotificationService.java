@@ -20,7 +20,7 @@ import android.widget.RemoteViews;
 import com.e.assignment.R;
 import com.e.assignment.database.databaseHelper;
 import com.e.assignment.model.Event;
-import com.e.assignment.view.ListEventActivity;
+import com.e.assignment.view.EditEventActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -66,6 +66,7 @@ public class NotificationService extends IntentService implements LocationListen
         Originlocation = getOriginlocation();
         databaseHelper dh = new databaseHelper(getApplicationContext());
         Map<String, Event> m = dh.readEvents(dh.getReadableDatabase());
+        int count=0;
         for (Event value : m.values()) {
             if(Objects.equals(value.getLocation(), "")){
                 continue;
@@ -78,9 +79,9 @@ public class NotificationService extends IntentService implements LocationListen
 
             Log.i("calendar", "time: "+ arriveTimePlus.getTime().toString());
             if(arriveTimePlus.getTime().after(value.getStartDate())){
-                makeNotification(value.getId());
+                makeNotification(count,value.getId());
             }
-
+            count++;
         }
 
     }
@@ -128,11 +129,11 @@ public class NotificationService extends IntentService implements LocationListen
 
         return result.toString();
     }
-    private void makeNotification(String eventID){
+    private void makeNotification(int id,String eventID){
         RemoteViews contentView = new RemoteViews(getPackageName(),
                 R.layout.activity_notification);
         contentView.setTextViewText(R.id.NotifyText,"notify test");
-        mNotificationManager.notify(1,createDefaultNotificationBuilder("test",eventID).setCustomContentView(contentView).build());
+        mNotificationManager.notify(id,createDefaultNotificationBuilder("test",eventID).setCustomContentView(contentView).build());
     }
     private long getNextTime() {
         long now = System.currentTimeMillis();
@@ -199,7 +200,7 @@ public class NotificationService extends IntentService implements LocationListen
         // is already an active matching pending intent, we will update its
         // extras to be the ones passed in here.
         return PendingIntent.getActivity(this, 0,
-                new Intent(this, ListEventActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra(Intent.EXTRA_TEXT,eventId),
+                new Intent(this, EditEventActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra(Intent.EXTRA_TEXT,eventId),
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }
     @SuppressLint("WrongConstant")
