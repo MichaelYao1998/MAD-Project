@@ -3,7 +3,9 @@ package com.e.assignment.view;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 import com.e.assignment.R;
 import com.e.assignment.Service.NotificationService;
 import com.e.assignment.adapter.ListViewAdapter;
+import com.e.assignment.controller.NetworkReceiver;
 import com.e.assignment.database.databaseHelper;
 import com.e.assignment.model.Event;
 import com.e.assignment.model.EventsModel;
@@ -30,6 +33,7 @@ public class ListEventActivity extends AppCompatActivity {
     SQLiteDatabase database;
     databaseHelper dbActivity;
     ListMovieActivity lma;
+    NetworkReceiver nr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -37,6 +41,15 @@ public class ListEventActivity extends AppCompatActivity {
 
         Intent intent = new Intent(getApplicationContext(), NotificationService.class);
         startService(intent);
+
+        // call the network check
+        nr = new NetworkReceiver();
+        nr.enable(this);
+
+        //add to the intent filter
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        filter.addAction("com.e.assignment.CONNECTIVITY_CHANGE");
 
 
         eventsModel = EventsModelImpl.getSingletonInstance(getApplicationContext());

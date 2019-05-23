@@ -343,36 +343,4 @@ public class EditEventActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * retrieve data from the edit event activity view
-     * then add them to the database
-
-     public void addEvent(Event selectedEvent) {
-     String id = eventsModelImpl.eventIdGenerator();
-     String event = eventTitle.getText().toString().trim();
-     String startDate = eventStartDate.getText().toString().trim();
-     String startTime = eventStartTime.getText().toString().trim();
-     String endDate = eventEndDate.getText().toString().trim();
-     String endTime = eventEndTime.getText().toString().trim();
-     String venue = eventVenue.getText().toString().trim();
-     String latitude = eventLat.getText().toString().trim();
-     String longitude = eventLng.getText().toString().trim();
-     //        String movieTitle = eventMovie.getText().toString().trim();
-     String movieId = movie.getId();
-     String attendees = "";
-
-     String insertSQL = "INSERT INTO event \n" +
-     "(id, eventTitle, startDate, startTime, endDate, endTime, venue,latitude, longitude,movieTitle,attendee)\n" +
-     "VALUES \n" +
-     "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-     if (selectedEvent.getId().equals(id)) {
-     //update
-     } else {
-     database.execSQL(insertSQL, new String[]{id, event, startDate, startTime, endDate,
-     endTime, venue, latitude, longitude, movieId, attendees});
-     }
-     Toast.makeText(this, "event added successfully", Toast.LENGTH_SHORT).show();
-     }
-     */
-
 }
