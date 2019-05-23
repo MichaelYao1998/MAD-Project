@@ -1,15 +1,12 @@
 package com.e.assignment.controller;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.Network;
-import android.net.NetworkCapabilities;
-import android.net.NetworkInfo;
 import android.net.NetworkRequest;
 import android.util.Log;
-import android.widget.Toast;
+
 
 //public class NetworkReceiver extends BroadcastReceiver {
 //    @Override

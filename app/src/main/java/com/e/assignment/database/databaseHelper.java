@@ -20,10 +20,8 @@ import java.util.Objects;
 
 
 public class databaseHelper extends SQLiteOpenHelper {
-    //    private Event event;
     private Movie movie;
     private Context context;
-   // private SQLiteDatabase database;
     private final String TAG = getClass().getName();
     public static final String DATABASE_NAME = "MADPROJECT";
     public databaseHelper(Context context) {

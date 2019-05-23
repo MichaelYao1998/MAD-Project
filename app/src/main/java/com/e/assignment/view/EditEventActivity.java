@@ -62,9 +62,6 @@ public class EditEventActivity extends AppCompatActivity {
     public static final String DATABASE_NAME = "MADPROJECT";
     private SQLiteDatabase database;
     private databaseHelper databaseHelper;
-    private EventsModelImpl eventsModelImpl = new EventsModelImpl();
-    private Movie movie;
-
 
     /*
      *  Initialize the page
@@ -142,9 +139,7 @@ public class EditEventActivity extends AppCompatActivity {
                 model.deleteEvent(eventID);
                 if (v.getId() == R.id.deleteEvent) {
                     databaseHelper.deleteRecord(database,eventID);
-
                 }
-
                 finish();
             }
         });
@@ -166,10 +161,6 @@ public class EditEventActivity extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         saveTempEvent();
-//        if (alertDialog != null) {
-//            alertDialog.dismiss();
-//            alertDialog = null;
-//        }
 
         // Save UI state changes to the savedInstanceState.
         // This bundle will be passed to onCreate if the process is

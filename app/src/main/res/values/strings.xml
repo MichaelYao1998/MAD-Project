@@ -60,5 +60,6 @@
     <string name="map">Map</string>
     <string name="NoAttendees">None</string>
     <string name="NoMoive">No Movie</string>
+    <string name="setting">Setting</string>
 
 </resources>
