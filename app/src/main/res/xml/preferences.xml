@@ -22,6 +22,7 @@
     <EditTextPreference
         android:dialogTitle="@string/Enter_the_threshold"
         android:key="noti_threshold"
+        android:defaultValue="3600"
         android:inputType="number"
         android:summary="@string/threshold"
         android:title="@string/notification_threshold" />
@@ -29,6 +30,7 @@
     <EditTextPreference
         android:dialogTitle="@string/Enter_the_duration"
         android:key="remind duration"
+        android:defaultValue="60"
         android:inputType="number"
         android:summary="@string/remind_duration"
         android:title="@string/duration" />
@@ -36,6 +38,7 @@
     <EditTextPreference
         android:dialogTitle="@string/Enter_the_period"
         android:key="noti period"
+        android:defaultValue="60"
         android:inputType="number"
         android:summary="@string/period"
         android:title="@string/notification_period"/>

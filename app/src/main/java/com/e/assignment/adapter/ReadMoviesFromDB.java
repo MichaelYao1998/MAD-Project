@@ -1,9 +1,10 @@
-package com.e.assignment.database;
+package com.e.assignment.adapter;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 
+import com.e.assignment.database.databaseHelper;
 import com.e.assignment.model.Movie;
 
 import java.util.Map;

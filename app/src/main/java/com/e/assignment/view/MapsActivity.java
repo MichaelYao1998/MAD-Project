@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
 import com.e.assignment.R;
+import com.e.assignment.model.Event;
 import com.e.assignment.model.EventsModel;
 import com.e.assignment.model.EventsModelImpl;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -12,6 +13,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -43,9 +48,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Add a marker in Sydney and move the camera
         EventsModel em = EventsModelImpl.getSingletonInstance(getApplicationContext());
-        em.sortTheEventList(false);
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        Map<Date, Event> map = em.sortTheEventList(false);
+        Date current= Calendar.getInstance().getTime();
+        int count = 0;
+        for (Map.Entry<Date, Event> entry : map.entrySet()) {
+            if (count>2){
+                break;
+            }
+            if (current.before(entry.getKey())){
+                String [] location = entry.getValue().getLocation().split(",");
+                if (location.length!=0){
+                    mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(Double.parseDouble(location[0]),Double.parseDouble(location[1])))
+                            .title(entry.getValue().getTitle()));
+                    if (count==0)
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                new LatLng(Double.parseDouble(location[0]),Double.parseDouble(location[1])),5));
+                    count++;
+                }
+            }
+        }
+        if (count==0){
+            LatLng mel = new LatLng(-37.814795, 144.966119);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mel,5));
+        }
     }
 }

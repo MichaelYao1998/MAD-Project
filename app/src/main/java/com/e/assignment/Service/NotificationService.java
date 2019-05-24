@@ -20,6 +20,7 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.e.assignment.R;
+import com.e.assignment.controller.SelectHandler;
 import com.e.assignment.database.databaseHelper;
 import com.e.assignment.model.Event;
 
@@ -58,6 +59,7 @@ public class NotificationService extends IntentService implements LocationListen
     @Override
     public void onHandleIntent(Intent intent) {
         super.onCreate();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         databaseHelper dh = new databaseHelper(getApplicationContext());
         m = dh.readEvents(dh.getReadableDatabase());
@@ -69,15 +71,15 @@ public class NotificationService extends IntentService implements LocationListen
             if (m.get(intent.getExtras().getString("event"))==null){
                 return;
             }
+            sharedPreferences.edit().putString(intent.getExtras().getString("event"),"").commit();
             makeNotification(m.get(intent.getExtras().getString("event")));
             return;
         }
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         threshold = Integer.parseInt(sharedPreferences.getString("noti_threshold",null));
-
         checkPeriod = Integer.parseInt(sharedPreferences.getString("noti period",null));
-
+        remindAgain = Integer.parseInt(sharedPreferences.getString("remind duration",null));
 
 
         AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Activity.ALARM_SERVICE);
@@ -169,7 +171,8 @@ public class NotificationService extends IntentService implements LocationListen
         rv.setOnClickPendingIntent(R.id.cancelButton, makePendingIntent(event,"cancel"));
         rv.setOnClickPendingIntent(R.id.remindButton, makePendingIntent(event,"remind"));
         int remindGap=remindAgain;
-        rv.setTextViewText(R.id.remindButton,"remind in "+remindGap+" minutes");
+        Log.i("!", "setPendingIntentToRemoteViews: "+remindGap);
+        rv.setTextViewText(R.id.remindButton,"remind in "+remindGap+"s");
         rv.setTextViewText(R.id.NotifyText,event.getTitle());
 
     }

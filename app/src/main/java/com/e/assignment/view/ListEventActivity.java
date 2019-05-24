@@ -20,7 +20,6 @@ import com.e.assignment.model.Event;
 import com.e.assignment.model.EventsModel;
 import com.e.assignment.model.EventsModelImpl;
 import com.e.assignment.model.viewModel.EventListViewModel;
-import com.e.assignment.permission.PermissionActivity;
 
 import java.util.Date;
 import java.util.Map;

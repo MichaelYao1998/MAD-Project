@@ -1,4 +1,4 @@
-package com.e.assignment.permission;
+package com.e.assignment.view;
 
 import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;

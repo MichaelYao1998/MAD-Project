@@ -1,8 +1,9 @@
-package com.e.assignment.database;
+package com.e.assignment.adapter;
 
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.e.assignment.database.databaseHelper;
 import com.e.assignment.model.Event;
 
 import java.util.Map;

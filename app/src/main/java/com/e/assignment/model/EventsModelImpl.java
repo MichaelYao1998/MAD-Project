@@ -3,10 +3,10 @@ package com.e.assignment.model;
 import android.content.Context;
 import android.util.Log;
 
-import com.e.assignment.database.ReadEventFromDB;
-import com.e.assignment.database.ReadMoviesFromDB;
-import com.e.assignment.database.WriteEventMapToDB;
-import com.e.assignment.database.WriteMovieMapToDB;
+import com.e.assignment.adapter.ReadEventFromDB;
+import com.e.assignment.adapter.ReadMoviesFromDB;
+import com.e.assignment.adapter.WriteEventMapToDB;
+import com.e.assignment.adapter.WriteMovieMapToDB;
 import com.e.assignment.database.databaseHelper;
 
 import java.io.File;

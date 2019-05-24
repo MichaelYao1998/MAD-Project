@@ -1,4 +1,4 @@
-package com.e.assignment.Service;
+package com.e.assignment.controller;
 
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.e.assignment.Service.NotificationService;
 import com.e.assignment.view.EditEventActivity;
 
 import java.util.Objects;
@@ -38,7 +39,9 @@ public class SelectHandler extends IntentService {
             mNotificationManager.cancel(eventId.hashCode());
         }
         else if (Objects.equals(select, "remind")){
+            sharedPreferences.edit().putString(eventId,dateStr).commit();
             setRemind(eventId,remindAgain);
+            mNotificationManager.cancel(eventId.hashCode());
         }
         else if (Objects.equals(select, "cancel")){
             Intent i = new Intent(getApplicationContext(), EditEventActivity.class);
@@ -58,7 +61,6 @@ public class SelectHandler extends IntentService {
         pi = PendingIntent.getService(getApplicationContext(), 101, i, 0);
         Log.i("makeNotify:", "remind: ");
         am.setExact(AlarmManager.RTC_WAKEUP,ns.getNextTime(gapTime),pi);
-        mNotificationManager.cancel(eventId.hashCode());
     }
 
 }

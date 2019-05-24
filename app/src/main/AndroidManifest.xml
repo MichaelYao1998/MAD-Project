@@ -52,7 +52,7 @@
             android:enabled="true"
             android:exported="true" />
         <service
-            android:name=".Service.SelectHandler"
+            android:name=".controller.SelectHandler"
             android:enabled="true"
             android:exported="true" />
         <activity android:name=".view.ListEventActivity">
@@ -70,7 +70,6 @@
 
         <activity android:name=".view.ListMovieActivity" />
         <activity android:name=".view.CalendarActivity" />
-        <activity android:name=".view.NotificationActivity" />
         <activity android:name=".view.FragmentPreferenceActivity" />
     </application>
 

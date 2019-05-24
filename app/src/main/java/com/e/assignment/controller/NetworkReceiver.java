@@ -8,23 +8,6 @@ import android.net.NetworkRequest;
 import android.util.Log;
 
 
-//public class NetworkReceiver extends BroadcastReceiver {
-//    @Override
-//    public void onReceive(Context context, Intent intent) {
-//        ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE );
-//        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-//        boolean isConnected = activeNetwork != null &&
-//                activeNetwork.isConnectedOrConnecting();
-//        Toast.makeText(context, "Internet Connected", Toast.LENGTH_LONG).show();
-//        Log.i("!!??", "onReceive: ");
-//        if (isConnected) {
-//            Log.i("!!??", "activeNetwork: ");
-//        }
-//        else{
-//            Log.i("!!??", "no receive: ");
-//        }
-//    }
-//}
 public class NetworkReceiver {
     private final String TAG = getClass().getName();
 

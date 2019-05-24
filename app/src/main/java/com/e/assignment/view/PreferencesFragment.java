@@ -1,4 +1,4 @@
-package com.e.assignment.fragment;
+package com.e.assignment.view;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.e.assignment.R;
-import com.e.assignment.view.FragmentPreferenceActivity;
 
 import java.util.Map;
 
