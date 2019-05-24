@@ -37,16 +37,22 @@ public class SelectHandler extends IntentService {
 
         int remindAgain = Integer.parseInt(sharedPreferences.getString("remind duration",null));
         Log.i("!", "onHandleIntent: ");
+        //cancel the notification, and record them into sharedPreferences to avoid duplicate notify
         if (Objects.equals(select, "dismiss")){
             sharedPreferences.edit().putString(eventId,dateStr).commit();
             mNotificationManager.cancel(eventId.hashCode());
         }
+        //cancel the notification, schedule next time notification
+        //and record them into sharedPreferences to avoid duplicate notify
         else if (Objects.equals(select, "remind")){
             sharedPreferences.edit().putString(eventId,dateStr).commit();
             setRemind(eventId,remindAgain);
             mNotificationManager.cancel(eventId.hashCode());
         }
+        //Start the edit event activity for user if they really want to delete the event
+        //cancel the notification and record them into sharedPreferences to avoid duplicate notify
         else if (Objects.equals(select, "cancel")){
+            sharedPreferences.edit().putString(eventId,dateStr).commit();
             Intent i = new Intent(getApplicationContext(), EditEventActivity.class);
             i.putExtra(Intent.EXTRA_TEXT,eventId);
             startActivity(i);

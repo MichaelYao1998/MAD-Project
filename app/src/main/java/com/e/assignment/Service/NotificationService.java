@@ -96,6 +96,7 @@ public class NotificationService extends IntentService implements LocationListen
             Calendar arriveTimePlus = Calendar.getInstance();
 
             ReadUrlHelper urlHelper = new ReadUrlHelper(URL_HEAD+Originlocation+DestiLocation+value.getLocation()+API);
+            Log.i("travel time:", urlHelper.getDuration(urlHelper.readFromUrl())+"");
             arriveTimePlus.add(Calendar.SECOND,urlHelper.getDuration(urlHelper.readFromUrl()));
             arriveTimePlus.add(Calendar.SECOND,threshold);
 
