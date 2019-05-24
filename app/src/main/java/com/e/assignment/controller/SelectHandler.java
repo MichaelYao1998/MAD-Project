@@ -57,6 +57,7 @@ public class SelectHandler extends IntentService {
             i.putExtra(Intent.EXTRA_TEXT,eventId);
             startActivity(i);
             setRemind(eventId,remindAgain);
+            mNotificationManager.cancel(eventId.hashCode());
         }
     }
     /*
