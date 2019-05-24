@@ -5,15 +5,8 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.IntentFilter;
-
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-
-import android.support.v7.app.AppCompatActivity;
-
-import android.preference.PreferenceManager;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -44,13 +37,10 @@ public class ListEventActivity extends PermissionActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_list_event);
-        addPermissionHelper(REQUEST_GPS,
+        addPermissionHelper(1,
                 "we need to get your location .. coz!", Manifest.permission.ACCESS_FINE_LOCATION);
 
-        addPermissionHelper(REQUEST_OVERLAP,
-                "we need to POP UP WINDOWS .. coz!", Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-
-        if(checkPermission(REQUEST_GPS)){
+        if(checkPermission(1)){
             Intent intent = new Intent(getApplicationContext(), NotificationService.class);
             startService(intent);
 

@@ -6,11 +6,12 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.e.assignment.R;
 import com.e.assignment.view.FragmentPreferenceActivity;
 
 import java.util.Map;
 
-public class PreferencesFragment extends PreferenceFragment implements OnSharedPreferenceChangeListener{
+public class PreferencesFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String LOG_TAG = FragmentPreferenceActivity.class.getName();
 
 

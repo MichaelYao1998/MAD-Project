@@ -24,37 +24,38 @@ public class SelectHandler extends IntentService {
     private NotificationManager mNotificationManager;
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
+
         String select = Objects.requireNonNull(intent.getExtras()).getString("select");
         String eventId = Objects.requireNonNull(intent.getExtras()).getString("event");
+        String dateStr = Objects.requireNonNull(intent.getExtras()).getString("date");
         mNotificationManager = (NotificationManager)getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        int remindAgain = Integer.parseInt(sharedPreferences.getString("remind duration",null));
         Log.i("!", "onHandleIntent: ");
         if (Objects.equals(select, "dismiss")){
+            sharedPreferences.edit().putString(eventId,dateStr).commit();
             mNotificationManager.cancel(eventId.hashCode());
         }
         else if (Objects.equals(select, "remind")){
-            setRemind(eventId,10);
+            setRemind(eventId,remindAgain);
         }
         else if (Objects.equals(select, "cancel")){
             Intent i = new Intent(getApplicationContext(), EditEventActivity.class);
             i.putExtra(Intent.EXTRA_TEXT,eventId);
             startActivity(i);
-            setRemind(eventId,10);
+            setRemind(eventId,remindAgain);
         }
     }
 
     public void setRemind(String eventId,int gapTime){
-
         NotificationService ns = new NotificationService();
-
         AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Activity.ALARM_SERVICE);
-
         PendingIntent pi;
         Intent i = new Intent(getApplicationContext(), NotificationService.class);
         i.putExtra("makeNotify","make");
         i.putExtra("event",eventId);
         pi = PendingIntent.getService(getApplicationContext(), 101, i, 0);
-
         Log.i("makeNotify:", "remind: ");
         am.setExact(AlarmManager.RTC_WAKEUP,ns.getNextTime(gapTime),pi);
         mNotificationManager.cancel(eventId.hashCode());

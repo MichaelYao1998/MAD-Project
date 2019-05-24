@@ -22,7 +22,6 @@ import android.widget.RemoteViews;
 import com.e.assignment.R;
 import com.e.assignment.database.databaseHelper;
 import com.e.assignment.model.Event;
-import com.e.assignment.view.EditEventActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,7 +43,6 @@ public class NotificationService extends IntentService implements LocationListen
     private boolean isGPSEnable = false;
     private boolean isNetworkEnable = false;
     private String Originlocation;
-    private int threadhold = 5000;
     private String DestiLocation="&destinations=";
     private Map<String, Event> m;
     protected LocationManager locationManager;
@@ -54,7 +52,9 @@ public class NotificationService extends IntentService implements LocationListen
     }
 
     private NotificationManager mNotificationManager;
-
+    public int threshold;
+    public int checkPeriod;
+    public int remindAgain;
     @Override
     public void onHandleIntent(Intent intent) {
         super.onCreate();
@@ -70,11 +70,18 @@ public class NotificationService extends IntentService implements LocationListen
         }
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        threshold = Integer.parseInt(sharedPreferences.getString("noti_threshold",null));
+
+        checkPeriod = Integer.parseInt(sharedPreferences.getString("noti period",null));
+
+
+
         AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Activity.ALARM_SERVICE);
         PendingIntent pi;
         pi = PendingIntent.getService(getApplicationContext(), 100, intent, 0);
         i = intent;
-        am.setExact(AlarmManager.RTC_WAKEUP,getNextTime(10),pi);
+        am.setExact(AlarmManager.RTC_WAKEUP,getNextTime(checkPeriod),pi);
+
         Originlocation = getOriginlocation();
         for (Event value : m.values()) {
             if(Objects.equals(value.getLocation(), "")){
@@ -85,15 +92,15 @@ public class NotificationService extends IntentService implements LocationListen
             }
             Calendar arriveTimePlus = Calendar.getInstance();
 
-            arriveTimePlus.add(Calendar.SECOND,getDuration(readFromUrl(value.getLocation())));
-            arriveTimePlus.add(Calendar.SECOND,threadhold);
 
-            Log.i("calendar", "time: "+ arriveTimePlus.getTime().toString());
+
+            Log.i("duration", "event time: "+ getDuration(readFromUrl(value.getLocation())));
+            arriveTimePlus.add(Calendar.SECOND,getDuration(readFromUrl(value.getLocation())));
+            arriveTimePlus.add(Calendar.SECOND,threshold);
+
             if(arriveTimePlus.getTime().after(value.getStartDate())){
 
-                Log.i("calendar", "event time: "+ value.getStartDate());
 
-                sharedPreferences.edit().putString(value.getId(),value.getStartDate().toString()).commit();
                 makeNotification(value);
             }
         }
@@ -154,27 +161,22 @@ public class NotificationService extends IntentService implements LocationListen
         return now + gapTime * 1000;
     }
     public void setPendingIntentToRemoteViews(RemoteViews rv, Event event){
-        rv.setOnClickPendingIntent(R.id.dismissButton,makePnedingIntent(event.getId(),"dismiss"));
-        rv.setOnClickPendingIntent(R.id.cancelButton,makePnedingIntent(event.getId(),"cancel"));
-        rv.setOnClickPendingIntent(R.id.remindButton,makePnedingIntent(event.getId(),"remind"));
-        int remindGap=10;
+        rv.setOnClickPendingIntent(R.id.dismissButton,makePnedingIntent(event,"dismiss"));
+        rv.setOnClickPendingIntent(R.id.cancelButton,makePnedingIntent(event,"cancel"));
+        rv.setOnClickPendingIntent(R.id.remindButton,makePnedingIntent(event,"remind"));
+        int remindGap=remindAgain;
         rv.setTextViewText(R.id.remindButton,"remind in "+remindGap+" minutes");
         rv.setTextViewText(R.id.NotifyText,event.getTitle());
 
     }
-    private PendingIntent makePnedingIntent(String eventId,String select)
+    private PendingIntent makePnedingIntent(Event event,String select)
     {
-        return PendingIntent.getService(this,(eventId+select).hashCode(),
-                new Intent(this, SelectHandler.class).putExtra("event",eventId).putExtra("select",select),
+        return PendingIntent.getService(this,(event.getId()+select).hashCode(),
+                new Intent(this, SelectHandler.class).putExtra("event",event.getId()).putExtra("select",select).putExtra("date",event.getStartDate().toString()),
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    private PendingIntent makeEventIntent(String eventId,int count)
-    {
-        return PendingIntent.getActivity(this, count,
-                new Intent(this, EditEventActivity.class).putExtra(Intent.EXTRA_TEXT,eventId),
-                PendingIntent.FLAG_UPDATE_CURRENT);
-    }
+
     @Override
     public void onDestroy() {
         // TODO Auto-generated method stub
