@@ -173,7 +173,7 @@ public class NotificationService extends IntentService implements LocationListen
         int remindGap=remindAgain;
         Log.i("!", "setPendingIntentToRemoteViews: "+remindGap);
         rv.setTextViewText(R.id.remindButton,"remind in "+remindGap+"s");
-        rv.setTextViewText(R.id.NotifyText,event.getTitle());
+        rv.setTextViewText(R.id.NotifyText,event.getTitle()+" is going to start!!");
 
     }
     private PendingIntent makePendingIntent(Event event, String select)

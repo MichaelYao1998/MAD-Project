@@ -157,26 +157,6 @@ public class databaseHelper extends SQLiteOpenHelper {
         String sql = "DELETE FROM event WHERE id = ?";
         database.execSQL(sql, new String[]{id});
     }
-//    public void deleteRecord(String id) {
-//        builder = new AlertDialog.Builder(context);
-//        builder.setTitle("Do you want to delete this record?");
-//        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                String sql = "DELETE FROM event WHERE id = ?";
-//                database.execSQL(sql, new String[]{id});
-//            }
-//        });
-//        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//
-//            }
-//        });
-//
-//        AlertDialog alertDialog = builder.create();
-//        alertDialog.show();
-//    }
 
 
     /**
@@ -247,7 +227,6 @@ public class databaseHelper extends SQLiteOpenHelper {
     public Map<String,Event> readEvents(SQLiteDatabase database) {
         Cursor  cursor = database.rawQuery("select * from event",null);
 
-
         Map<String,Event> m = new HashMap<String,Event>();
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
@@ -275,18 +254,6 @@ public class databaseHelper extends SQLiteOpenHelper {
                         attendees.put(keyValue[0],keyValue[1]);
                     }
                 }
-                Log.i("db!!","1:"+ cursor.getString(0));
-
-                Log.i("db!!","2:"+ cursor.getString(1));
-
-                Log.i("db!!","3:"+ cursor.getString(2));
-
-                Log.i("db!!","4:"+ cursor.getString(3));
-
-                Log.i("db!!","5:"+ cursor.getString(4));
-                Log.i("db!!","6:"+ cursor.getString(5));
-                Log.i("db!!","7:"+ cursor.getString(6));
-                Log.i("db!!", "8:"+cursor.getString(7));
                 Event item = new EventImpl(id,eventTitle,startDate,endDate,venue,location);
                 item.setAttendeesList(attendees);
                 if(!Objects.equals(cursor.getString(6), "")){
@@ -300,7 +267,6 @@ public class databaseHelper extends SQLiteOpenHelper {
             }
             cursor.close();
         }
-
 
         return m;
     }

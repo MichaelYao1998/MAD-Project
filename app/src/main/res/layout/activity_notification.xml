@@ -8,17 +8,18 @@
 
     <TextView
         android:id="@+id/NotifyText"
-        android:layout_width="219dp"
+        android:layout_width="wrap_content"
         android:layout_height="25dp"
 
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="100dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="100dp"
+        android:layout_marginEnd="20dp"
         android:textAlignment="center"
-        android:textIsSelectable="false" />
+        android:textIsSelectable="false"
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/dismissButton"
