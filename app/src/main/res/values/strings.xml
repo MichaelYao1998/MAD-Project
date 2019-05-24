@@ -61,5 +61,7 @@
     <string name="NoAttendees">None</string>
     <string name="NoMoive">No Movie</string>
     <string name="setting">Setting</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_confirm">Confirm</string>
 
 </resources>

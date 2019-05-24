@@ -1,13 +1,11 @@
 package com.e.assignment.fragment;
 
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.e.assignment.R;
 import com.e.assignment.view.FragmentPreferenceActivity;
 
 import java.util.Map;
@@ -51,7 +49,7 @@ public class PreferencesFragment extends PreferenceFragment {
         sharedPreferences.edit().putString(THRESHOLD_KEY, ThresholdValue).commit();
         sharedPreferences.edit().putString(DURATION_KEY, DurationValue).commit();
         sharedPreferences.edit().putString(PERIOD_KEY, PeriodValue).commit();
-
+        //sharedPreferences.edit().putLong()
         //display the preferences for debugging
         Map<String, ?> prefMap = sharedPreferences.getAll();
         Log.i(LOG_TAG, prefMap.toString());

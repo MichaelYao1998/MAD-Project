@@ -1,25 +1,58 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@android:color/white"
-    android:baselineAligned="false"
-    android:gravity="center_vertical"
-    android:orientation="horizontal">
-
+    android:layout_height="fill_parent"
+    android:background="@color/grey"
+    android:gravity="left"
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/NotifyText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="219dp"
+        android:layout_height="25dp"
 
-        android:textIsSelectable="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="100dp"
+        android:textAlignment="center"
+        android:textIsSelectable="false" />
 
     <Button
-        android:id="@+id/NotifyBut"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Button" />
+        android:id="@+id/dismissButton"
+        android:layout_width="98dp"
+        android:layout_height="35dp"
+        android:layout_below="@+id/NotifyText"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="30dp"
+        android:text="dismiss"
+        android:textSize="12dp" />
 
-</LinearLayout>
+    <Button
+        android:id="@+id/remindButton"
+        android:layout_width="98dp"
+        android:layout_height="35dp"
+        android:layout_below="@+id/NotifyText"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="15dp"
+        android:layout_toStartOf="@+id/dismissButton"
+        android:layout_toEndOf="@+id/cancelButton"
+        android:text="remind"
+        android:textSize="12dp" />
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="98dp"
+        android:layout_height="35dp"
+        android:layout_below="@+id/NotifyText"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="5dp"
+        android:text="cancel"
+        android:textSize="12dp" />
+
+</RelativeLayout>

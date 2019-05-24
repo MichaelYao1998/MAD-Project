@@ -1,5 +1,6 @@
 package com.e.assignment.view;
 
+import android.Manifest;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -8,7 +9,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,11 +24,12 @@ import com.e.assignment.model.Event;
 import com.e.assignment.model.EventsModel;
 import com.e.assignment.model.EventsModelImpl;
 import com.e.assignment.model.viewModel.EventListViewModel;
+import com.e.assignment.permission.PermissionActivity;
 
 import java.util.Date;
 import java.util.Map;
 
-public class ListEventActivity extends AppCompatActivity {
+public class ListEventActivity extends PermissionActivity {
     ListViewAdapter mAdapter;
     EventListViewModel myViewModel;
     EventsModel eventsModel;
@@ -35,14 +37,27 @@ public class ListEventActivity extends AppCompatActivity {
     private static final String THRESHOLD_KEY = "noti_threshold";
     private static final String DURATION_KEY = "remind duration";
     private static final String PERIOD_KEY = "noti period";
+    private static final int REQUEST_WRITE_STORAGE = 1;
+    private static final int REQUEST_GPS = 2;
+    private static final int REQUEST_OVERLAP = 3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
-        Intent intent = new Intent(getApplicationContext(), NotificationService.class);
-        startService(intent);
+        setContentView(R.layout.activity_list_event);
+        addPermissionHelper(REQUEST_GPS,
+                "we need to get your location .. coz!", Manifest.permission.ACCESS_FINE_LOCATION);
 
+        addPermissionHelper(REQUEST_OVERLAP,
+                "we need to POP UP WINDOWS .. coz!", Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+
+        if(checkPermission(REQUEST_GPS)){
+            Intent intent = new Intent(getApplicationContext(), NotificationService.class);
+            startService(intent);
+
+        }
         // call the network check
         nr = new NetworkReceiver();
         nr.enable(this);
@@ -55,7 +70,6 @@ public class ListEventActivity extends AppCompatActivity {
         addToSharedPreference();
 
         eventsModel = EventsModelImpl.getSingletonInstance(getApplicationContext());
-        setContentView(R.layout.activity_list_event);
         myViewModel = ViewModelProviders.of(this).get(EventListViewModel.class);
         myViewModel.getEvents(eventsModel.isReverse()).observe(this, new Observer<Map<Date, Event>>() {
             @Override

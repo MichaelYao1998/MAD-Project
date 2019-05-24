@@ -48,7 +48,7 @@ class ContactPicker {
      *  when no permission on runtime,
      *  request the permission
      */
-    private void RequestPermission(Activity thisActivity, String[] Permission) {
+    public void RequestPermission(Activity thisActivity, String[] Permission) {
         if (ContextCompat.checkSelfPermission(thisActivity,
                 Permission[0])
                 != PackageManager.PERMISSION_GRANTED) {

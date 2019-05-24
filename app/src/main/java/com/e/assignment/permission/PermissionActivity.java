@@ -57,7 +57,7 @@ public abstract class PermissionActivity extends AppCompatActivity
       // lazy initialisation and pre-condition checking
       if(layout == null)
       {
-         layout = findViewById(R.id.permission_view);
+         layout = findViewById(R.id.EventListView);
          if (layout == null)
             throw new IllegalArgumentException("Root view must contain a permission_view ID in the layout hierarchy");
       }
