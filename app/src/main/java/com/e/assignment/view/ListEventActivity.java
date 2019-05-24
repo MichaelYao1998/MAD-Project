@@ -13,7 +13,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.e.assignment.R;
-import com.e.assignment.Service.NotificationService;
 import com.e.assignment.adapter.ListViewAdapter;
 import com.e.assignment.controller.NetworkReceiver;
 import com.e.assignment.model.Event;
@@ -40,13 +39,11 @@ public class ListEventActivity extends PermissionActivity {
                 "we need to get your location .. coz!", Manifest.permission.ACCESS_FINE_LOCATION);
 
         if(checkPermission(1)){
-            Intent intent = new Intent(getApplicationContext(), NotificationService.class);
-            startService(intent);
-
+            nr = new NetworkReceiver();
+            nr.enable(getApplicationContext());
         }
         // call the network check
-        nr = new NetworkReceiver();
-        nr.enable(this);
+
 
         //add to the intent filter
         IntentFilter filter = new IntentFilter();

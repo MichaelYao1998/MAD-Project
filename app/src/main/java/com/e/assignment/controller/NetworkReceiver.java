@@ -7,6 +7,8 @@ import android.net.Network;
 import android.net.NetworkRequest;
 import android.util.Log;
 
+import com.e.assignment.Service.NotificationService;
+
 
 public class NetworkReceiver {
     private final String TAG = getClass().getName();
@@ -26,11 +28,15 @@ public class NetworkReceiver {
         connectivityManager.registerNetworkCallback(
                 builder.build(),//network, give the current set of capabilities
                 new ConnectivityManager.NetworkCallback() {
+
                     @Override
                     //connect to the internet
                     public void onAvailable(Network network) {
                         context.sendBroadcast(getConnectivityIntent(false));
                         Log.i(TAG, "activeNetwork: ");
+
+                        Intent intent = new Intent(context, NotificationService.class);
+                        context.startService(intent);
                     }
 
                     //disconnect from the internet
