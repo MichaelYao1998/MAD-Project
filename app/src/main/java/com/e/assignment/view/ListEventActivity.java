@@ -38,11 +38,13 @@ public class ListEventActivity extends PermissionActivity {
         addPermissionHelper(1,
                 "we need to get your location .. coz!", Manifest.permission.ACCESS_FINE_LOCATION);
 
+
         if(checkPermission(1)){
+            // call the network check
             nr = new NetworkReceiver();
             nr.enable(getApplicationContext());
         }
-        // call the network check
+
 
 
         //add to the intent filter

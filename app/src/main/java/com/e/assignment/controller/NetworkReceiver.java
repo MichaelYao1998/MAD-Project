@@ -16,11 +16,10 @@ public class NetworkReceiver {
     /**
      *
      * @param context
-     * enable the network check, if connect to network...
-     * if disconnect form the network....
+     * enable the network check, and monitor the Internet connection
+     * If Internet is available, then enable notification service
      */
     public void enable(Context context) {
-//        networkRequest = new NetworkRequest.Builder().addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR).addTransportType(NetworkCapabilities.TRANSPORT_WIFI).build();
 
         Log.i(TAG, "enable ");
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -52,7 +51,7 @@ public class NetworkReceiver {
      *
      * @param noConnection
      * @return
-     *
+     * not connection intent
      */
     private Intent getConnectivityIntent(boolean noConnection) {
 

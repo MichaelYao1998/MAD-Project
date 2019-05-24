@@ -72,4 +72,7 @@
     <string name="Enter_the_period">Enter the notification period</string>
     <string name="period">Period</string>
     <string name="notification_period">Notification check period</string>
+    <string name="dismiss">dismiss</string>
+    <string name="remind">remind</string>
+    <string name="cancel">Cancel</string>
 </resources>

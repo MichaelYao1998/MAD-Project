@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="space">16dp</dimen>
+    <dimen name="textSize">12sp</dimen>
+    <dimen name="notifi_textSize">18sp</dimen>
+    <dimen name="padding">10dp</dimen>
+    <dimen name="twenty_five">25dp</dimen>
+    <dimen name="twenty">20dp</dimen>
+    <dimen name="five">5dp</dimen>
+    <dimen name="thirty">30dp</dimen>
+    <dimen name="thirty_five">35dp</dimen>
+    <dimen name="fifteen">15dp</dimen>
 </resources>

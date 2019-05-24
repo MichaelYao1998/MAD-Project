@@ -20,14 +20,17 @@ import java.util.Objects;
 
 
 public class databaseHelper extends SQLiteOpenHelper {
-    private Movie movie;
-    private Context context;
     private final String TAG = getClass().getName();
     public static final String DATABASE_NAME = "MADPROJECT";
     public databaseHelper(Context context) {
         super(context, DATABASE_NAME, null,1);
     }
 
+    /**
+     *
+     * @param sqLiteDatabase
+     * create event and movie table
+     */
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(
