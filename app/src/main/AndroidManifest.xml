@@ -66,6 +66,7 @@
         <activity android:name=".view.ListMovieActivity" />
         <activity android:name=".view.CalendarActivity" />
         <activity android:name=".view.NotificationActivity" />
+        <activity android:name=".view.FragmentPreferenceActivity" />
     </application>
 
 </manifest>
