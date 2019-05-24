@@ -5,9 +5,12 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
+
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+
+import android.support.v7.app.AppCompatActivity;
+
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
@@ -34,12 +37,6 @@ public class ListEventActivity extends PermissionActivity {
     EventListViewModel myViewModel;
     EventsModel eventsModel;
     NetworkReceiver nr;
-    private static final String THRESHOLD_KEY = "noti_threshold";
-    private static final String DURATION_KEY = "remind duration";
-    private static final String PERIOD_KEY = "noti period";
-    private static final int REQUEST_WRITE_STORAGE = 1;
-    private static final int REQUEST_GPS = 2;
-    private static final int REQUEST_OVERLAP = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +64,6 @@ public class ListEventActivity extends PermissionActivity {
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         filter.addAction("com.e.assignment.CONNECTIVITY_CHANGE");
 
-        addToSharedPreference();
 
         eventsModel = EventsModelImpl.getSingletonInstance(getApplicationContext());
         myViewModel = ViewModelProviders.of(this).get(EventListViewModel.class);
@@ -128,13 +124,15 @@ public class ListEventActivity extends PermissionActivity {
                 startActivity(newEvent);
                 break;
             case R.id.menu_map:
+                Toast.makeText(this, "google map", Toast.LENGTH_SHORT).show();
                 Intent mapIntent = new Intent(getApplicationContext(),MapsActivity.class);
                 startActivity(mapIntent);
                 break;
-//            case R.id.setting:
-//                Intent settingIntent = new Intent(getApplicationContext(),FragmentPreferenceActivity.class);
-//                startActivity(settingIntent);
-//                break;
+            case R.id.setting:
+                Toast.makeText(this, "Share preference setting", Toast.LENGTH_SHORT).show();
+                Intent settingIntent = new Intent(getApplicationContext(),FragmentPreferenceActivity.class);
+                startActivity(settingIntent);
+                break;
                 //click calendar will redirect to CalendarActivity page
             case R.id.menu_calendar:
                 Toast.makeText(this, "calendar", Toast.LENGTH_SHORT).show();
@@ -158,27 +156,5 @@ public class ListEventActivity extends PermissionActivity {
         if (resultCode == RESULT_OK) {
             refresh();
         }
-    }
-
-    /**
-     * To store value in shared preference
-     */
-    public void addToSharedPreference() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String ThresholdValue = "5";
-        String DurationValue = "10";
-        String PeriodValue = "100";
-
-        //now add extra fields into sharedPreferences
-        sharedPreferences.edit().putString(THRESHOLD_KEY, ThresholdValue).commit();
-        sharedPreferences.edit().putString(DURATION_KEY, DurationValue).commit();
-        sharedPreferences.edit().putString(PERIOD_KEY, PeriodValue).commit();
-
-        //display the preferences for debugging
-        Map<String, ?> prefMap = sharedPreferences.getAll();
-        Log.i("sharedPreference", prefMap.toString());
-        //display threshold for  debugging
-        Log.i("threshold", "threshold=" + sharedPreferences.getString(THRESHOLD_KEY, ""));
-
     }
 }
