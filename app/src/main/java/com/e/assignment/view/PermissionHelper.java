@@ -9,6 +9,9 @@ import android.view.View;
 
 import java.util.Arrays;
 
+/*
+ *  the code is From Casper
+ */
 // General reusable Helper class for processing runtime permission requests in API 23+
 // Removes code duplication from Activities that need to process multiple permission sets
 

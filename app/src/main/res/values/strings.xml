@@ -65,11 +65,11 @@
     <string name="dialog_confirm">Confirm</string>
     <string name="Enter_the_threshold">Enter the notification threshold</string>
     <string name="threshold">threshold</string>
-    <string name="notification_threshold">notification threshold</string>
+    <string name="notification_threshold">Notification threshold</string>
     <string name="Enter_the_duration">Enter the remind again duration</string>
-    <string name="duration">remind again duration</string>
+    <string name="duration">Remind again duration</string>
     <string name="remind_duration">Duration</string>
     <string name="Enter_the_period">Enter the notification period</string>
     <string name="period">Period</string>
-    <string name="notification_period">notification period</string>
+    <string name="notification_period">Notification check period</string>
 </resources>

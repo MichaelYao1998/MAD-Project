@@ -197,6 +197,10 @@ public class databaseHelper extends SQLiteOpenHelper {
         }
         return total;
     }
+
+    /**
+     * fetch the movie by its id
+     */
     public Movie readMovieByID(SQLiteDatabase database,String movieID){
         Cursor  cursor = database.rawQuery("select * from movie WHERE id="+movieID,null);
         Movie m = null;
@@ -211,6 +215,10 @@ public class databaseHelper extends SQLiteOpenHelper {
 
         return m;
     }
+    /**
+     * fetch the whole movie table
+     * and return them in map type
+     */
     public Map<String,Movie> readMovies(SQLiteDatabase database){
         Cursor cursor = database.rawQuery("select * from movie",null);
         Map<String,Movie> m = new HashMap<String,Movie>();
@@ -224,9 +232,12 @@ public class databaseHelper extends SQLiteOpenHelper {
         }
         return m;
     }
+    /**
+     * fetch the whole events table
+     * and return them in map type
+     */
     public Map<String,Event> readEvents(SQLiteDatabase database) {
         Cursor  cursor = database.rawQuery("select * from event",null);
-
         Map<String,Event> m = new HashMap<String,Event>();
         if (cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
@@ -241,12 +252,9 @@ public class databaseHelper extends SQLiteOpenHelper {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-
                 String venue = cursor.getString(4);
                 String location = cursor.getString(5);
-
                 String[] attendeeString = cursor.getString(7).replace("{","").replace("}","").split(", ");
-
                 Map<String,String> attendees =new HashMap<>();
                 for (String i: attendeeString) {
                     String[] keyValue = i.split("=");
@@ -259,8 +267,6 @@ public class databaseHelper extends SQLiteOpenHelper {
                 if(!Objects.equals(cursor.getString(6), "")){
                     item.setMovie(readMovieByID(database,cursor.getString(6)));
                 }
-                //item.setAttendeesList();
-
                 m.put(cursor.getString(0),item);
 
                 cursor.moveToNext();

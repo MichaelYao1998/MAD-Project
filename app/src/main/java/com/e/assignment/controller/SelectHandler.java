@@ -15,7 +15,10 @@ import com.e.assignment.Service.NotificationService;
 import com.e.assignment.view.EditEventActivity;
 
 import java.util.Objects;
-
+/*
+ * The class used to listen the click actions of the buttons from notification
+ * handle them based on the intent
+ */
 public class SelectHandler extends IntentService {
 
     public SelectHandler() {
@@ -50,7 +53,9 @@ public class SelectHandler extends IntentService {
             setRemind(eventId,remindAgain);
         }
     }
-
+    /*
+     * Schedule the notification based on the users setting "remind me in XX seconds" SharedPreferences
+     */
     public void setRemind(String eventId,int gapTime){
         NotificationService ns = new NotificationService();
         AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Activity.ALARM_SERVICE);

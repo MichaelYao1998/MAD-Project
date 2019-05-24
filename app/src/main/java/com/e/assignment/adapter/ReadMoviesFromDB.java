@@ -9,6 +9,9 @@ import com.e.assignment.model.Movie;
 
 import java.util.Map;
 
+/*
+ * using AsyncTask class to process the reading movies from database in other worker thread
+ */
 public class ReadMoviesFromDB extends AsyncTask<Void, Void,Map<String, Movie>> {
     private databaseHelper dbh;
     public ReadMoviesFromDB(Context c){

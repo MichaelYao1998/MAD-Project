@@ -24,20 +24,16 @@ import com.e.assignment.controller.SelectHandler;
 import com.e.assignment.database.databaseHelper;
 import com.e.assignment.model.Event;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.Objects;
-
+/*
+ *  The service class is for checking if send notification to user
+ *  It is depend on the travel time to destination for each event , threshold time and event start time.
+ *  Once the notification was sent, it will be recorded into SharedPreferences to avoid multiple notify
+ *  When the service run, it will also schedule next time checking based on user's setting.
+ *
+ */
 public class NotificationService extends IntentService implements LocationListener {
     public static final String URL_HEAD = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=";
     private static final String API = "&mode=driving&key=AIzaSyAIHxjxhZivpxuh-G_HeQHgTU8XRpcjpiE";
@@ -47,11 +43,9 @@ public class NotificationService extends IntentService implements LocationListen
     private String DestiLocation="&destinations=";
     private Map<String, Event> m;
     protected LocationManager locationManager;
-    private Intent i;
     public NotificationService() {
         super("NotificationService");
     }
-
     private NotificationManager mNotificationManager;
     public int threshold;
     public int checkPeriod;
@@ -64,10 +58,10 @@ public class NotificationService extends IntentService implements LocationListen
         databaseHelper dh = new databaseHelper(getApplicationContext());
         m = dh.readEvents(dh.getReadableDatabase());
 
+        // Check the intent. Make the notification, if the intent is from the selectHandler class
         if(intent!=null && intent.getExtras()!=null
                 && Objects.equals(intent.getExtras().getString("makeNotify"), "make")){
-
-            Log.i("makeNotify:", "makeNotify: ");
+            // ignore if the event is deleted.
             if (m.get(intent.getExtras().getString("event"))==null){
                 return;
             }
@@ -85,97 +79,66 @@ public class NotificationService extends IntentService implements LocationListen
         AlarmManager am = (AlarmManager) getApplicationContext().getSystemService(Activity.ALARM_SERVICE);
         PendingIntent pi;
         pi = PendingIntent.getService(getApplicationContext(), 100, intent, 0);
-        i = intent;
         am.setExact(AlarmManager.RTC_WAKEUP,getNextTime(checkPeriod),pi);
 
         Originlocation = getOriginlocation();
+
+        // loop over the event map
         for (Event value : m.values()) {
+            // ignore the event which don't have the location
             if(Objects.equals(value.getLocation(), "")){
                 continue;
             }
+            // avoid the duplicated notification
             if (sharedPreferences.contains(value.getId())&&sharedPreferences.getString(value.getId(),null).equals(value.getStartDate().toString())){
                 continue;
             }
             Calendar arriveTimePlus = Calendar.getInstance();
 
-
-
-            Log.i("duration", "event time: "+ getDuration(readFromUrl(value.getLocation())));
-            arriveTimePlus.add(Calendar.SECOND,getDuration(readFromUrl(value.getLocation())));
+            ReadUrlHelper urlHelper = new ReadUrlHelper(URL_HEAD+Originlocation+DestiLocation+value.getLocation()+API);
+            arriveTimePlus.add(Calendar.SECOND,urlHelper.getDuration(urlHelper.readFromUrl()));
             arriveTimePlus.add(Calendar.SECOND,threshold);
 
             if(arriveTimePlus.getTime().after(value.getStartDate())){
-
-
                 makeNotification(value);
             }
         }
         dh.close();
     }
-    public int getDuration(String jsonStr){
-        int durationInSec = 0;
-
-        try {
-            JSONObject body = new JSONObject(jsonStr);
-            JSONArray rowArray = body.getJSONArray("rows");
-            JSONObject row = rowArray.getJSONObject(0);
-            JSONArray elementsArray = row.getJSONArray("elements");
-            JSONObject elements = elementsArray.getJSONObject(0);
-            JSONObject duration = elements.getJSONObject("duration");
-            durationInSec = duration.getInt("value");
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return durationInSec;
-    }
-    public String readFromUrl(String destination){
-        HttpURLConnection urlConnection = null;
-        StringBuilder result = new StringBuilder();
-
-        try {
-            Log.i("URL:",URL_HEAD+Originlocation+DestiLocation+destination+API);
-            URL url = new URL(URL_HEAD+Originlocation+DestiLocation+destination+API);
-            urlConnection = (HttpURLConnection) url.openConnection();
-            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                result.append(line);
-            }
-
-        }catch( Exception e) {
-            e.printStackTrace();
-        }
-        finally {
-            urlConnection.disconnect();
-        }
-
-
-        return result.toString();
-    }
+    /*
+     * make the notification with the unique hashcode
+     */
     public void makeNotification(Event event){
         RemoteViews contentView = new RemoteViews(getPackageName(),
                 R.layout.activity_notification);
         setPendingIntentToRemoteViews(contentView,event);
-        mNotificationManager.notify(event.getId().hashCode(),createDefaultNotificationBuilder("test",event.getId()).setCustomContentView(contentView).build());
+        mNotificationManager.notify(event.getId().hashCode(),createDefaultNotificationBuilder().setCustomContentView(contentView).build());
     }
+    /*
+     * get the next time based on the notification period time setting
+     */
     public long getNextTime(int gapTime) {
         long now = System.currentTimeMillis();
         return now + gapTime * 1000;
     }
+
+    /*
+     * Making the pending intent to the remote view
+     * set pending Intent based on the button type
+     * Also set the remote view
+     */
     public void setPendingIntentToRemoteViews(RemoteViews rv, Event event){
         rv.setOnClickPendingIntent(R.id.dismissButton, makePendingIntent(event,"dismiss"));
         rv.setOnClickPendingIntent(R.id.cancelButton, makePendingIntent(event,"cancel"));
         rv.setOnClickPendingIntent(R.id.remindButton, makePendingIntent(event,"remind"));
         int remindGap=remindAgain;
-        Log.i("!", "setPendingIntentToRemoteViews: "+remindGap);
         rv.setTextViewText(R.id.remindButton,"remind in "+remindGap+"s");
         rv.setTextViewText(R.id.NotifyText,event.getTitle()+" is going to start!!");
-
     }
+
+    /*
+     * Make the pending intent with extra key "select"
+     */
     private PendingIntent makePendingIntent(Event event, String select)
     {
         return PendingIntent.getService(this,(event.getId()+select).hashCode(),
@@ -190,6 +153,23 @@ public class NotificationService extends IntentService implements LocationListen
         super.onDestroy();
         Log.d("MyIntentService", "onDestroy");
     }
+    /*
+     * @return the notification builder
+     */
+    @SuppressLint("WrongConstant")
+    private Notification.Builder createDefaultNotificationBuilder()
+    {
+        Notification.Builder builder = null;
+        builder = new Notification.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                .setPriority(NotificationCompat.PRIORITY_MAX);
+        return builder;
+    }
+
+    /*
+     * get the users location based on gps or network
+     */
     @SuppressLint("MissingPermission")
     public String getOriginlocation() {
         Location location = null;
@@ -202,7 +182,6 @@ public class NotificationService extends IntentService implements LocationListen
                 if (locationManager!=null)
                     location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             }
-
             if (isGPSEnable){
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1000,0,this);
                 if (locationManager!=null)
@@ -238,14 +217,5 @@ public class NotificationService extends IntentService implements LocationListen
 
     }
 
-    @SuppressLint("WrongConstant")
-    private Notification.Builder createDefaultNotificationBuilder(CharSequence text, String eventId)
-    {
-        Notification.Builder builder = null;
-        builder = new Notification.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setDefaults(NotificationCompat.DEFAULT_ALL)
-                .setPriority(NotificationCompat.PRIORITY_MAX);
-        return builder;
-    }
+
 }

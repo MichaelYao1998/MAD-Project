@@ -8,6 +8,9 @@ import com.e.assignment.model.Event;
 
 import java.util.Map;
 
+/*
+ * using AsyncTask class to process the writing events from database in other worker thread
+ */
 public class WriteEventMapToDB extends AsyncTask<Map<String, Event>, Void,Void> {
     private databaseHelper dbh;
     public WriteEventMapToDB(Context c){

@@ -9,7 +9,9 @@ import com.e.assignment.R;
 
 import java.util.HashMap;
 import java.util.Map;
-
+/*
+ *  the code is From Casper
+ */
 // abstract superclass for using Caspar's PermissionHelper class
 // overrides call addPermissionHelper() for appropriate Permissions
 // then call checkPermission() and the requests including UI are handled automatically
