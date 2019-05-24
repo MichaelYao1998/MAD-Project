@@ -61,10 +61,14 @@ public class NotificationService extends IntentService implements LocationListen
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         databaseHelper dh = new databaseHelper(getApplicationContext());
         m = dh.readEvents(dh.getReadableDatabase());
+
         if(intent!=null && intent.getExtras()!=null
                 && Objects.equals(intent.getExtras().getString("makeNotify"), "make")){
 
             Log.i("makeNotify:", "makeNotify: ");
+            if (m.get(intent.getExtras().getString("event"))==null){
+                return;
+            }
             makeNotification(m.get(intent.getExtras().getString("event")));
             return;
         }
@@ -161,15 +165,15 @@ public class NotificationService extends IntentService implements LocationListen
         return now + gapTime * 1000;
     }
     public void setPendingIntentToRemoteViews(RemoteViews rv, Event event){
-        rv.setOnClickPendingIntent(R.id.dismissButton,makePnedingIntent(event,"dismiss"));
-        rv.setOnClickPendingIntent(R.id.cancelButton,makePnedingIntent(event,"cancel"));
-        rv.setOnClickPendingIntent(R.id.remindButton,makePnedingIntent(event,"remind"));
+        rv.setOnClickPendingIntent(R.id.dismissButton, makePendingIntent(event,"dismiss"));
+        rv.setOnClickPendingIntent(R.id.cancelButton, makePendingIntent(event,"cancel"));
+        rv.setOnClickPendingIntent(R.id.remindButton, makePendingIntent(event,"remind"));
         int remindGap=remindAgain;
         rv.setTextViewText(R.id.remindButton,"remind in "+remindGap+" minutes");
         rv.setTextViewText(R.id.NotifyText,event.getTitle());
 
     }
-    private PendingIntent makePnedingIntent(Event event,String select)
+    private PendingIntent makePendingIntent(Event event, String select)
     {
         return PendingIntent.getService(this,(event.getId()+select).hashCode(),
                 new Intent(this, SelectHandler.class).putExtra("event",event.getId()).putExtra("select",select).putExtra("date",event.getStartDate().toString()),

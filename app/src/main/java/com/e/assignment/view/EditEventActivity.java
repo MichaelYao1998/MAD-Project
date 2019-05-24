@@ -2,6 +2,7 @@ package com.e.assignment.view;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -133,15 +134,14 @@ public class EditEventActivity extends AppCompatActivity {
         }
         Button deleteButton = findViewById(R.id.deleteEvent);
         deleteButton.setVisibility(View.VISIBLE);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                model.deleteEvent(eventID);
-                if (v.getId() == R.id.deleteEvent) {
-                    databaseHelper.deleteRecord(database,eventID);
-                }
-                finish();
+        deleteButton.setOnClickListener(v -> {
+            model.deleteEvent(eventID);
+            if (v.getId() == R.id.deleteEvent) {
+                databaseHelper.deleteRecord(database,eventID);
+                NotificationManager mNotificationManager = (NotificationManager)getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
+                mNotificationManager.cancel(eventID.hashCode());
             }
+            finish();
         });
         calendar.setTime(selectedEvent.getStartDate());
         calendarEnd.setTime(selectedEvent.getEndDate());
